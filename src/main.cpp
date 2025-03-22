@@ -4,20 +4,20 @@
 
 WINDOW *win;
 
-// Function to handle window resize
+// function to handle window resize
 void handle_resize(int sig)
 {
   if (sig == SIGWINCH)
   {
-    endwin();  // End ncurses mode
-    refresh(); // Refresh the terminal
+    endwin();  // end ncurses mode
+    refresh(); // refresh the terminal
 
     int height = LINES;
     int width = COLS;
 
     delwin(win);                       // clean up the old window
     win = newwin(height, width, 0, 0); // create new full-screen window
-    box(win, 0, 0);                    // redraw border
+    // box(win, 0, 0);                    // redraw border
 
     // redraw content
     mvwprintw(win, height / 2, (width - 8) / 2, "neonote.");
@@ -49,7 +49,7 @@ int main()
   win = newwin(height, width, 0, 0);
   refresh();
 
-  box(win, 0, 0);
+  // box(win, 0, 0); //this for border if we want
   mvwprintw(win, height / 2, (width - 8) / 2, "neonote.");
   // note: subtract length of string from width to have centered
 
