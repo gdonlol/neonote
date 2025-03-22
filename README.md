@@ -2,6 +2,8 @@
 ## Description
 
 CS3307 Group 14
+
+
 Beautiful, fast, and fully featured text editor in the terminal for users who wish to keep their workflow in one place. This project will incorporate planning features similar to Notion to streamline personal productivity but be optimized for terminal use with a graphical TUI (text-based user interface). The text editor will integrate tools for task management, calendar scheduling, and more, while being optimized for a keyboard-driven workflow in a terminal environment.
 
 This software will be developed in C++ and will run virtually on a Raspberry Pi. We do not require a physical Raspberry Pi kit for this project.
