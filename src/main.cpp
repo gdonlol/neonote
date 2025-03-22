@@ -4,6 +4,16 @@
 
 WINDOW *win;
 
+void render_menu()
+{
+
+  // box(win, 0, 0); //this for border if we want
+  mvwprintw(win, (LINES - 10) / 2, (COLS - 8) / 2, "neonote.");
+  mvwprintw(win, (LINES - 2) / 2, (COLS - 16) / 2, "1. my notes");
+  mvwprintw(win, (LINES - 1) / 2, (COLS - 16) / 2, "2. exit");
+  refresh();
+}
+
 // function to handle window resize
 void handle_resize(int sig)
 {
@@ -12,15 +22,12 @@ void handle_resize(int sig)
     endwin();  // end ncurses mode
     refresh(); // refresh the terminal
 
-    int height = LINES;
-    int width = COLS;
-
-    delwin(win);                       // clean up the old window
-    win = newwin(height, width, 0, 0); // create new full-screen window
+    delwin(win);                     // clean up the old window
+    win = newwin(LINES, COLS, 0, 0); // create new full-screen window
     // box(win, 0, 0);                    // redraw border
 
     // redraw content
-    mvwprintw(win, height / 2, (width - 8) / 2, "neonote.");
+    render_menu();
     wrefresh(win);
   }
 }
@@ -42,16 +49,11 @@ int main()
 
   signal(SIGWINCH, handle_resize);
 
-  int height, width;
-  getmaxyx(stdscr, height, width);
-
   // create window at 0 0 with max height and width
-  win = newwin(height, width, 0, 0);
+  win = newwin(LINES, COLS, 0, 0);
   refresh();
 
-  // box(win, 0, 0); //this for border if we want
-  mvwprintw(win, height / 2, (width - 8) / 2, "neonote.");
-  // note: subtract length of string from width to have centered
+  render_menu();
 
   wrefresh(win);
   getch();
