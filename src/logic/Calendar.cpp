@@ -1,15 +1,33 @@
 #include "Calendar.h"
-#include <iostream>
+
+Calendar::Calendar() {}
 
 void Calendar::addEvent(const Event& event) {
     events.push_back(event);
-    std::cout << "Event added: " << event.toString() << std::endl;
 }
 
-void Calendar::printEvents() const {
-    std::cout << "\n--- Calendar Events ---\n";
-    for (const auto& event : events) {
-        std::cout << event.toString() << std::endl;
+void Calendar::removeEvent(int eventId) {
+    for(auto it = events.begin(); it != events.end(); ++it) {
+        if(it->getId() == eventId) {
+            events.erase(it);
+            break;
+        }
     }
-    std::cout << "-----------------------\n";
+}
+
+std::vector<Event> Calendar::getEvents() const {
+    return events;
+}
+
+void Calendar::updateEvent(int eventId, const Event& updatedEvent) {
+    for(auto & event : events) {
+        if(event.getId() == eventId) {
+            event = updatedEvent;
+            break;
+        }
+    }
+}
+
+void Calendar::renderCalendar() {
+    // Stub: Rendering should be handled by the TUI.
 }

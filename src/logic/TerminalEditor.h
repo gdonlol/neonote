@@ -1,28 +1,48 @@
-#ifndef TERMINALEDITOR_H
-#define TERMINALEDITOR_H
-
-#include <string>
-#include <vector>
+#include "TaskManager.h"
 #include <ncurses.h>
 
-class TerminalEditor
-{
-public:
-    TerminalEditor();
-    void run(const std::string &filename);
+TaskManager::TaskManager() {}
 
-private:
-    std::vector<std::string> lines;
-    int row, col;
+void TaskManager::addTask(const Task& task) {
+    tasks.push_back(task);
+}
 
-    void loadFile(const std::string &filename);
-    void saveFile(const std::string &filename);
-    void initScreen();
-    void mainLoop();
-    void renderUI();
-    void displayContent();
-    void handleInput(int ch);
-    void cleanup();
-};
+void TaskManager::removeTask(int taskId) {
+    for (auto it = tasks.begin(); it != tasks.end(); ++it) {
+        if (it->getId() == taskId) {
+            tasks.erase(it);
+            break;
+        }
+    }
+}
 
-#endif // TERMINALEDITOR_H
+std::vector<Task> TaskManager::getTasks() const {
+    return tasks;
+}
+
+void TaskManager::updateTask(int taskId, const Task& updatedTask) {
+    for (auto& task : tasks) {
+        if (task.getId() == taskId) {
+            task = updatedTask;
+            break;
+        }
+    }
+}
+
+void TaskManager::renderTasks(WINDOW* win, int &line) const {
+    // Print a header for clarity
+    mvwprintw(win, line++, 1, "---- To Do List ----");
+    for (const auto& task : tasks) {
+        mvwprintw(win, line++, 1, "%s", task.toString().c_str());
+    }
+    mvwprintw(win, line++, 1, "--------------------");
+}
+
+void TaskManager::moveTask(int taskId, const std::string& newStatus) {
+    for (auto & task : tasks) {
+        if (task.getId() == taskId) {
+            task.setStatus(newStatus);
+            return;
+        }
+    }
+}

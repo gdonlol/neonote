@@ -4,27 +4,20 @@
 #include "Task.h"
 #include <vector>
 #include <string>
+#include <ncurses.h>
 
-// TaskManager class manages a collection of Task objects
 class TaskManager {
-public:
-    // Adds a new task to the task list
-    void addTask(const Task& task);
-
-    // Removes a task from the list based on its ID
-    void removeTask(int taskId);
-
-    // Updates a task by replacing it with an updated version
-    void updateTask(int taskId, Task updatedTask);
-
-    // Moves a task to a new status category
-    void moveTask(int taskId, const std::string& newStatus);
-
-    // Returns a formatted string representation of all tasks
-    std::string printTasks() const;
-    
 private:
     std::vector<Task> tasks;
+public:
+    TaskManager();
+    void addTask(const Task& task);
+    void removeTask(int taskId);
+    std::vector<Task> getTasks() const;
+    void updateTask(int taskId, const Task& updatedTask);
+    // Render the list of tasks to the provided ncurses window starting at 'line'
+    void renderTasks(WINDOW* win, int &line) const;
+    void moveTask(int taskId, const std::string& newStatus);
 };
 
 #endif // TASKMANAGER_H

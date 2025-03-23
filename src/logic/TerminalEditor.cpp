@@ -1,53 +1,63 @@
-#include "TerminalHeader.h"
-#include <ncurses.h>
-#include <fstream>
+#include "TerminalEditor.h"
 
-TerminalEditor::TerminalEditor() : row(0), col(0), sidebar(nullptr), content(nullptr) {}
+TerminalEditor::TerminalEditor() : currentFile(""), currentBuffer(""), cursorPosition(0) {}
 
-void TerminalEditor::run(const std::string& filename) {
-    initScreen();
-    loadFile(filename);
-    mainLoop();
-    saveFile(filename);
-    cleanup();
+void TerminalEditor::openFile(const std::string& filePath) {
+    currentFile = filePath;
+    currentBuffer = "Loaded file content."; // Dummy content for demonstration
 }
 
-void TerminalEditor::loadFile(const std::string& filename) {
-    // Implementation to load file content into 'lines' vector
-    std::ifstream file(filename); // Loads file for reading
-    std::string line; // Temp variable for current line read
-    while (std::getline(file, line)) {
-        lines.push_back(line); // Load to lines vector
+void TerminalEditor::saveFile(const std::string& filePath) {
+    currentFile = filePath;
+    // Stub: In a full implementation, perform file I/O here.
+}
+
+void TerminalEditor::insertText(const std::string& text) {
+    currentBuffer += text;
+}
+
+void TerminalEditor::deleteChar() {
+    if (!currentBuffer.empty()) {
+        currentBuffer.pop_back();
     }
 }
 
-void TerminalEditor::saveFile(const std::string& filename) {
-    // Implementation to save 'lines' vector content to file
-    std::ofstream file(filename); // Opens file for writing
-    for (const auto& line : lines) { // Loop over lines to write
-        file << line << '\n';
-    }
+void TerminalEditor::moveCursor(int offset) {
+    cursorPosition += offset;
+    if(cursorPosition < 0) cursorPosition = 0;
+    if(cursorPosition > static_cast<int>(currentBuffer.size())) cursorPosition = currentBuffer.size();
 }
 
-void TerminalEditor::initScreen() {
-    // Implementation to initialize ncurses screen and windows
-    initscr();
-    cbreak();
-    noecho();
-    keypad(stdscr, TRUE);
-    refresh();
+void TerminalEditor::render() {
+    // Stub: Would normally render the currentBuffer to the display.
 }
 
-// RENDERUI SENT TO RENDER, MAINLOOP SENT TO EDITORINPUTS
-
-void TerminalEditor::displayContent() {
-    // Implementation to display the 'lines' vector content in the content window
+void TerminalEditor::handleInput(const std::string& input) {
+    // Stub: Process input commands.
 }
 
-void TerminalEditor::handleInput(int ch) {
-    // Implementation to handle user input (keyboard events)
+std::string TerminalEditor::boldText(const std::string & text) {
+    // For demonstration, simulate bold formatting by surrounding text with "**"
+    return "**" + text + "**";
 }
 
-void TerminalEditor::cleanup() {
-    endwin();
+std::string TerminalEditor::italicizeText(const std::string & text) {
+    // For demonstration, simulate italic formatting by surrounding text with "_"
+    return "_" + text + "_";
+}
+
+void TerminalEditor::saveBinary() { /* Stub */ }
+void TerminalEditor::loadBinary() { /* Stub */ }
+void TerminalEditor::lockPage(const std::string& password) { /* Stub */ }
+void TerminalEditor::unlockPage(const std::string& password) { /* Stub */ }
+void TerminalEditor::linkPage(const std::string& targetPage) { /* Stub */ }
+void TerminalEditor::createSubpage(const std::string& subpageName) { /* Stub */ }
+void TerminalEditor::enableWidget(const std::string& widgetName) { /* Stub */ }
+void TerminalEditor::setKeybind(const std::string& key, const std::string& action) { /* Stub */ }
+void TerminalEditor::setColorScheme(const std::string& schemeName) { /* Stub */ }
+void TerminalEditor::collaborate(const std::string& sessionId) { /* Stub */ }
+void TerminalEditor::loadPlugin(const std::string& pluginPath) { /* Stub */ }
+
+std::string TerminalEditor::getContent() const {
+    return currentBuffer;
 }
