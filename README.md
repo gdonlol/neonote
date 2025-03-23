@@ -1,10 +1,48 @@
 ## How to run
 
-Use `make` to compile the program or `make run` to compile and run.
+Clone the repository.
+
+Navigate to project directory in your terminal and use `make` to compile the program or `make run` to compile and run.
 
 -   The compiled binary will be located in the `bin/` folder.
 -   If the `bin/` directory doesn’t exist, `make` will automatically create it.
 
+## Dependencies
+
+Neonote relies on the following dependencies for proper compilation and execution.
+
+- `g++` (GCC)    
+- **ncurses Library**
+  - Used for terminal-based UI rendering.
+  - Install commands for common Linux distributions:
+    - **Debian/Ubuntu**:  
+    ```
+    sudo apt install libncurses5-dev libncursesw5-dev
+    ```
+    - **Arch Linux**:  
+    ```
+    sudo pacman -S ncurses
+    ```
+    - **Fedora/RHEL**:  
+    ```
+    sudo dnf install ncurses-devel
+    ```
+- **GNU Make**
+  - Used to build the project using the provided `Makefile`.  
+  - Install commands:
+    - **Debian/Ubuntu**:  
+    ```
+    sudo apt install make
+    ```
+    - **Arch Linux**:  
+    ```
+    sudo pacman -S make
+    ```
+    - **Fedora/RHEL**:  
+    ```
+    sudo dnf install make
+    ```
+  
 ## Description
 
 CS3307 Group 14
