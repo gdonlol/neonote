@@ -4,6 +4,7 @@
 
 #include "./logic/EditorInputs.h"
 #include "./render/RenderEditor.h"
+#include "./render/RenderMenu.h"
 
 WINDOW *win;
 
@@ -11,31 +12,6 @@ int curr_window = 0; // current active window, 0=menu 1=text editor
 
 // for main menu:
 int menu_option = 0;
-
-void render_menu()
-{
-  clear();
-
-  // box(win, 0, 0); //this for border if we want
-  mvwprintw(win, (LINES - 11) / 2, (COLS - 8) / 2, "neonote.");
-
-  if (menu_option == 0)
-  {
-    wattron(win, COLOR_PAIR(1));
-    mvwprintw(win, (LINES - 2) / 2, (COLS - 8) / 2, "my notes");
-    wattroff(win, COLOR_PAIR(1));
-    mvwprintw(win, (LINES - 1) / 2, (COLS - 4) / 2, "exit");
-  }
-  else
-  {
-    mvwprintw(win, (LINES - 2) / 2, (COLS - 8) / 2, "my notes");
-    wattron(win, COLOR_PAIR(1));
-    mvwprintw(win, (LINES - 1) / 2, (COLS - 4) / 2, "exit");
-    wattroff(win, COLOR_PAIR(1));
-  }
-
-  refresh();
-}
 
 void draw_screen()
 {
@@ -48,7 +24,7 @@ void draw_screen()
   else if (curr_window == 0)
   {
     curs_set(0);
-    render_menu();
+    renderMenu(win, menu_option);
   }
 
   wrefresh(win);
