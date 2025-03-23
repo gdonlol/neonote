@@ -5,6 +5,8 @@
 #include <vector>
 #include <ncurses.h>
 
+#include "./render/RenderEditor.h"
+
 class TerminalEditor {
 public:
     TerminalEditor();
@@ -13,8 +15,7 @@ public:
 private:
     std::vector<std::string> lines;
     int row, col;
-    WINDOW *sidebar;
-    WINDOW *content;
+    renderEditor renderEditor;
 
     void loadFile(const std::string& filename);
     void saveFile(const std::string& filename);
