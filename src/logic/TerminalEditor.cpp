@@ -14,10 +14,19 @@ void TerminalEditor::run(const std::string& filename) {
 
 void TerminalEditor::loadFile(const std::string& filename) {
     // Implementation to load file content into 'lines' vector
+    std::ifstream file(filename); // Loads file for reading
+    std::string line; // Temp variable for current line read
+    while (std::getline(file, line)) {
+        lines.push_back(line); // Load to lines vector
+    }
 }
 
 void TerminalEditor::saveFile(const std::string& filename) {
     // Implementation to save 'lines' vector content to file
+    std::ofstream file(filename); // Opens file for writing
+    for (const auto& line : lines) { // Loop over lines to write
+        file << line << '\n';
+    }
 }
 
 void TerminalEditor::initScreen() {
