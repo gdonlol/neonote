@@ -6,6 +6,6 @@ Event::Event(int id, const std::string& title, const std::string& description, c
 
 std::string Event::toString() const {
     std::ostringstream oss;
-    oss << "Event ID: " << id << ", Title: " << title << ", Date: " << date;
+    oss << "Event ID: " << id << ", Title: " << title << ", Date: " << date << "]\n" << "   Description: " << description;
     return oss.str();
 }
