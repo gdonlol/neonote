@@ -4,7 +4,6 @@
 #include <vector>
 using namespace std;
 
-#include "./logic/EditorInputs.h"
 #include "./render/RenderEditor.h"
 #include "./render/RenderMenu.h"
 #include "./logic/TerminalEditor.h"

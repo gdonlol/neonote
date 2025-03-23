@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -Wall -Wextra -g
 LDFLAGS = -lncurses
 
-SRC = src/main.cpp src/logic/EditorInputs.cpp src/render/RenderEditor.cpp src/render/RenderMenu.cpp
+SRC = src/main.cpp src/logic/TerminalEditor.cpp src/render/RenderEditor.cpp src/render/RenderMenu.cpp
 TARGET = bin/neonote
 
 all: $(TARGET)
