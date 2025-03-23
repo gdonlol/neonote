@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <ncurses.h>
 
 class TerminalEditor {
 public:
@@ -12,12 +13,15 @@ public:
 private:
     std::vector<std::string> lines;
     int row, col;
+    WINDOW *sidebar;
+    WINDOW *content;
 
     void loadFile(const std::string& filename);
     void saveFile(const std::string& filename);
     void initScreen();
     void mainLoop();
-    void display();
+    void renderUI();
+    void displayContent();
     void handleInput(int ch);
     void cleanup();
 };
