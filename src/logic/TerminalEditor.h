@@ -5,20 +5,18 @@
 #include <vector>
 #include <ncurses.h>
 
-#include "./render/RenderEditor.h"
-
-class TerminalEditor {
+class TerminalEditor
+{
 public:
     TerminalEditor();
-    void run(const std::string& filename);
+    void run(const std::string &filename);
 
 private:
     std::vector<std::string> lines;
     int row, col;
-    renderEditor renderEditor;
 
-    void loadFile(const std::string& filename);
-    void saveFile(const std::string& filename);
+    void loadFile(const std::string &filename);
+    void saveFile(const std::string &filename);
     void initScreen();
     void mainLoop();
     void renderUI();

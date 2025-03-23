@@ -1,15 +1,8 @@
-#ifndef EDITOR_INPUTS_H
-#define EDITOR_INPUTS_H
+#ifndef EDITORINPUTS_H
+#define EDITORINPUTS_H
 
-#include "TerminalEditor.h"
+#include <ncurses.h>
 
-class EditorInputs {
-public:
-    EditorInputs(TerminalEditor& editor);
-    void handleInput(int input);
+void editorInputParser(int input);
 
-private:
-    TerminalEditor& editor;
-};
-
-#endif // EDITOR_INPUTS_H
+#endif
