@@ -11,12 +11,12 @@ public:
     TerminalEditor();
     void run(const std::string &filename);
     void handleInput(int ch);
+    void loadFile(const std::string &filename);
 
 private:
     std::vector<std::string> lines;
     int row, col;
 
-    void loadFile(const std::string &filename);
     void saveFile(const std::string &filename);
     void initScreen();
     void mainLoop();

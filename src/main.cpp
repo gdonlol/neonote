@@ -121,6 +121,7 @@ int main()
         input = getch();
         if (focused_div == 0)
         {
+          terminal_editor.loadFile(files[0]);
           terminal_editor.handleInput(input);
         }
         else
