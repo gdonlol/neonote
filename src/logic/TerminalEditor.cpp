@@ -31,15 +31,14 @@ void TerminalEditor::saveFile(const std::string& filename) {
 
 void TerminalEditor::initScreen() {
     // Implementation to initialize ncurses screen and windows
+    initscr();
+    cbreak();
+    noecho();
+    keypad(stdscr, TRUE);
+    refresh();
 }
 
-void TerminalEditor::mainLoop() {
-    // Implementation of the main loop to handle input and render UI
-}
-
-void TerminalEditor::renderUI() {
-    // Implementation to render sidebar and content windows
-}
+// RENDERUI SENT TO RENDER, MAINLOOP SENT TO EDITORINPUTS
 
 void TerminalEditor::displayContent() {
     // Implementation to display the 'lines' vector content in the content window
@@ -50,5 +49,5 @@ void TerminalEditor::handleInput(int ch) {
 }
 
 void TerminalEditor::cleanup() {
-    // Implementation to clean up ncurses resources
+    endwin();
 }
