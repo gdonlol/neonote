@@ -16,13 +16,17 @@ void render_menu()
 
   if (menu_option == 0)
   {
-    mvwprintw(win, (LINES - 2) / 2, (COLS - 16) / 2, ">> my notes");
+    wattron(win, COLOR_PAIR(1));
+    mvwprintw(win, (LINES - 2) / 2, (COLS - 16) / 2, "1. my notes");
+    wattroff(win, COLOR_PAIR(1));
     mvwprintw(win, (LINES - 1) / 2, (COLS - 16) / 2, "2. exit");
   }
   else
   {
     mvwprintw(win, (LINES - 2) / 2, (COLS - 16) / 2, "1. my notes");
-    mvwprintw(win, (LINES - 1) / 2, (COLS - 16) / 2, ">> exit");
+    wattron(win, COLOR_PAIR(1));
+    mvwprintw(win, (LINES - 1) / 2, (COLS - 16) / 2, "2. exit");
+    wattroff(win, COLOR_PAIR(1));
   }
 
   refresh();
@@ -34,6 +38,7 @@ void draw_screen()
   // render menu
   if (curr_window == 0)
   {
+    curs_set(0);
     render_menu();
   }
   if (curr_window == 1)
@@ -67,6 +72,8 @@ int main()
   noecho();             // stop inputs from printing
   use_default_colors(); // use default terminal colors for users with custom terminals
   keypad(stdscr, TRUE); // enable arrow keys
+  start_color();
+  init_pair(1, COLOR_BLACK, COLOR_WHITE);
   // check color support
   if (!has_colors())
   {
