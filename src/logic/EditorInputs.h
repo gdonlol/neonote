@@ -1,8 +1,15 @@
-#ifndef RENDERTERMINAL_H
-#define RENDERTERMINAL_H
+#ifndef EDITOR_INPUTS_H
+#define EDITOR_INPUTS_H
 
-#include <ncurses.h>
+#include "TerminalEditor.h"
 
-void editorInputParser(int input);
+class EditorInputs {
+public:
+    EditorInputs(TerminalEditor& editor);
+    void handleInput(int input);
 
-#endif
+private:
+    TerminalEditor& editor;
+};
+
+#endif // EDITOR_INPUTS_H
