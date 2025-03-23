@@ -7,6 +7,7 @@ using namespace std;
 #include "./logic/EditorInputs.h"
 #include "./render/RenderEditor.h"
 #include "./render/RenderMenu.h"
+#include "./logic/TerminalEditor.h"
 
 WINDOW *win;
 
@@ -113,13 +114,14 @@ int main()
 
     if (curr_window == 1)
     {
+      TerminalEditor terminal_editor;
       while (1)
       {
         draw_screen();
         input = getch();
         if (focused_div == 0)
         {
-          editorInputParser(input);
+          terminal_editor.handleInput(input);
         }
         else
         {

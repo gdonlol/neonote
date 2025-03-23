@@ -10,6 +10,7 @@ class TerminalEditor
 public:
     TerminalEditor();
     void run(const std::string &filename);
+    void handleInput(int ch);
 
 private:
     std::vector<std::string> lines;
@@ -21,7 +22,7 @@ private:
     void mainLoop();
     void renderUI();
     void displayContent();
-    void handleInput(int ch);
+
     void cleanup();
 };
 
