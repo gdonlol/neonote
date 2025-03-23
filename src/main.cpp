@@ -2,6 +2,9 @@
 #include <string>
 #include <signal.h>
 
+#include "./logic/EditorInputs.h"
+#include "./render/RenderEditor.h"
+
 WINDOW *win;
 
 int curr_window = 0; // current active window, 0=menu 1=text editor
@@ -12,20 +15,20 @@ int menu_option = 0;
 void render_menu()
 {
   // box(win, 0, 0); //this for border if we want
-  mvwprintw(win, (LINES - 10) / 2, (COLS - 8) / 2, "neonote.");
+  mvwprintw(win, (LINES - 11) / 2, (COLS - 8) / 2, "neonote.");
 
   if (menu_option == 0)
   {
     wattron(win, COLOR_PAIR(1));
-    mvwprintw(win, (LINES - 2) / 2, (COLS - 16) / 2, "1. my notes");
+    mvwprintw(win, (LINES - 2) / 2, (COLS - 8) / 2, "my notes");
     wattroff(win, COLOR_PAIR(1));
-    mvwprintw(win, (LINES - 1) / 2, (COLS - 16) / 2, "2. exit");
+    mvwprintw(win, (LINES - 1) / 2, (COLS - 4) / 2, "exit");
   }
   else
   {
-    mvwprintw(win, (LINES - 2) / 2, (COLS - 16) / 2, "1. my notes");
+    mvwprintw(win, (LINES - 2) / 2, (COLS - 8) / 2, "my notes");
     wattron(win, COLOR_PAIR(1));
-    mvwprintw(win, (LINES - 1) / 2, (COLS - 16) / 2, "2. exit");
+    mvwprintw(win, (LINES - 1) / 2, (COLS - 4) / 2, "exit");
     wattroff(win, COLOR_PAIR(1));
   }
 
@@ -43,6 +46,8 @@ void draw_screen()
   }
   if (curr_window == 1)
   {
+    curs_set(1);
+    renderEditor(win);
   }
   wrefresh(win);
 }
@@ -88,15 +93,46 @@ int main()
   refresh();
   while (1)
   {
-    draw_screen();
-    int input = getch();
-    if (input == KEY_UP || input == 'k')
+    int input;
+
+    if (curr_window == 0)
     {
-      menu_option = (menu_option - 1) % 2;
+      while (1)
+      {
+        draw_screen();
+        input = getch();
+        if (input == KEY_UP || input == 'k')
+        {
+          menu_option = (menu_option - 1) % 2;
+        }
+        else if (input == KEY_DOWN || input == 'j')
+        {
+          menu_option = (menu_option + 1) % 2;
+        }
+        else if (input == KEY_ENTER || input == '\n')
+        {
+          if (menu_option == 0)
+          {
+            curr_window = 1;
+            break;
+          }
+          else
+          {
+            endwin();
+            return 0;
+          }
+        }
+      }
     }
-    else if (input == KEY_DOWN || input == 'j')
+
+    if (curr_window == 1)
     {
-      menu_option = (menu_option + 1) % 2;
+      while (1)
+      {
+        draw_screen();
+        input = getch();
+        editorInputParser(input);
+      }
     }
   }
   endwin();
