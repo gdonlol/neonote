@@ -15,6 +15,9 @@ int curr_window = 0; // current active window, 0=menu 1=text editor
 // for main menu:
 int menu_option = 0;
 
+// for editor screen:
+int focused_div = 0;
+
 // placeholders for now:
 vector<string> files = {"Untitled1", "Untitled2"};
 
@@ -114,7 +117,14 @@ int main()
       {
         draw_screen();
         input = getch();
-        editorInputParser(input);
+        if (focused_div == 0)
+        {
+          editorInputParser(input);
+        }
+        else
+        {
+          // side bar inputs
+        }
       }
     }
   }
