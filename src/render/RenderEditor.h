@@ -2,7 +2,10 @@
 #define RENDEREDITOR_H
 
 #include <ncurses.h>
+#include <vector>
+#include <string>
+using namespace std;
 
-void renderEditor(WINDOW *win);
+void renderEditor(WINDOW *win, vector<string> &files);
 
 #endif

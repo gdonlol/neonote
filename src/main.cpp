@@ -1,6 +1,8 @@
 #include <ncurses.h>
 #include <string>
 #include <signal.h>
+#include <vector>
+using namespace std;
 
 #include "./logic/EditorInputs.h"
 #include "./render/RenderEditor.h"
@@ -13,13 +15,16 @@ int curr_window = 0; // current active window, 0=menu 1=text editor
 // for main menu:
 int menu_option = 0;
 
+// placeholders for now:
+vector<string> files = {"Untitled1", "Untitled2"};
+
 void draw_screen()
 {
   // render menu
   if (curr_window == 1)
   {
     curs_set(1);
-    renderEditor(win);
+    renderEditor(win, files);
   }
   else if (curr_window == 0)
   {
