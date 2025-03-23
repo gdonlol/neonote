@@ -1,36 +1,45 @@
-#include "TerminalEditor.h"
-#include <iostream>
+#include "TerminalHeader.h"
+#include <ncurses.h>
+#include <fstream>
 
-// ANSI escape codes for text formatting in the terminal
-const std::string ANSI_BOLD_ON = "\033[1m";
-const std::string ANSI_ITALIC_ON = "\033[3m";
-const std::string ANSI_RESET = "\033[0m";
+TerminalEditor::TerminalEditor() : row(0), col(0), sidebar(nullptr), content(nullptr) {}
 
-TerminalEditor::TerminalEditor() : content("") {}
-
-void TerminalEditor::insertText(const std::string& text) {
-    content += text;
+void TerminalEditor::run(const std::string& filename) {
+    initScreen();
+    loadFile(filename);
+    mainLoop();
+    saveFile(filename);
+    cleanup();
 }
 
-std::string TerminalEditor::getContent() const {
-    return content;
+void TerminalEditor::loadFile(const std::string& filename) {
+    // Implementation to load file content into 'lines' vector
 }
 
-std::string TerminalEditor::applyBold(const std::string& text) const {
-    return ANSI_BOLD_ON + text + ANSI_RESET;
+void TerminalEditor::saveFile(const std::string& filename) {
+    // Implementation to save 'lines' vector content to file
 }
 
-std::string TerminalEditor::applyItalic(const std::string& text) const {
-    return ANSI_ITALIC_ON + text + ANSI_RESET;
+void TerminalEditor::initScreen() {
+    // Implementation to initialize ncurses screen and windows
 }
 
-void TerminalEditor::saveFile(const std::string& filePath) const {
-    std::cout << "Saving file to " << filePath << "..." << std::endl;
-    // File I/O code would be added here.
+void TerminalEditor::mainLoop() {
+    // Implementation of the main loop to handle input and render UI
 }
 
-void TerminalEditor::openFile(const std::string& filePath) {
-    std::cout << "Opening file from " << filePath << "..." << std::endl;
-    // File I/O code would be added here.
-    content = "Loaded file content.";
+void TerminalEditor::renderUI() {
+    // Implementation to render sidebar and content windows
+}
+
+void TerminalEditor::displayContent() {
+    // Implementation to display the 'lines' vector content in the content window
+}
+
+void TerminalEditor::handleInput(int ch) {
+    // Implementation to handle user input (keyboard events)
+}
+
+void TerminalEditor::cleanup() {
+    // Implementation to clean up ncurses resources
 }
