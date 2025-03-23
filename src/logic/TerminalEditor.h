@@ -2,19 +2,24 @@
 #define TERMINALEDITOR_H
 
 #include <string>
+#include <vector>
 
 class TerminalEditor {
 public:
     TerminalEditor();
-    void insertText(const std::string& text);
-    std::string getContent() const;
-    std::string applyBold(const std::string& text) const;
-    std::string applyItalic(const std::string& text) const;
-    void saveFile(const std::string& filePath) const;
-    void openFile(const std::string& filePath);
-    
+    void run(const std::string& filename);
+
 private:
-    std::string content;
+    std::vector<std::string> lines;
+    int row, col;
+
+    void loadFile(const std::string& filename);
+    void saveFile(const std::string& filename);
+    void initScreen();
+    void mainLoop();
+    void display();
+    void handleInput(int ch);
+    void cleanup();
 };
 
 #endif // TERMINALEDITOR_H
