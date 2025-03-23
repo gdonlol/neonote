@@ -45,7 +45,41 @@ void TerminalEditor::displayContent() {
 }
 
 void TerminalEditor::handleInput(int ch) {
-    // Implementation to handle user input (keyboard events)
+    switch (ch) {
+        case KEY_UP:
+            if (row > 0) --row;
+            break;
+        case KEY_DOWN:
+            if (row < lines.size() - 1) ++row;
+            break;
+        case KEY_LEFT:
+            if (col > 0) --col;
+            break;
+        case KEY_RIGHT:
+            if (col < lines[row].length()) ++col;
+            break;
+        case KEY_BACKSPACE:
+            if (col > 0) {
+                lines[row].erase(col - 1, 1);
+                --col;
+            } else if (row > 0) {
+                col = lines[row - 1].length();
+                lines[row - 1] += lines[row];
+                lines.erase(lines.begin() + row);
+                --row;
+            }
+            break;
+        case '\n':
+            lines.insert(lines.begin() + row + 1, lines[row].substr(col));
+            lines[row].resize(col);
+            ++row;
+            col = 0;
+            break;
+        default:
+            lines[row].insert(col, 1, ch);
+            ++col;
+            break;
+    }
 }
 
 void TerminalEditor::cleanup() {
