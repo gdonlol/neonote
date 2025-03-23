@@ -52,7 +52,6 @@ void handle_resize(int sig)
 
     delwin(win);                     // clean up the old window
     win = newwin(LINES, COLS, 0, 0); // create new full-screen window
-    // box(win, 0, 0);                    // redraw border
 
     // redraw content
     draw_screen();
@@ -67,6 +66,7 @@ int main()
   cbreak();             // allows ctrl c terminate
   noecho();             // stop inputs from printing
   use_default_colors(); // use default terminal colors for users with custom terminals
+  keypad(stdscr, TRUE); // enable arrow keys
   // check color support
   if (!has_colors())
   {
@@ -82,8 +82,15 @@ int main()
   while (1)
   {
     draw_screen();
-    getch();
-    menu_option = (menu_option + 1) % 2;
+    int input = getch();
+    if (input == KEY_UP || input == 'k')
+    {
+      menu_option = (menu_option - 1) % 2;
+    }
+    else if (input == KEY_DOWN || input == 'j')
+    {
+      menu_option = (menu_option + 1) % 2;
+    }
   }
   endwin();
 
