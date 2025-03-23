@@ -1,8 +1,13 @@
+## How to run
+
+Use `make` to compile the program or `make run` to compile and run.
+
+-   The compiled binary will be located in the `bin/` folder.
+-   If the `bin/` directory doesn’t exist, `make` will automatically create it.
 
 ## Description
 
 CS3307 Group 14
-
 
 Beautiful, fast, and fully featured text editor in the terminal for users who wish to keep their workflow in one place. This project will incorporate planning features similar to Notion to streamline personal productivity but be optimized for terminal use with a graphical TUI (text-based user interface). The text editor will integrate tools for task management, calendar scheduling, and more, while being optimized for a keyboard-driven workflow in a terminal environment.
 

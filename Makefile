@@ -8,6 +8,7 @@ TARGET = bin/neonote
 all: $(TARGET)
 
 $(TARGET): $(SRC)
+	@mkdir -p $(dir $(TARGET))
 	$(CXX) -o $(TARGET) $(SRC) $(LDFLAGS)
 
 run: $(TARGET)
