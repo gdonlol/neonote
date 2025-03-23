@@ -14,6 +14,8 @@ int menu_option = 0;
 
 void render_menu()
 {
+  clear();
+
   // box(win, 0, 0); //this for border if we want
   mvwprintw(win, (LINES - 11) / 2, (COLS - 8) / 2, "neonote.");
 
@@ -37,18 +39,18 @@ void render_menu()
 
 void draw_screen()
 {
-  clear();
   // render menu
-  if (curr_window == 0)
-  {
-    curs_set(0);
-    render_menu();
-  }
   if (curr_window == 1)
   {
     curs_set(1);
     renderEditor(win);
   }
+  else if (curr_window == 0)
+  {
+    curs_set(0);
+    render_menu();
+  }
+
   wrefresh(win);
 }
 
