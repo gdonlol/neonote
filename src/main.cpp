@@ -58,28 +58,7 @@ void draw_screen()
 
     refresh();
   }
-
   wrefresh(win);
-}
-
-// function to handle window resize
-void handle_resize(int sig)
-{
-  if (sig == SIGWINCH)
-  {
-    endwin();  // end ncurses mode
-    refresh(); // refresh the terminal
-
-    delwin(win);                     // clean up the old window
-    win = newwin(LINES, COLS, 0, 0); // create new full-screen window
-    sidebar_width = COLS * 0.25;
-    content_width = COLS - sidebar_width;
-    sidebar = derwin(win, LINES, sidebar_width, 0, 0);
-    content = derwin(win, LINES, content_width, 0, sidebar_width);
-
-    // redraw content
-    draw_screen();
-  }
 }
 
 int main()
@@ -99,7 +78,6 @@ int main()
     getch();
     return -1;
   }
-  signal(SIGWINCH, handle_resize); // listen for terminal resize
 
   // create window at 0 0 with max height and width
   win = newwin(LINES, COLS, 0, 0);
@@ -147,9 +125,7 @@ int main()
 
     if (curr_window == 1)
     {
-
       // setup
-
       curs_set(1);
       terminal_editor.RenderUI(sidebar_width, files);
       terminal_editor.loadFile(files[0]); // wait is this supposed to be in the loop

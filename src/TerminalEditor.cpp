@@ -93,12 +93,21 @@ void TerminalEditor::displayContent()
         int line_index = scroll_row + i;
         if (line_index < lines.size())
         {
-            string line = lines[line_index].substr(scroll_col, max_cols);
+            string line = lines[line_index];
+
+            if (scroll_col < line.size())
+            {
+                line = line.substr(scroll_col, max_cols);
+            }
+            else
+            {
+                line = "";
+            }
+
             mvwprintw(content, i + 2, 2, "%s", line.c_str());
         }
     }
 
-    // Move cursor to the correct position relative to the scroll
     wmove(content, row - scroll_row + 2, col - scroll_col + 2);
     wrefresh(content);
 }
@@ -176,7 +185,6 @@ void TerminalEditor::handleInputContent(int ch)
     {
         col = lines[row].length();
     }
-
 }
 
 void TerminalEditor::handleInputSidebar(int ch)
