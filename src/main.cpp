@@ -120,8 +120,9 @@ int main()
         input = getch();
         if (focused_div == 0)
         {
-          terminal_editor.loadFile(files[0]);
+          // terminal_editor.loadFile(files[0]); wait is this supposed to be in the loop
           terminal_editor.handleInput(input);
+          terminal_editor.displayContent();
         }
         else
         {
