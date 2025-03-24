@@ -14,6 +14,7 @@ TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, WINDOW *conte
     col = 0;
     scroll_row = 0;
     scroll_col = 0;
+    lines = {""};
 }
 
 void TerminalEditor::loadFile(const string &filename)
@@ -53,7 +54,6 @@ void TerminalEditor::RenderUI(int sidebar_width, vector<string> &files)
     }
 
     box(content, 0, 0);
-    mvwprintw(content, 1, 2, "Content");
 
     wrefresh(win);
     wrefresh(sidebar);
@@ -63,6 +63,7 @@ void TerminalEditor::RenderUI(int sidebar_width, vector<string> &files)
 void TerminalEditor::displayContent()
 {
     werase(content);
+    box(content, 0, 0);
     int max_lines = LINES - 4;        // Subtract 2 for borders and 2 for padding
     int max_cols = (COLS * 0.75) - 4; // Subtract 2 for borders and 2 for padding
 
@@ -118,7 +119,7 @@ void TerminalEditor::handleInput(int ch)
             --col;
         break;
     case KEY_RIGHT:
-        if (col < lines[row].length())
+        if (col < lines[row].length() - 1)
             ++col;
         break;
     case KEY_BACKSPACE:
@@ -142,7 +143,7 @@ void TerminalEditor::handleInput(int ch)
         col = 0;
         break;
     default:
-        lines[row].insert(col, 1, ch);
+        lines[row].insert(col, string(1, ch));
         ++col;
         break;
     }
