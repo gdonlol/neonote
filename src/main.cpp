@@ -101,8 +101,10 @@ int main()
   const char *home = getenv("HOME");
   if (home == nullptr)
   {
-    cerr << "Failed to get HOME directory" << endl;
-    return false;
+    printw("no home directory");
+    getch();
+    endwin();
+    return 0;
   }
   string homePath = string(home) + "/.local/share/neonote";
   struct stat info;
