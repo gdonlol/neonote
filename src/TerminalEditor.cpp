@@ -84,10 +84,10 @@ void TerminalEditor::displayContent()
 {
     werase(content);
     box(content, 0, 0);
-    int max_lines = LINES - 4;        // Subtract 2 for borders and 2 for padding
-    int max_cols = (COLS * 0.75) - 4; // Subtract 2 for borders and 2 for padding
+    int max_lines = LINES - 4;      // Subtract 2 for borders and 2 for padding
+    int max_cols = COLS * 0.75 - 4; // Subtract 2 for borders and 2 for padding
 
-    // Adjust scroll_row to ensure the cursor is visible
+    // Adjust scroll_row and scroll_col
     if (row < scroll_row)
     {
         scroll_row = row;
@@ -97,7 +97,6 @@ void TerminalEditor::displayContent()
         scroll_row = row - max_lines + 1;
     }
 
-    // Adjust scroll_col to ensure the cursor is visible
     if (col < scroll_col)
     {
         scroll_col = col;
@@ -107,29 +106,85 @@ void TerminalEditor::displayContent()
         scroll_col = col - max_cols + 1;
     }
 
-    for (int i = 0; i < max_lines; ++i)
-    {
-        int line_index = scroll_row + i;
-        if (line_index < lines.size())
-        {
-            string line = lines[line_index];
+    // Adjust for asterisks
+    int asterisk_offset;
 
-            if (scroll_col < line.size())
-            {
-                line = line.substr(scroll_col, max_cols);
+    static bool bold_on = false;
+    static bool italics_on = false;
+
+    for (int i = 0; i < max_lines; ++i) {
+        
+	int line_index = scroll_row + i; // Apply scrolling offset
+        if (line_index < lines.size()) { // Display until last possible row
+            std::string line = lines[line_index]; // Load to buffer
+            int x = 2; // Compensate for padding
+            asterisk_offset = 0;
+
+            if (bold_on) {
+                wattroff(content, A_BOLD);
+                bold_on = false;
             }
-            else
-            {
-                line = "";
+            if (italics_on) {
+                wattroff(content, A_ITALIC);
+                italics_on = false;
             }
 
-            mvwprintw(content, i + 2, 2, "%s", line.c_str());
+            for (size_t pos = scroll_col; pos < line.length() && x < max_cols + 2; ++pos) {
+                
+                if (pos + 1 < line.length() && line[pos] == '*' && line[pos + 1] == '*') {
+                    bold_on = !bold_on;
+		    ++asterisk_offset;
+		    ++asterisk_offset;
+                    if (bold_on) {
+                        wattron(content, A_BOLD);
+                    } else {
+                        wattroff(content, A_BOLD);
+                    }
+
+                    ++pos; // Skip the second asterisk
+                    continue; // Don't render the markers
+                }
+
+                else if (line[pos] == '*') {
+                    italics_on = !italics_on;
+		    ++asterisk_offset;
+                    if (italics_on) {
+                        wattron(content, A_ITALIC);
+                    } else {
+                        wattroff(content, A_ITALIC);
+                    }
+                    continue; 
+		}
+
+                // Handle escape for literal asterisks 
+                else if (line[pos] == '\\' && pos + 1 < line.length() && 
+                        (line[pos + 1] == '*' || line[pos + 1] == '\\')) {
+                    ++pos;
+
+                }
+
+
+                mvwaddch(content, i + 2, x, line[pos]);
+                ++x;
+            }
         }
     }
 
-    wmove(content, row - scroll_row + 2, col - scroll_col + 2);
+
+    if (bold_on) {
+        wattroff(content, A_BOLD);
+        bold_on = false;
+    }
+    if (italics_on) {
+        wattroff(content, A_ITALIC);
+        italics_on = false;
+    }
+
+
+    wmove(content, row - scroll_row + 2, col - scroll_col + 2 - asterisk_offset);
     wrefresh(content);
 }
+
 
 void TerminalEditor::handleInput(int ch)
 {

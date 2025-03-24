@@ -29,6 +29,9 @@ private:
     void loadFile(const string &filename);
     void saveFile(const string &filename);
 
+    bool isCursorInFormattedRegion(int row, int col);
+    void applyMarkdownFormatting(const std::string &line, int y, int x);
+
     void cleanup();
 };
 
