@@ -30,7 +30,7 @@ int content_width;
 WINDOW *sidebar;
 WINDOW *content;
 
-TerminalEditor terminal_editor(win, sidebar, content); // helper functions in here
+TerminalEditor terminal_editor(win, sidebar, content, files); // helper functions in here
 
 void draw_screen()
 {
@@ -93,7 +93,7 @@ int main()
   WINDOW *sidebar = derwin(win, LINES, sidebar_width, 0, 0);
   WINDOW *content = derwin(win, LINES, content_width, 0, sidebar_width);
 
-  TerminalEditor terminal_editor(win, sidebar, content); // helper functions in here
+  TerminalEditor terminal_editor(win, sidebar, content, files); // helper functions in here
 
   refresh();
 
@@ -181,7 +181,6 @@ int main()
       // setup
       curs_set(1);
       terminal_editor.RenderUI(sidebar_width, files);
-      terminal_editor.loadFile(files[0]); // wait is this supposed to be in the loop
 
       while (1)
       {

@@ -5,32 +5,51 @@
 #include <string>
 using namespace std;
 
-TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, WINDOW *content_in)
+TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, WINDOW *content_in, vector<string> &files_in)
+    : win(win_in), sidebar(sidebar_in), content(content_in), files(files_in) // Initialization list ✅
 {
-    win = win_in;
-    sidebar = sidebar_in;
-    content = content_in;
     row = 0;
     col = 0;
     scroll_row = 0;
     scroll_col = 0;
     focused_div = 0;
     lines = {""};
+
+    if (!files.empty())
+    {
+        loadFile(files[0]);
+    }
 }
 
 void TerminalEditor::loadFile(const string &filename)
 {
-    ifstream file("~/.local/share/" + filename);
+    const char *home = getenv("HOME");
+    if (home == nullptr)
+        return;
+
+    string path = string(home) + "/.local/share/" + filename + ".md";
+
+    ifstream file(path);
+    if (!file.is_open())
+        return;
+
     string line;
     while (getline(file, line))
     {
         lines.push_back(line);
     }
+    file.close();
 }
 
 void TerminalEditor::saveFile(const string &filename)
 {
-    ofstream file("~/.local/share/" + filename);
+    const char *home = getenv("HOME");
+    if (home == nullptr)
+        return;
+
+    string path = string(home) + "/.local/share/" + filename + ".md";
+
+    ofstream file(path);
     for (const auto &line : lines)
     {
         file << line << '\n';
