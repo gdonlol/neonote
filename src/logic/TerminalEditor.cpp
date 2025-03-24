@@ -7,6 +7,7 @@ TerminalEditor::TerminalEditor() : row(0), col(0), scroll_row(0), scroll_col(0) 
 void TerminalEditor::run(const std::string &filename)
 {
     initScreen();
+    renderUI()
     loadFile(filename);
     mainLoop();
     saveFile(filename);
