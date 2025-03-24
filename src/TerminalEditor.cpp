@@ -117,6 +117,12 @@ void TerminalEditor::handleInput(int ch)
 
 void TerminalEditor::handleInputContent(int ch)
 {
+    // Segfault Insurance pt. 1
+    if (lines.empty())
+    {
+        lines.push_back("");
+    }
+
     switch (ch)
     {
     case KEY_UP:
@@ -132,7 +138,7 @@ void TerminalEditor::handleInputContent(int ch)
             --col;
         break;
     case KEY_RIGHT:
-        if (col < lines[row].length() - 1)
+        if (col < lines[row].length())
             ++col;
         break;
     case KEY_BACKSPACE:
@@ -160,6 +166,17 @@ void TerminalEditor::handleInputContent(int ch)
         ++col;
         break;
     }
+
+    // Segfault Insurance pt.2
+    if (row >= lines.size())
+    {
+        row = lines.size() - 1;
+    }
+    if (col > lines[row].length())
+    {
+        col = lines[row].length();
+    }
+
 }
 
 void TerminalEditor::handleInputSidebar(int ch)
