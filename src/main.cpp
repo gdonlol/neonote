@@ -144,15 +144,8 @@ int main()
       while (1)
       {
         input = getch();
-        if (focused_div == 0)
-        {
-          terminal_editor.handleInput(input);
-          terminal_editor.displayContent();
-        }
-        else
-        {
-          // side bar inputs
-        }
+        terminal_editor.handleInput(input);
+        terminal_editor.displayContent();
       }
     }
   }

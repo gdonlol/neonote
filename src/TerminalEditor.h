@@ -10,10 +10,12 @@ class TerminalEditor
 {
 public:
     TerminalEditor(WINDOW *win, WINDOW *sidebar, WINDOW *content);
-    void handleInput(int ch);
+    void handleInputContent(int ch);
+    void handleInputSidebar(int ch);
     void loadFile(const string &filename);
     void displayContent();
     void RenderUI(int sidebar_width, vector<string> &files);
+    void handleInput(int ch);
 
 private:
     vector<string> lines;       // Stores the lines of the file
@@ -22,6 +24,7 @@ private:
     WINDOW *win;                // Main window
     WINDOW *sidebar;            // Sidebar window
     WINDOW *content;            // Content window
+    int focused_div;            // Current focused panel
 
     void saveFile(const string &filename);
 

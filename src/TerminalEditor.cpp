@@ -14,6 +14,7 @@ TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, WINDOW *conte
     col = 0;
     scroll_row = 0;
     scroll_col = 0;
+    focused_div = 0;
     lines = {""};
 }
 
@@ -104,6 +105,18 @@ void TerminalEditor::displayContent()
 
 void TerminalEditor::handleInput(int ch)
 {
+    if (focused_div == 0)
+    {
+        handleInputContent(ch);
+    }
+    else
+    {
+        handleInputSidebar(ch);
+    }
+}
+
+void TerminalEditor::handleInputContent(int ch)
+{
     switch (ch)
     {
     case KEY_UP:
@@ -147,6 +160,10 @@ void TerminalEditor::handleInput(int ch)
         ++col;
         break;
     }
+}
+
+void TerminalEditor::handleInputSidebar(int ch)
+{
 }
 
 void TerminalEditor::cleanup()
