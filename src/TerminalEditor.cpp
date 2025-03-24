@@ -20,7 +20,7 @@ TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, WINDOW *conte
 
 void TerminalEditor::loadFile(const string &filename)
 {
-    ifstream file(filename);
+    ifstream file("~/.local/share/" + filename);
     string line;
     while (getline(file, line))
     {
@@ -30,7 +30,7 @@ void TerminalEditor::loadFile(const string &filename)
 
 void TerminalEditor::saveFile(const string &filename)
 {
-    ofstream file(filename);
+    ofstream file("~/.local/share/" + filename);
     for (const auto &line : lines)
     {
         file << line << '\n';
