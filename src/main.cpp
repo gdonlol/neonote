@@ -6,6 +6,8 @@
 #include <sys/types.h>
 #include <cstdlib>
 #include <iostream>
+#include <filesystem>
+#include <fstream>
 using namespace std;
 
 #include "./TerminalEditor.h"
@@ -21,7 +23,7 @@ int menu_option = 0;
 int focused_div = 0;
 
 // placeholders for now:
-vector<string> files = {"Untitled1", "Untitled2"};
+vector<string> files = {};
 
 int sidebar_width;
 int content_width;
@@ -80,7 +82,8 @@ int main()
   {
     printw("Terminal does not support color");
     getch();
-    return -1;
+    endwin();
+    return 0;
   }
 
   // create window at 0 0 with max height and width
@@ -101,14 +104,37 @@ int main()
     cerr << "Failed to get HOME directory" << endl;
     return false;
   }
-  string path = string(home) + "/.local/share/neonote";
+  string homePath = string(home) + "/.local/share/neonote";
   struct stat info;
   // create the directory
-  if (!(stat(path.c_str(), &info) == 0 && S_ISDIR(info.st_mode)) && mkdir(path.c_str(), 0775) != 0)
+  if (!(stat(homePath.c_str(), &info) == 0 && S_ISDIR(info.st_mode)) && mkdir(homePath.c_str(), 0775) != 0)
   {
     printw("mkdir failed");
     getch();
-    return -1;
+    endwin();
+    return 0;
+  }
+  // read files
+  for (const auto &entry : std::filesystem::directory_iterator(homePath))
+  {
+    files.push_back(entry.path().stem().string());
+  }
+  if (files.size() == 0)
+  {
+    string filePath = homePath + "/" + "Untitled1.md";
+    ofstream file(filePath);
+    if (file)
+    {
+      file.close();
+      files.push_back("Untitled1");
+    }
+    else
+    {
+      printw("default file creation failed");
+      getch();
+      endwin();
+      return 0;
+    }
   }
 
   // ----------------------
