@@ -12,6 +12,8 @@ public:
     void handleInput(int ch);
     void loadFile(const std::string &filename);
     void displayContent();
+    void renderUI();
+
 
 private:
 
@@ -23,7 +25,6 @@ private:
 
     void saveFile(const std::string &filename);
     void initScreen();
-    void renderUI();
 
     void cleanup();
 };
