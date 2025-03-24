@@ -6,7 +6,7 @@
 using namespace std;
 
 TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, WINDOW *content_in, vector<string> &files_in)
-    : win(win_in), sidebar(sidebar_in), content(content_in), files(files_in) // Initialization list ✅
+    : win(win_in), sidebar(sidebar_in), content(content_in), files(files_in)
 {
     row = 0;
     col = 0;
