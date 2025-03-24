@@ -7,9 +7,8 @@ TerminalEditor::TerminalEditor() : row(0), col(0), scroll_row(0), scroll_col(0) 
 void TerminalEditor::run(const std::string &filename)
 {
     initScreen();
-    renderUI()
+    renderUI();
     loadFile(filename);
-    mainLoop();
     saveFile(filename);
     cleanup();
 }
@@ -42,7 +41,8 @@ void TerminalEditor::initScreen()
     refresh();
 }
 
-void TerminalEditor::renderUI() {
+void TerminalEditor::renderUI()
+{
     int sidebar_width = COLS * 0.25;
     int content_width = COLS - sidebar_width;
 
@@ -59,28 +59,37 @@ void TerminalEditor::renderUI() {
     wrefresh(content);
 }
 
-void TerminalEditor::displayContent() {
+void TerminalEditor::displayContent()
+{
     werase(content);
-    int max_lines = LINES - 4; // Subtract 2 for borders and 2 for padding
+    int max_lines = LINES - 4;      // Subtract 2 for borders and 2 for padding
     int max_cols = COLS * 0.75 - 4; // Subtract 2 for borders and 2 for padding
 
     // Adjust scroll_row to ensure the cursor is visible
-    if (row < scroll_row) {
+    if (row < scroll_row)
+    {
         scroll_row = row;
-    } else if (row >= scroll_row + max_lines) {
+    }
+    else if (row >= scroll_row + max_lines)
+    {
         scroll_row = row - max_lines + 1;
     }
 
     // Adjust scroll_col to ensure the cursor is visible
-    if (col < scroll_col) {
+    if (col < scroll_col)
+    {
         scroll_col = col;
-    } else if (col >= scroll_col + max_cols) {
+    }
+    else if (col >= scroll_col + max_cols)
+    {
         scroll_col = col - max_cols + 1;
     }
 
-    for (int i = 0; i < max_lines; ++i) {
+    for (int i = 0; i < max_lines; ++i)
+    {
         int line_index = scroll_row + i;
-        if (line_index < lines.size()) {
+        if (line_index < lines.size())
+        {
             std::string line = lines[line_index].substr(scroll_col, max_cols);
             mvwprintw(content, i + 2, 2, "%s", line.c_str());
         }
