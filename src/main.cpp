@@ -4,9 +4,7 @@
 #include <vector>
 using namespace std;
 
-#include "./render/RenderEditor.h"
-#include "./render/RenderMenu.h"
-#include "./logic/TerminalEditor.h"
+#include "./TerminalEditor.h"
 
 WINDOW *win;
 
@@ -27,12 +25,30 @@ void draw_screen()
   if (curr_window == 1)
   {
     curs_set(1);
-    renderEditor(win, files);
   }
   else if (curr_window == 0)
   {
+    // draw menu
     curs_set(0);
-    renderMenu(win, menu_option);
+    // box(win, 0, 0); //this for border if we want
+    mvwprintw(win, (LINES - 11) / 2, (COLS - 8) / 2, "neonote.");
+    int rowPrint = (LINES - 2) / 2;
+    if (menu_option == 0)
+    {
+      wattron(win, COLOR_PAIR(1));
+      mvwprintw(win, rowPrint, (COLS - 8) / 2, "my notes");
+      wattroff(win, COLOR_PAIR(1));
+      mvwprintw(win, rowPrint + 1, (COLS - 4) / 2, "exit");
+    }
+    else
+    {
+      mvwprintw(win, rowPrint, (COLS - 8) / 2, "my notes");
+      wattron(win, COLOR_PAIR(1));
+      mvwprintw(win, rowPrint + 1, (COLS - 4) / 2, "exit");
+      wattroff(win, COLOR_PAIR(1));
+    }
+
+    refresh();
   }
 
   wrefresh(win);
@@ -113,16 +129,24 @@ int main()
 
     if (curr_window == 1)
     {
-      TerminalEditor terminal_editor;
+
+      // setup
+      int sidebar_width = COLS * 0.25;
+      int content_width = COLS - sidebar_width;
+      WINDOW *sidebar = derwin(win, LINES, sidebar_width, 0, 0);
+      WINDOW *content = derwin(win, LINES, content_width, 0, sidebar_width);
+
+      TerminalEditor terminal_editor(win, sidebar, content); // helper functions in here
+      terminal_editor.RenderUI(sidebar_width, files);
+      terminal_editor.loadFile(files[0]); // wait is this supposed to be in the loop
+
       while (1)
       {
-        draw_screen();
         input = getch();
         if (focused_div == 0)
         {
-          // terminal_editor.loadFile(files[0]); wait is this supposed to be in the loop
-          terminal_editor.handleInput(input);
-          terminal_editor.displayContent();
+          // terminal_editor.handleInput(input);
+          // terminal_editor.displayContent();
         }
         else
         {

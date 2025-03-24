@@ -5,26 +5,24 @@
 #include <vector>
 #include <ncurses.h>
 
-class TerminalEditor {
+class TerminalEditor
+{
 public:
-    TerminalEditor();
-    void run(const std::string &filename);
+    TerminalEditor(WINDOW *win, WINDOW *sidebar, WINDOW *content);
     void handleInput(int ch);
     void loadFile(const std::string &filename);
     void displayContent();
-    void renderUI();
-
+    void RenderUI(int sidebar_width, std::vector<std::string> &files);
 
 private:
-
     std::vector<std::string> lines; // Stores the lines of the file
     int row, col;                   // Current cursor position
     int scroll_row, scroll_col;     // Scroll position for the content window
+    WINDOW *win;                    // Main window
     WINDOW *sidebar;                // Sidebar window
     WINDOW *content;                // Content window
 
     void saveFile(const std::string &filename);
-    void initScreen();
 
     void cleanup();
 };

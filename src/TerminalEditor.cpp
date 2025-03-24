@@ -1,60 +1,61 @@
 #include "TerminalEditor.h"
 #include <ncurses.h>
 #include <fstream>
+#include <vector>
+#include <string>
+using namespace std;
 
-TerminalEditor::TerminalEditor() : row(0), col(0), scroll_row(0), scroll_col(0) {}
-
-void TerminalEditor::run(const std::string &filename)
+TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, WINDOW *content_in)
 {
-    initScreen();
-    renderUI();
-    loadFile(filename);
-    saveFile(filename);
-    cleanup();
+    win = win_in;
+    sidebar = sidebar_in;
+    content = content_in;
+    row = 0;
+    col = 0;
+    scroll_row = 0;
+    scroll_col = 0;
 }
 
-void TerminalEditor::loadFile(const std::string &filename)
+void TerminalEditor::loadFile(const string &filename)
 {
-    std::ifstream file(filename);
-    std::string line;
-    while (std::getline(file, line))
+    ifstream file(filename);
+    string line;
+    while (getline(file, line))
     {
         lines.push_back(line);
     }
 }
 
-void TerminalEditor::saveFile(const std::string &filename)
+void TerminalEditor::saveFile(const string &filename)
 {
-    std::ofstream file(filename);
+    ofstream file(filename);
     for (const auto &line : lines)
     {
         file << line << '\n';
     }
 }
 
-void TerminalEditor::initScreen()
+void TerminalEditor::RenderUI(int sidebar_width, vector<string> &files)
 {
-    initscr();
-    cbreak();
-    noecho();
-    keypad(stdscr, TRUE);
+    werase(win);
+    wrefresh(win);
+
     refresh();
-}
-
-void TerminalEditor::renderUI()
-{
-    int sidebar_width = COLS * 0.25;
-    int content_width = COLS - sidebar_width;
-
-    sidebar = derwin(stdscr, LINES, sidebar_width, 0, 0);
-    content = derwin(stdscr, LINES, content_width, 0, sidebar_width);
 
     box(sidebar, 0, 0);
-    mvwprintw(sidebar, 1, 2, "Menu");
+    mvwprintw(sidebar, 2, 2, "My Tasks");
+    mvwprintw(sidebar, 3, 2, "Calendar");
+    mvwhline(win, 5, 1, ACS_HLINE, sidebar_width - 2);
+
+    for (int i = 0; i < files.size(); i++)
+    {
+        mvwprintw(sidebar, 7 + i, 2, files[i].c_str());
+    }
 
     box(content, 0, 0);
     mvwprintw(content, 1, 2, "Content");
 
+    wrefresh(win);
     wrefresh(sidebar);
     wrefresh(content);
 }
@@ -62,8 +63,8 @@ void TerminalEditor::renderUI()
 void TerminalEditor::displayContent()
 {
     werase(content);
-    int max_lines = LINES - 4;      // Subtract 2 for borders and 2 for padding
-    int max_cols = COLS * 0.75 - 4; // Subtract 2 for borders and 2 for padding
+    int max_lines = LINES - 4;        // Subtract 2 for borders and 2 for padding
+    int max_cols = (COLS * 0.75) - 4; // Subtract 2 for borders and 2 for padding
 
     // Adjust scroll_row to ensure the cursor is visible
     if (row < scroll_row)
@@ -90,7 +91,7 @@ void TerminalEditor::displayContent()
         int line_index = scroll_row + i;
         if (line_index < lines.size())
         {
-            std::string line = lines[line_index].substr(scroll_col, max_cols);
+            string line = lines[line_index].substr(scroll_col, max_cols);
             mvwprintw(content, i + 2, 2, "%s", line.c_str());
         }
     }
