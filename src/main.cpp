@@ -19,12 +19,20 @@ int focused_div = 0;
 // placeholders for now:
 vector<string> files = {"Untitled1", "Untitled2"};
 
+int sidebar_width;
+int content_width;
+WINDOW *sidebar;
+WINDOW *content;
+
+TerminalEditor terminal_editor(win, sidebar, content); // helper functions in here
+
 void draw_screen()
 {
   // render menu
   if (curr_window == 1)
   {
     curs_set(1);
+    terminal_editor.RenderUI(sidebar_width, files);
   }
   else if (curr_window == 0)
   {
@@ -64,10 +72,13 @@ void handle_resize(int sig)
 
     delwin(win);                     // clean up the old window
     win = newwin(LINES, COLS, 0, 0); // create new full-screen window
+    sidebar_width = COLS * 0.25;
+    content_width = COLS - sidebar_width;
+    sidebar = derwin(win, LINES, sidebar_width, 0, 0);
+    content = derwin(win, LINES, content_width, 0, sidebar_width);
 
     // redraw content
     draw_screen();
-    wrefresh(win);
   }
 }
 
@@ -92,6 +103,13 @@ int main()
 
   // create window at 0 0 with max height and width
   win = newwin(LINES, COLS, 0, 0);
+  int sidebar_width = COLS * 0.25;
+  int content_width = COLS - sidebar_width;
+  WINDOW *sidebar = derwin(win, LINES, sidebar_width, 0, 0);
+  WINDOW *content = derwin(win, LINES, content_width, 0, sidebar_width);
+
+  TerminalEditor terminal_editor(win, sidebar, content); // helper functions in here
+
   refresh();
   while (1)
   {
@@ -131,12 +149,7 @@ int main()
     {
 
       // setup
-      int sidebar_width = COLS * 0.25;
-      int content_width = COLS - sidebar_width;
-      WINDOW *sidebar = derwin(win, LINES, sidebar_width, 0, 0);
-      WINDOW *content = derwin(win, LINES, content_width, 0, sidebar_width);
 
-      TerminalEditor terminal_editor(win, sidebar, content); // helper functions in here
       curs_set(1);
       terminal_editor.RenderUI(sidebar_width, files);
       terminal_editor.loadFile(files[0]); // wait is this supposed to be in the loop
