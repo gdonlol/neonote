@@ -305,19 +305,19 @@ void TerminalEditor::handleInputContent(int ch)
         saveFile(files[0]);
         break;
     case KEY_F(1):
-        endwin();
-        exit(0);
+        cleanup();
         break;
     case 17:
-        endwin();
-        exit(0);
+        cleanup();
         break;
     default:
-        lines[row].insert(col, string(1, ch));
-        ++col;
+        if (ch >= 32 && ch <= 126)
+        {
+            lines[row].insert(col, std::string(1, ch));
+            ++col;
+        }
         break;
     }
-
     // Segfault Insurance pt.2
     if (row >= lines.size())
     {
@@ -335,5 +335,7 @@ void TerminalEditor::handleInputSidebar(int ch)
 
 void TerminalEditor::cleanup()
 {
+    saveFile(files[0]);
     endwin();
+    exit(0);
 }
