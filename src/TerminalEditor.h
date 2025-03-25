@@ -1,38 +1,34 @@
-#ifndef TERMINALEDITOR_H
-#define TERMINALEDITOR_H
+#ifndef TERMINAL_EDITOR_H
+#define TERMINAL_EDITOR_H
 
-#include <string>
-#include <vector>
 #include <ncurses.h>
-using namespace std;
+#include <vector>
+#include <string>
+#include "FileManager.h"
+#include "EditorUI.h"
 
-class TerminalEditor
-{
+class TerminalEditor {
 public:
-    TerminalEditor(WINDOW *win, WINDOW *sidebar, WINDOW *content, vector<string> &files);
+    TerminalEditor(WINDOW *win, WINDOW *sidebar, WINDOW *content,
+                 const std::vector<std::string> &files);
+    
+    void handleInput(int ch);
+    void cleanup();
+    
+private:
+    FileManager fileManager;
+    EditorUI ui;
+    
+    int row;
+    int col;
+    int scroll_row;
+    int scroll_col;
+    int focused_div;
+    std::vector<std::string> lines;
+
     void handleInputContent(int ch);
     void handleInputSidebar(int ch);
-    void displayContent();
-    void RenderUI(int sidebar_width, vector<string> &files);
-    void handleInput(int ch);
-
-private:
-    vector<string> lines;       // Stores the lines of the file
-    int row, col;               // Current cursor position
-    int scroll_row, scroll_col; // Scroll position for the content window
-    WINDOW *win;                // Main window
-    WINDOW *sidebar;            // Sidebar window
-    WINDOW *content;            // Content window
-    int focused_div;            // Current focused panel
-    vector<string> &files;      // Files vector
-
-    void loadFile(const string &filename);
-    void saveFile(const string &filename);
-
-    bool isCursorInFormattedRegion(int row, int col);
-    void applyMarkdownFormatting(const std::string &line, int y, int x);
-
-    void cleanup();
+    void adjustCursorPosition();
 };
 
-#endif // TERMINALEDITOR_H
+#endif
