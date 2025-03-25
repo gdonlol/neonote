@@ -58,11 +58,13 @@ void draw_screen()
 int main()
 {
   // ncurses setup
-  initscr();            // initialize screen
-  cbreak();             // allows ctrl c terminate
-  noecho();             // stop inputs from printing
-  use_default_colors(); // use default terminal colors for users with custom terminals
-  keypad(stdscr, TRUE); // enable arrow keys
+  initscr(); // initialize screen
+  cbreak();  // allows ctrl c terminate
+  noecho();  // stop inputs from printing
+  raw();
+  use_default_colors();     // use default terminal colors for users with custom terminals
+  keypad(stdscr, TRUE);     // enable special keys
+  intrflush(stdscr, FALSE); // Prevent flushing on interrupt keys
   start_color();
   init_pair(1, COLOR_BLACK, COLOR_WHITE);
   // check color support

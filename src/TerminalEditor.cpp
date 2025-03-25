@@ -301,6 +301,17 @@ void TerminalEditor::handleInputContent(int ch)
         ++row;
         col = 0;
         break;
+    case 19:
+        saveFile(files[0]);
+        break;
+    case KEY_F(1):
+        endwin();
+        exit(0);
+        break;
+    case 17:
+        endwin();
+        exit(0);
+        break;
     default:
         lines[row].insert(col, string(1, ch));
         ++col;
