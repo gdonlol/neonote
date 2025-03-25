@@ -2,12 +2,7 @@
 #include <string>
 #include <signal.h>
 #include <vector>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <cstdlib>
-#include <iostream>
-#include <filesystem>
-#include <fstream>
+
 using namespace std;
 
 #include "./TerminalEditor.h"
@@ -30,17 +25,10 @@ int content_width;
 WINDOW *sidebar;
 WINDOW *content;
 
-TerminalEditor terminal_editor(win, sidebar, content, files); // helper functions in here
-
 void draw_screen()
 {
   // render menu
-  if (curr_window == 1)
-  {
-    curs_set(1);
-    terminal_editor.RenderUI(sidebar_width, files);
-  }
-  else if (curr_window == 0)
+  if (curr_window == 0)
   {
     // draw menu
     curs_set(0);
@@ -93,51 +81,7 @@ int main()
   WINDOW *sidebar = derwin(win, LINES, sidebar_width, 0, 0);
   WINDOW *content = derwin(win, LINES, content_width, 0, sidebar_width);
 
-  TerminalEditor terminal_editor(win, sidebar, content, files); // helper functions in here
-
   refresh();
-
-  // creating app directory
-  const char *home = getenv("HOME");
-  if (home == nullptr)
-  {
-    printw("no home directory");
-    getch();
-    endwin();
-    return 0;
-  }
-  string homePath = string(home) + "/.local/share/neonote";
-  struct stat info;
-  // create the directory
-  if (!(stat(homePath.c_str(), &info) == 0 && S_ISDIR(info.st_mode)) && mkdir(homePath.c_str(), 0775) != 0)
-  {
-    printw("mkdir failed");
-    getch();
-    endwin();
-    return 0;
-  }
-  // read files
-  for (const auto &entry : std::filesystem::directory_iterator(homePath))
-  {
-    files.push_back(entry.path().stem().string());
-  }
-  if (files.size() == 0)
-  {
-    string filePath = homePath + "/" + "Untitled1.md";
-    ofstream file(filePath);
-    if (file)
-    {
-      file.close();
-      files.push_back("Untitled1");
-    }
-    else
-    {
-      printw("default file creation failed");
-      getch();
-      endwin();
-      return 0;
-    }
-  }
 
   // ----------------------
   // main menu
@@ -179,9 +123,11 @@ int main()
     if (curr_window == 1)
     {
       // setup
+      TerminalEditor terminal_editor(win, sidebar, content, files); // initialize terminal editor
+      terminal_editor.displayContent();
       curs_set(1);
       terminal_editor.RenderUI(sidebar_width, files);
-
+      // infinite loop
       while (1)
       {
         input = getch();

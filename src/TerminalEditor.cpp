@@ -3,6 +3,12 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <iostream>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <cstdlib>
+#include <filesystem>
+#include <fstream>
 using namespace std;
 
 TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, WINDOW *content_in, vector<string> &files_in)
@@ -14,6 +20,45 @@ TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, WINDOW *conte
     scroll_col = 0;
     focused_div = 0;
     lines = {""};
+
+    // creating app directory
+    const char *home = getenv("HOME");
+    if (home == nullptr)
+    {
+        printw("no home directory");
+        getch();
+        endwin();
+    }
+    string homePath = string(home) + "/.local/share/neonote";
+    struct stat info;
+    // create the directory
+    if (!(stat(homePath.c_str(), &info) == 0 && S_ISDIR(info.st_mode)) && mkdir(homePath.c_str(), 0775) != 0)
+    {
+        printw("mkdir failed");
+        getch();
+        endwin();
+    }
+    // read files
+    for (const auto &entry : std::filesystem::directory_iterator(homePath))
+    {
+        files.push_back(entry.path().stem().string());
+    }
+    if (files.size() == 0)
+    {
+        string filePath = homePath + "/" + "Untitled1.txt";
+        ofstream file(filePath);
+        if (file)
+        {
+            file.close();
+            files.push_back("Untitled1");
+        }
+        else
+        {
+            printw("default file creation failed");
+            getch();
+            endwin();
+        }
+    }
 
     if (!files.empty())
     {
@@ -27,18 +72,18 @@ void TerminalEditor::loadFile(const string &filename)
     if (home == nullptr)
         return;
 
-    string path = string(home) + "/.local/share/" + filename + ".md";
+    string path = string(home) + "/.local/share/neonote/" + filename + ".txt";
 
     ifstream file(path);
-    if (!file.is_open())
-        return;
 
     string line;
     while (getline(file, line))
     {
+        cout << line << endl;
         lines.push_back(line);
     }
     file.close();
+    displayContent();
 }
 
 void TerminalEditor::saveFile(const string &filename)
@@ -47,7 +92,7 @@ void TerminalEditor::saveFile(const string &filename)
     if (home == nullptr)
         return;
 
-    string path = string(home) + "/.local/share/" + filename + ".md";
+    string path = string(home) + "/.local/share/neonote/" + filename + ".txt";
 
     ofstream file(path);
     for (const auto &line : lines)
@@ -112,57 +157,70 @@ void TerminalEditor::displayContent()
     static bool bold_on = false;
     static bool italics_on = false;
 
-    for (int i = 0; i < max_lines; ++i) {
-        
-	int line_index = scroll_row + i; // Apply scrolling offset
-        if (line_index < lines.size()) { // Display until last possible row
+    for (int i = 0; i < max_lines; ++i)
+    {
+
+        int line_index = scroll_row + i; // Apply scrolling offset
+        if (line_index < lines.size())
+        {                                         // Display until last possible row
             std::string line = lines[line_index]; // Load to buffer
-            int x = 2; // Compensate for padding
+            int x = 2;                            // Compensate for padding
             asterisk_offset = 0;
 
-            if (bold_on) {
+            if (bold_on)
+            {
                 wattroff(content, A_BOLD);
                 bold_on = false;
             }
-            if (italics_on) {
+            if (italics_on)
+            {
                 wattroff(content, A_ITALIC);
                 italics_on = false;
             }
 
-            for (size_t pos = scroll_col; pos < line.length() && x < max_cols + 2; ++pos) {
-                
-                if (pos + 1 < line.length() && line[pos] == '*' && line[pos + 1] == '*') {
+            for (size_t pos = scroll_col; pos < line.length() && x < max_cols + 2; ++pos)
+            {
+
+                if (pos + 1 < line.length() && line[pos] == '*' && line[pos + 1] == '*')
+                {
                     bold_on = !bold_on;
-		    ++asterisk_offset;
-		    ++asterisk_offset;
-                    if (bold_on) {
+                    ++asterisk_offset;
+                    ++asterisk_offset;
+                    if (bold_on)
+                    {
                         wattron(content, A_BOLD);
-                    } else {
+                    }
+                    else
+                    {
                         wattroff(content, A_BOLD);
                     }
 
-                    ++pos; // Skip the second asterisk
+                    ++pos;    // Skip the second asterisk
                     continue; // Don't render the markers
                 }
 
-                else if (line[pos] == '*') {
+                else if (line[pos] == '*')
+                {
                     italics_on = !italics_on;
-		    ++asterisk_offset;
-                    if (italics_on) {
+                    ++asterisk_offset;
+                    if (italics_on)
+                    {
                         wattron(content, A_ITALIC);
-                    } else {
+                    }
+                    else
+                    {
                         wattroff(content, A_ITALIC);
                     }
-                    continue; 
-		}
-
-                // Handle escape for literal asterisks 
-                else if (line[pos] == '\\' && pos + 1 < line.length() && 
-                        (line[pos + 1] == '*' || line[pos + 1] == '\\')) {
-                    ++pos;
-
+                    continue;
                 }
 
+                // Handle escape for literal asterisks
+                else if (line[pos] == '\\' && pos + 1 < line.length() &&
+                         (line[pos + 1] == '*' || line[pos + 1] == '\\'))
+                {
+                    ++pos;
+                    ++asterisk_offset;
+                }
 
                 mvwaddch(content, i + 2, x, line[pos]);
                 ++x;
@@ -170,21 +228,20 @@ void TerminalEditor::displayContent()
         }
     }
 
-
-    if (bold_on) {
+    if (bold_on)
+    {
         wattroff(content, A_BOLD);
         bold_on = false;
     }
-    if (italics_on) {
+    if (italics_on)
+    {
         wattroff(content, A_ITALIC);
         italics_on = false;
     }
 
-
     wmove(content, row - scroll_row + 2, col - scroll_col + 2 - asterisk_offset);
     wrefresh(content);
 }
-
 
 void TerminalEditor::handleInput(int ch)
 {
