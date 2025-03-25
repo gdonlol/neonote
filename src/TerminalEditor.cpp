@@ -19,7 +19,7 @@ TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, WINDOW *conte
     scroll_row = 0;
     scroll_col = 0;
     focused_div = 0;
-    lines = {""};
+    lines = {};
 
     // creating app directory
     const char *home = getenv("HOME");
@@ -45,7 +45,7 @@ TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, WINDOW *conte
     }
     if (files.size() == 0)
     {
-        string filePath = homePath + "/" + "Untitled1.txt";
+        string filePath = homePath + "/" + "Untitled1.md";
         ofstream file(filePath);
         if (file)
         {
@@ -63,6 +63,7 @@ TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, WINDOW *conte
     if (!files.empty())
     {
         loadFile(files[0]);
+        displayContent();
     }
 }
 
@@ -72,18 +73,17 @@ void TerminalEditor::loadFile(const string &filename)
     if (home == nullptr)
         return;
 
-    string path = string(home) + "/.local/share/neonote/" + filename + ".txt";
+    string path = string(home) + "/.local/share/neonote/" + filename + ".md";
 
     ifstream file(path);
 
     string line;
     while (getline(file, line))
     {
-        cout << line << endl;
+        // cout << line << endl; // for debug
         lines.push_back(line);
     }
     file.close();
-    displayContent();
 }
 
 void TerminalEditor::saveFile(const string &filename)
@@ -92,7 +92,7 @@ void TerminalEditor::saveFile(const string &filename)
     if (home == nullptr)
         return;
 
-    string path = string(home) + "/.local/share/neonote/" + filename + ".txt";
+    string path = string(home) + "/.local/share/neonote/" + filename + ".md";
 
     ofstream file(path);
     for (const auto &line : lines)

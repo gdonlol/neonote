@@ -124,9 +124,10 @@ int main()
     {
       // setup
       TerminalEditor terminal_editor(win, sidebar, content, files); // initialize terminal editor
-      terminal_editor.displayContent();
       curs_set(1);
       terminal_editor.RenderUI(sidebar_width, files);
+      terminal_editor.displayContent();
+
       // infinite loop
       while (1)
       {
