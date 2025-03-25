@@ -102,6 +102,14 @@ void TerminalEditor::handleInputContent(int ch) {
         case 17: // Ctrl+Q
             cleanup();  /**< Exit and save the current file. */
             break;
+        case 2: // Ctrl+B - Insert ** for bold
+            lines[row].insert(col, "**");
+            col += 2;
+            break;
+        case 9: // Ctrl+I - Insert * for italic
+            lines[row].insert(col, "*");
+            col++;
+            break;
         default:
             if (ch >= 32 && ch <= 126) {  /**< Insert printable characters. */
                 lines[row].insert(col, string(1, ch));
