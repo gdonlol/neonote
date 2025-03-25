@@ -3,9 +3,25 @@
 #include <string>
 #include <vector>
 
+/**
+ * @brief Constructor for the EditorUI class.
+ * 
+ * @param win_in The main window to be used for rendering.
+ * @param sidebar_in The sidebar window to be used for rendering.
+ * @param content_in The content window to be used for rendering.
+ */
 EditorUI::EditorUI(WINDOW *win_in, WINDOW *sidebar_in, WINDOW *content_in) 
     : win(win_in), sidebar(sidebar_in), content(content_in) {}
 
+/**
+ * @brief Renders the entire user interface.
+ * 
+ * Clears the main window, renders the sidebar, and the content window. 
+ * Refreshes all windows after rendering.
+ * 
+ * @param sidebar_width The width of the sidebar.
+ * @param files A vector of strings representing the files to display in the sidebar.
+ */
 void EditorUI::renderUI(int sidebar_width, const std::vector<std::string> &files) {
     werase(win);
     wrefresh(win);
@@ -19,6 +35,15 @@ void EditorUI::renderUI(int sidebar_width, const std::vector<std::string> &files
     wrefresh(content);
 }
 
+/**
+ * @brief Renders the sidebar with the list of files and additional content.
+ * 
+ * The sidebar includes labels like "My Tasks" and "Calendar", 
+ * along with a horizontal line and a list of file names.
+ * 
+ * @param sidebar_width The width of the sidebar.
+ * @param files A vector of strings representing the file names to be displayed.
+ */
 void EditorUI::renderSidebar(int sidebar_width, const std::vector<std::string> &files) {
     box(sidebar, 0, 0);
     mvwprintw(sidebar, 2, 2, "My Tasks");
@@ -30,6 +55,19 @@ void EditorUI::renderSidebar(int sidebar_width, const std::vector<std::string> &
     }
 }
 
+/**
+ * @brief Displays the content in the content window.
+ * 
+ * Clears the content window, draws a box around it, and then renders the 
+ * actual content lines in the window. The content is rendered based on 
+ * the current row, column, and scrolling parameters.
+ * 
+ * @param lines A vector of strings representing the lines to be displayed.
+ * @param row The current row position of the cursor.
+ * @param col The current column position of the cursor.
+ * @param scroll_row The row index for the scrolling.
+ * @param scroll_col The column index for the scrolling.
+ */
 void EditorUI::displayContent(const std::vector<std::string> &lines, 
                             int row, int col, 
                             int scroll_row, int scroll_col) {
@@ -39,6 +77,19 @@ void EditorUI::displayContent(const std::vector<std::string> &lines,
     wrefresh(content);
 }
 
+/**
+ * @brief Renders the actual content inside the content window.
+ * 
+ * This method handles the rendering of lines with special formatting such as 
+ * bold and italics based on the presence of asterisks (*). It also manages 
+ * cursor position and scrolling logic.
+ * 
+ * @param lines A vector of strings representing the lines to be displayed.
+ * @param row The current row position of the cursor.
+ * @param col The current column position of the cursor.
+ * @param scroll_row The row index for the scrolling.
+ * @param scroll_col The column index for the scrolling.
+ */
 void EditorUI::renderContent(const std::vector<std::string> &lines,
                            int row, int col,
                            int scroll_row, int scroll_col) {
@@ -116,6 +167,12 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
     wmove(content, row - scroll_row + 2, col - scroll_col + 2 - total_asterisk_offset);
 }
 
+/**
+ * @brief Cleans up and terminates the ncurses session.
+ * 
+ * This function is called to clean up the ncurses environment after 
+ * the program has finished running.
+ */
 void EditorUI::cleanup() {
     endwin();
 }
