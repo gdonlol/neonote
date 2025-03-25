@@ -46,14 +46,35 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
     int max_cols = COLS * 0.75 - 4;
     static bool bold_on = false;
     static bool italics_on = false;
-    int asterisk_offset = 0; // Track asterisks that affect cursor position
+    int total_asterisk_offset = 0; // Track total asterisk offset up to cursor position
+    int line_asterisk_offset = 0;  // Track asterisk offset for current line
 
+    // Calculate the total asterisk offset up to the cursor position
+    if (row >= scroll_row && row < scroll_row + max_lines) {
+        std::string cursor_line = lines[row];
+        for (size_t pos = 0; pos < col && pos < cursor_line.length(); ++pos) {
+            if (pos + 1 < cursor_line.length() && cursor_line[pos] == '*' && cursor_line[pos + 1] == '*') {
+                total_asterisk_offset += 2;
+                pos++;
+            }
+            else if (cursor_line[pos] == '*') {
+                total_asterisk_offset += 1;
+            }
+            else if (cursor_line[pos] == '\\' && pos + 1 < cursor_line.length() && 
+                    (cursor_line[pos + 1] == '*' || cursor_line[pos + 1] == '\\')) {
+                total_asterisk_offset += 1;
+                pos++;
+            }
+        }
+    }
+
+    // Render all lines
     for (int i = 0; i < max_lines; ++i) {
         int line_index = scroll_row + i;
         if (line_index < lines.size()) {
             std::string line = lines[line_index];
             int x = 2;
-            asterisk_offset = 0; // Reset for each line
+            line_asterisk_offset = 0;
 
             if (bold_on) wattroff(content, A_BOLD);
             if (italics_on) wattroff(content, A_ITALIC);
@@ -63,7 +84,7 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
                 // Handle formatting marks
                 if (pos + 1 < line.length() && line[pos] == '*' && line[pos + 1] == '*') {
                     bold_on = !bold_on;
-                    asterisk_offset += 2;
+                    line_asterisk_offset += 2;
                     pos++;
                     if (bold_on) wattron(content, A_BOLD);
                     else wattroff(content, A_BOLD);
@@ -71,7 +92,7 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
                 }
                 else if (line[pos] == '*') {
                     italics_on = !italics_on;
-                    asterisk_offset++;
+                    line_asterisk_offset += 1;
                     if (italics_on) wattron(content, A_ITALIC);
                     else wattroff(content, A_ITALIC);
                     continue;
@@ -79,7 +100,7 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
                 else if (line[pos] == '\\' && pos + 1 < line.length() && 
                         (line[pos + 1] == '*' || line[pos + 1] == '\\')) {
                     pos++;
-                    asterisk_offset++;
+                    line_asterisk_offset += 1;
                 }
 
                 mvwaddch(content, i + 2, x, line[pos]);
@@ -91,10 +112,9 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
     if (bold_on) wattroff(content, A_BOLD);
     if (italics_on) wattroff(content, A_ITALIC);
     
-    // Apply asterisk offset to cursor position
-    wmove(content, row - scroll_row + 2, col - scroll_col + 2 -  asterisk_offset);
+    // Apply the total asterisk offset to cursor position
+    wmove(content, row - scroll_row + 2, col - scroll_col + 2 - total_asterisk_offset);
 }
-
 
 void EditorUI::cleanup() {
     endwin();
