@@ -7,13 +7,12 @@
 class Task {
 public:
     // Constructor: Initializes a task with an ID, title, description, and due date.
-    // The task's default status is set to "To Do".
     Task(int id, const std::string& title, const std::string& description, const std::string& dueDate);
     
     // Returns the unique ID of the task
     int getId() const;
 
-    // Getter function for Task title
+    // Returns the task's title
     std::string getTitle() const;
 
     // Returns the task's description
@@ -25,8 +24,11 @@ public:
     // Returns the due date of the task
     std::string getDueDate() const;
 
-    // Setter method to update the status of the task.
+    // Setter methods:
+    void setTitle(const std::string& newTitle);
+    void setDescription(const std::string& newDescription);
     void setStatus(const std::string& newStatus);
+    void setDueDate(const std::string& newDueDate);
     
 private:
     int id;
