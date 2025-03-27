@@ -27,7 +27,7 @@ void EditorUI::renderUI(int sidebar_width, const std::vector<std::string> &files
     wrefresh(win);
     refresh();
 
-    renderSidebar(sidebar_width, files);
+    renderSidebar(sidebar_width, files, 0);
     box(content, 0, 0);
 
     wrefresh(win);
@@ -44,15 +44,13 @@ void EditorUI::renderUI(int sidebar_width, const std::vector<std::string> &files
  * @param sidebar_width The width of the sidebar.
  * @param files A vector of strings representing the file names to be displayed.
  */
-void EditorUI::renderSidebar(int sidebar_width, const std::vector<std::string> &files) {
+void EditorUI::renderSidebar(int sidebar_width, const std::vector<std::string> &files, int sidebar_index) {
     box(sidebar, 0, 0);
     mvwprintw(sidebar, 2, 2, "My Tasks");
     mvwprintw(sidebar, 3, 2, "Calendar");
     mvwhline(sidebar, 5, 1, ACS_HLINE, sidebar_width - 2);
 
-    for (size_t i = 0; i < files.size(); i++) {
-        mvwprintw(sidebar, 7 + i, 2, "%s", files[i].c_str());
-    }
+    updateSidebar(files, sidebar_index);
 }
 
 /**
@@ -167,8 +165,14 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
     wmove(content, row - scroll_row + 2, col - scroll_col + 2 - total_asterisk_offset);
 }
 
-void EditorUI::displaySidebar() {
-
+void EditorUI::updateSidebar(const std::vector<std::string> &files, int sidebar_index) {
+    
+    for (size_t i = 0; i < files.size(); i++) {
+        if(i == sidebar_index) wattron(sidebar, COLOR_PAIR(1));
+        mvwprintw(sidebar, 7 + i, 2, "%s", files[i].c_str());
+        wattroff(sidebar, COLOR_PAIR(1));
+    }
+    wrefresh(sidebar);
 }
 
 /**

@@ -24,6 +24,7 @@ private:
     int scroll_row;
     int scroll_col;
     int focused_div;
+    int sidebar_index;
     std::vector<std::string> lines;
 
     void handleInputContent(int ch);

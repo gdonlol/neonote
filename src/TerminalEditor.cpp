@@ -1,5 +1,6 @@
 #include "TerminalEditor.h"
 #include <string>
+#include <algorithm>
 
 using std::string;
 
@@ -17,7 +18,7 @@ using std::string;
 TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, 
                                WINDOW *content_in, const std::vector<std::string> &files_in)
     : fileManager(), ui(win_in, sidebar_in, content_in),
-      row(0), col(0), scroll_row(0), scroll_col(0), focused_div(0) {
+      row(0), col(0), scroll_row(0), scroll_col(0), focused_div(0), sidebar_index(0) {
 
     // Load initial file from file manager
     std::vector<std::string> initialFiles = fileManager.getFiles();
@@ -110,8 +111,11 @@ void TerminalEditor::handleInputContent(int ch) {
             lines[row].insert(col, "*");
             col++;
             break;
-        case 15: //Ctrl+O - Swap to sidebar control:
-            focused_div = (focused_div + 1) % 2;
+        case 15:
+        case 4:
+        // Ctrl+O or Ctrl+D - Swap to sidebar control:
+            focused_div = 1; /**< Flip focused_div. */
+            curs_set(0);
         default:
             if (ch >= 32 && ch <= 126) {  /**< Insert printable characters. */
                 lines[row].insert(col, string(1, ch));
@@ -131,7 +135,26 @@ void TerminalEditor::handleInputContent(int ch) {
  */
 void TerminalEditor::handleInputSidebar(int ch) {
     // Sidebar navigation logic would go here in the future.
+    int len_files = fileManager.getFiles().size();
 
+    switch (ch) {
+        case 15:
+        case 4:
+            focused_div = 0; /**< Flip focused_div. */
+            curs_set(1);
+            ui.displayContent(lines, row, col, scroll_row, scroll_col);
+            break;
+        case KEY_UP: 
+            sidebar_index = std::min(sidebar_index - 1, len_files) % len_files; 
+            ui.updateSidebar(fileManager.getFiles(), sidebar_index);
+            break;
+        case KEY_DOWN: 
+            sidebar_index = std::min(sidebar_index + 1, len_files) % len_files; 
+            ui.updateSidebar(fileManager.getFiles(), sidebar_index);
+            break;
+        case '\n':
+            break;
+    }
 }
 
 /**
