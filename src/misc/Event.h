@@ -13,6 +13,11 @@ public:
     std::string getDescription() const { return description; }
     std::string getDate() const { return date; }
     int getId() const { return id; }
+
+    // Setter Methods
+    void setTitle(const std::string& newTitle);
+    void setDescription(const std::string& newDescription);
+    void setDate(const std::string& newDate);
     
 private:
     int id;
