@@ -135,7 +135,7 @@ void TerminalEditor::handleInputContent(int ch) {
  */
 void TerminalEditor::handleInputSidebar(int ch) {
     // Sidebar navigation logic would go here in the future.
-    int len_files = fileManager.getFiles().size();
+    int len_files = fileManager.getFiles().size() + 2;
 
     switch (ch) {
         case 15:
@@ -145,7 +145,7 @@ void TerminalEditor::handleInputSidebar(int ch) {
             ui.displayContent(lines, row, col, scroll_row, scroll_col);
             break;
         case KEY_UP: 
-            sidebar_index = std::min(sidebar_index - 1, len_files) % len_files; 
+            sidebar_index = (sidebar_index - 1 + len_files) % len_files;
             ui.updateSidebar(fileManager.getFiles(), sidebar_index);
             break;
         case KEY_DOWN: 

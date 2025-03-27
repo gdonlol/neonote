@@ -46,10 +46,7 @@ void EditorUI::renderUI(int sidebar_width, const std::vector<std::string> &files
  */
 void EditorUI::renderSidebar(int sidebar_width, const std::vector<std::string> &files, int sidebar_index) {
     box(sidebar, 0, 0);
-    mvwprintw(sidebar, 2, 2, "My Tasks");
-    mvwprintw(sidebar, 3, 2, "Calendar");
     mvwhline(sidebar, 5, 1, ACS_HLINE, sidebar_width - 2);
-
     updateSidebar(files, sidebar_index);
 }
 
@@ -166,6 +163,13 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
 }
 
 void EditorUI::updateSidebar(const std::vector<std::string> &files, int sidebar_index) {
+    if(sidebar_index == files.size()) wattron(sidebar, COLOR_PAIR(1));
+    mvwprintw(sidebar, 2, 2, "My Tasks");
+    wattroff(sidebar, COLOR_PAIR(1));
+
+    if(sidebar_index == files.size() + 1) wattron(sidebar, COLOR_PAIR(1));
+    mvwprintw(sidebar, 3, 2, "Calendar");
+    wattroff(sidebar, COLOR_PAIR(1));
     
     for (size_t i = 0; i < files.size(); i++) {
         if(i == sidebar_index) wattron(sidebar, COLOR_PAIR(1));
