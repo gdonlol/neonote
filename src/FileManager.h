@@ -10,6 +10,7 @@ public:
     std::vector<std::string> getFiles() const;
     void loadFile(const std::string &filename, std::vector<std::string> &lines, std::string &current_file);
     void saveFile(const std::string &filename, const std::vector<std::string> &lines);
+    void newFile();
     
 private:
     std::string appDataPath;

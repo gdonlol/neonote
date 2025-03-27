@@ -112,6 +112,10 @@ void TerminalEditor::handleInputContent(int ch) {
             lines[row].insert(col, "*");
             col++;
             break;
+        case 14: // Ctrl+N - New file
+            fileManager.newFile(); /**< Push new file to files vector. */
+            ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+            break;
         case 15:
         case 4:
         // Ctrl+O or Ctrl+D - Swap to sidebar control:
@@ -153,7 +157,9 @@ void TerminalEditor::handleInputSidebar(int ch) {
             sidebar_index = std::min(sidebar_index + 1, len_files) % len_files; 
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             break;
-        case 14:
+        case 14: // Ctrl+N - New file
+            fileManager.newFile(); /**< Push new file to files vector. */
+            ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             break;
         case '\n':
             if (sidebar_index < fileManager.getFiles().size()){

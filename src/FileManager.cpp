@@ -119,3 +119,17 @@ void FileManager::saveFile(const string &filename, const vector<string> &lines) 
     }
     file.close();  /**< Close the file after writing. */
 }
+
+void FileManager::newFile(){
+    int dupeId = 0;
+    while(1){
+        dupeId++;
+        string path = appDataPath + "/Untitled" + std::to_string(dupeId) + ".md";
+        ifstream file(path);
+        if(!file.good()){
+            files.push_back("Untitled" + std::to_string(dupeId));
+            saveFile("Untitled" + std::to_string(dupeId), vector<string>{""});
+            break;
+        }
+    }
+}
