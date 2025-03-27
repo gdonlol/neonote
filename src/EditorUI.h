@@ -13,7 +13,7 @@ public:
     void displayContent(const std::vector<std::string> &lines, 
                        int row, int col, 
                        int scroll_row, int scroll_col);
-
+    void displaySidebar();
     void cleanup();
         
 private:

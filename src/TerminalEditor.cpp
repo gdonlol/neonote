@@ -45,11 +45,11 @@ TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in,
 void TerminalEditor::handleInput(int ch) {
     if (focused_div == 0) {
         handleInputContent(ch);  /**< Handle input in the content area of the editor. */
+        adjustCursorPosition();  /**< Adjust cursor position based on current content. */
+        ui.displayContent(lines, row, col, scroll_row, scroll_col);  /**< Redraw the content after input. */
     } else {
         handleInputSidebar(ch);  /**< Handle input in the sidebar area. */
-    }
-    adjustCursorPosition();  /**< Adjust cursor position based on current content. */
-    ui.displayContent(lines, row, col, scroll_row, scroll_col);  /**< Redraw the content after input. */
+    }   
 }
 
 /**
@@ -110,6 +110,8 @@ void TerminalEditor::handleInputContent(int ch) {
             lines[row].insert(col, "*");
             col++;
             break;
+        case 15: //Ctrl+O - Swap to sidebar control:
+            focused_div = (focused_div + 1) % 2;
         default:
             if (ch >= 32 && ch <= 126) {  /**< Insert printable characters. */
                 lines[row].insert(col, string(1, ch));
@@ -129,6 +131,7 @@ void TerminalEditor::handleInputContent(int ch) {
  */
 void TerminalEditor::handleInputSidebar(int ch) {
     // Sidebar navigation logic would go here in the future.
+
 }
 
 /**

@@ -51,7 +51,7 @@ void EditorUI::renderSidebar(int sidebar_width, const std::vector<std::string> &
     mvwhline(sidebar, 5, 1, ACS_HLINE, sidebar_width - 2);
 
     for (size_t i = 0; i < files.size(); i++) {
-        mvwprintw(sidebar, 7 + i, 2, files[i].c_str());
+        mvwprintw(sidebar, 7 + i, 2, "%s", files[i].c_str());
     }
 }
 
@@ -165,6 +165,10 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
     
     // Apply the total asterisk offset to cursor position
     wmove(content, row - scroll_row + 2, col - scroll_col + 2 - total_asterisk_offset);
+}
+
+void EditorUI::displaySidebar() {
+
 }
 
 /**
