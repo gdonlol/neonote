@@ -90,11 +90,11 @@ vector<string> FileManager::getFiles() const {
  * @param filename The name of the file to load (without the ".md" extension).
  * @param lines A reference to the vector that will hold the lines of the file.
  */
-void FileManager::loadFile(const string &filename, vector<string> &lines) {
+void FileManager::loadFile(const string &filename, vector<string> &lines, std::string &current_file) {
     string path = appDataPath + "/" + filename + ".md";  /**< Construct the full file path. */
     ifstream file(path);  /**< Open the file for reading. */
     string line;
-    
+    current_file = filename;
     lines.clear();  /**< Clear any previous contents of the lines vector. */
     while (getline(file, line)) {
         lines.push_back(line);  /**< Add each line to the lines vector. */

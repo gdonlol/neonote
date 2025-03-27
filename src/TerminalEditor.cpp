@@ -23,7 +23,8 @@ TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in,
     // Load initial file from file manager
     std::vector<std::string> initialFiles = fileManager.getFiles();
     if (!initialFiles.empty()) {
-        fileManager.loadFile(initialFiles[0], lines);  /**< Load the first file into lines. */
+        current_file = initialFiles[0];
+        fileManager.loadFile(initialFiles[0], lines, current_file);  /**< Load the first file into lines. */
     } else {
         lines.push_back("");  /**< If no files exist, start with an empty line. */
     }
@@ -153,6 +154,12 @@ void TerminalEditor::handleInputSidebar(int ch) {
             ui.updateSidebar(fileManager.getFiles(), sidebar_index);
             break;
         case '\n':
+            if (sidebar_index < fileManager.getFiles().size()){
+                fileManager.saveFile(current_file, lines);
+                fileManager.loadFile(fileManager.getFiles()[sidebar_index], lines, current_file);
+                adjustCursorPosition();  /**< Adjust cursor position based on current content. */
+                ui.displayContent(lines, row, col, scroll_row, scroll_col);  /**< Redraw the content after input. */
+            }
             break;
     }
 }

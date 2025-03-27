@@ -26,6 +26,7 @@ private:
     int focused_div;
     int sidebar_index;
     std::vector<std::string> lines;
+    std::string current_file;
 
     void handleInputContent(int ch);
     void handleInputSidebar(int ch);
