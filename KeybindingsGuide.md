@@ -10,10 +10,7 @@ This guide provides an overview of the keybindings available in the terminal edi
 - `Ctrl + B` - Inserts ** (bold formatting marker).
 - `Ctrl + I` - Inserts * (italic formatting marker).
 - `Ctrl + O` / `Ctrl + D` - Switches focus to the sidebar.
-- `Ctrl + R` - Renders the entire user interface (calls renderUI()).
-- `Ctrl + E` - Renders the content (calls renderContent()).
-- `Ctrl + W` - Displays content in the content window (calls displayContent()).
-- `Ctrl + X` - Cleans up and exits the ncurses session (calls cleanup()).
+- `Ctrl + N` - Makes a new file.
 - Printable Characters (`A-Z`, `0-9`, `Symbols`) - Inserts the typed character at the cursor position.
 
 ## Sidebar Navigation Mode
