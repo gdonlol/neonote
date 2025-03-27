@@ -111,6 +111,8 @@ int main() {
                 
                 // Handle exit from the editor (Ctrl+Q or F1)
                 if (input == 17 || input == KEY_F(1)) {  /**< Ctrl+Q or F1 to exit. */
+                    clear();
+                    refresh();
                     curr_window = 0;  /**< Switch back to the main menu. */
                     break;
                 }
