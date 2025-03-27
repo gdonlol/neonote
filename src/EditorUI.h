@@ -13,7 +13,7 @@ public:
     void displayContent(const std::vector<std::string> &lines, 
                        int row, int col, 
                        int scroll_row, int scroll_col);
-    void updateSidebar(const std::vector<std::string> &files, int sidebar_index);
+    void renderSidebar(int sidebar_width, const std::vector<std::string> &files, int sidebar_index);
     void cleanup();
         
 private:
@@ -21,7 +21,6 @@ private:
     WINDOW *sidebar;
     WINDOW *content;
     
-    void renderSidebar(int sidebar_width, const std::vector<std::string> &files, int sidebar_index);
     void renderContent(const std::vector<std::string> &lines, 
                       int row, int col, 
                       int scroll_row, int scroll_col);

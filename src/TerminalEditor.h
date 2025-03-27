@@ -25,6 +25,7 @@ private:
     int scroll_col;
     int focused_div;
     int sidebar_index;
+    int sidebar_width;
     std::vector<std::string> lines;
     std::string current_file;
 

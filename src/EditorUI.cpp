@@ -47,7 +47,20 @@ void EditorUI::renderUI(int sidebar_width, const std::vector<std::string> &files
 void EditorUI::renderSidebar(int sidebar_width, const std::vector<std::string> &files, int sidebar_index) {
     box(sidebar, 0, 0);
     mvwhline(sidebar, 5, 1, ACS_HLINE, sidebar_width - 2);
-    updateSidebar(files, sidebar_index);
+    if(sidebar_index == files.size()) wattron(sidebar, COLOR_PAIR(1));
+    mvwprintw(sidebar, 2, 2, "%s", std::string("My Tasks").substr(0, std::max(0, sidebar_width - 4)).c_str());
+    wattroff(sidebar, COLOR_PAIR(1));
+
+    if(sidebar_index == files.size() + 1) wattron(sidebar, COLOR_PAIR(1));
+    mvwprintw(sidebar, 3, 2, "%s", std::string("Calendar").substr(0, std::max(0, sidebar_width - 4)).c_str());
+    wattroff(sidebar, COLOR_PAIR(1));
+    
+    for (size_t i = 0; i < files.size(); i++) {
+        if(i == sidebar_index) wattron(sidebar, COLOR_PAIR(1));
+        mvwprintw(sidebar, 7 + i, 2, "%s", files[i].substr(0, std::max(0, sidebar_width - 4)).c_str());
+        wattroff(sidebar, COLOR_PAIR(1));
+    }
+    wrefresh(sidebar);
 }
 
 /**
@@ -160,23 +173,6 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
     
     // Apply the total asterisk offset to cursor position
     wmove(content, row - scroll_row + 2, col - scroll_col + 2 - total_asterisk_offset);
-}
-
-void EditorUI::updateSidebar(const std::vector<std::string> &files, int sidebar_index) {
-    if(sidebar_index == files.size()) wattron(sidebar, COLOR_PAIR(1));
-    mvwprintw(sidebar, 2, 2, "My Tasks");
-    wattroff(sidebar, COLOR_PAIR(1));
-
-    if(sidebar_index == files.size() + 1) wattron(sidebar, COLOR_PAIR(1));
-    mvwprintw(sidebar, 3, 2, "Calendar");
-    wattroff(sidebar, COLOR_PAIR(1));
-    
-    for (size_t i = 0; i < files.size(); i++) {
-        if(i == sidebar_index) wattron(sidebar, COLOR_PAIR(1));
-        mvwprintw(sidebar, 7 + i, 2, "%s", files[i].c_str());
-        wattroff(sidebar, COLOR_PAIR(1));
-    }
-    wrefresh(sidebar);
 }
 
 /**

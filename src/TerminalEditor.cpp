@@ -18,7 +18,7 @@ using std::string;
 TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, 
                                WINDOW *content_in, const std::vector<std::string> &files_in)
     : fileManager(), ui(win_in, sidebar_in, content_in),
-      row(0), col(0), scroll_row(0), scroll_col(0), focused_div(0), sidebar_index(0) {
+      row(0), col(0), scroll_row(0), scroll_col(0), focused_div(0), sidebar_index(0), sidebar_width(COLS * 0.25){
 
     // Load initial file from file manager
     std::vector<std::string> initialFiles = fileManager.getFiles();
@@ -32,7 +32,7 @@ TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in,
     curs_set(1);  /**< Show the cursor in the terminal editor. */
 
     // Render the initial UI and display the loaded content
-    ui.renderUI(COLS * 0.25, initialFiles);  /**< Render the user interface with the list of files. */
+    ui.renderUI(sidebar_width, initialFiles);  /**< Render the user interface with the list of files. */
     ui.displayContent(lines, row, col, scroll_row, scroll_col);  /**< Display the loaded content in the editor. */
 }
 
@@ -147,11 +147,13 @@ void TerminalEditor::handleInputSidebar(int ch) {
             break;
         case KEY_UP: 
             sidebar_index = (sidebar_index - 1 + len_files) % len_files;
-            ui.updateSidebar(fileManager.getFiles(), sidebar_index);
+            ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             break;
         case KEY_DOWN: 
             sidebar_index = std::min(sidebar_index + 1, len_files) % len_files; 
-            ui.updateSidebar(fileManager.getFiles(), sidebar_index);
+            ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+            break;
+        case 14:
             break;
         case '\n':
             if (sidebar_index < fileManager.getFiles().size()){
@@ -176,7 +178,7 @@ void TerminalEditor::adjustCursorPosition() {
     
     // Adjust scroll positions to keep the cursor visible.
     int max_lines = LINES - 4;
-    int max_cols = COLS * 0.75 - 4;
+    int max_cols = COLS - sidebar_width - 4;
     
     if (row < scroll_row) scroll_row = row;  /**< Adjust scroll_row if the cursor is above the visible area. */
     else if (row >= scroll_row + max_lines) scroll_row = row - max_lines + 1;  /**< Scroll down if the cursor goes beyond visible lines. */
