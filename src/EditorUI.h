@@ -15,6 +15,7 @@ public:
                        int scroll_row, int scroll_col);
     void renderSidebar(int sidebar_width, const std::vector<std::string> &files, int sidebar_index);
     void cleanup();
+    std::string displayPrompt(std::string title);
         
 private:
     WINDOW *win;

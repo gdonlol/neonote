@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include <string>
 #include <vector>
+#include "TextPrompt.h"
 
 /**
  * @brief Constructor for the EditorUI class.
@@ -175,6 +176,11 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
     wmove(content, row - scroll_row + 2, col - scroll_col + 2 - total_asterisk_offset);
 }
 
+std::string EditorUI::displayPrompt(std::string title){
+    TextPrompt prompt(win, title);
+    return prompt.prompt();
+}
+
 /**
  * @brief Cleans up and terminates the ncurses session.
  * 
@@ -182,5 +188,8 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
  * the program has finished running.
  */
 void EditorUI::cleanup() {
+    clear();
+    refresh();
+    wrefresh(win);
     endwin();
 }

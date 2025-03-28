@@ -77,7 +77,8 @@ int main() {
     // Main menu loop
     while (true) {
         int input;
-
+        clear();
+        refresh();
         if (curr_window == 0) {  /**< If we're in the menu window. */
             while (true) {
                 draw_screen();  /**< Draw the menu screen. */
@@ -111,13 +112,13 @@ int main() {
                 
                 // Handle exit from the editor (Ctrl+Q or F1)
                 if (input == 17 || input == KEY_F(1)) {  /**< Ctrl+Q or F1 to exit. */
-                    clear();
-                    refresh();
+                    terminal_editor.cleanup();
                     curr_window = 0;  /**< Switch back to the main menu. */
                     break;
                 }
-                
-                terminal_editor.handleInput(input);  /**< Pass the input to the text editor for handling. */
+                else{
+                    terminal_editor.handleInput(input);  /**< Pass the input to the text editor for handling. */
+                }
             }
         }
     }

@@ -100,10 +100,6 @@ void TerminalEditor::handleInputContent(int ch) {
         case 19: // Ctrl+S
             fileManager.saveFile(fileManager.getFiles()[0], lines);  /**< Save the current file. */
             break;
-        case KEY_F(1):
-        case 17: // Ctrl+Q
-            cleanup();  /**< Exit and save the current file. */
-            break;
         case 2: // Ctrl+B - Insert ** for bold
             lines[row].insert(col, "**");
             col += 2;
@@ -121,6 +117,7 @@ void TerminalEditor::handleInputContent(int ch) {
         // Ctrl+O or Ctrl+D - Swap to sidebar control:
             focused_div = 1; /**< Flip focused_div. */
             curs_set(0);
+            break;
         default:
             if (ch >= 32 && ch <= 126) {  /**< Insert printable characters. */
                 lines[row].insert(col, string(1, ch));
@@ -160,6 +157,13 @@ void TerminalEditor::handleInputSidebar(int ch) {
         case 14: // Ctrl+N - New file
             fileManager.newFile(); /**< Push new file to files vector. */
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+            break;
+        case KEY_F(2):
+        case 18:
+            ui.displayPrompt("Test title 1 LONG TITLE ASDASDASDASDAD");
+            ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+            ui.displayContent(lines, row, col, scroll_row, scroll_col);
+            refresh();
             break;
         case '\n':
             if (sidebar_index < fileManager.getFiles().size()){
@@ -202,5 +206,4 @@ void TerminalEditor::adjustCursorPosition() {
 void TerminalEditor::cleanup() {
     fileManager.saveFile(fileManager.getFiles()[0], lines);  /**< Save the current file. */
     ui.cleanup();  /**< Clean up the UI (e.g., end ncurses session). */
-    exit(0);  /**< Exit the program. */
 }
