@@ -138,7 +138,7 @@ void TerminalEditor::handleInputContent(int ch) {
 void TerminalEditor::handleInputSidebar(int ch) {
     // Sidebar navigation logic would go here in the future.
     int len_files = fileManager.getFiles().size() + 2;
-
+    std::string lol; 
     switch (ch) {
         case 15:
         case 4:
@@ -160,7 +160,7 @@ void TerminalEditor::handleInputSidebar(int ch) {
             break;
         case KEY_F(2):
         case 18:
-            ui.displayPrompt("Test title 1 LONG TITLE ASDASDASDASDAD");
+            lol = ui.displayPrompt("Test title 1 LONG TITLE ASDASDASDASDAD");
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             ui.displayContent(lines, row, col, scroll_row, scroll_col);
             refresh();

@@ -23,111 +23,109 @@ std::string TextPrompt::prompt() {
     int start_y = (LINES - height) / 2;  ///< Vertical position of the prompt window, centered on the screen.
     int start_x = (COLS - width) / 2;  ///< Horizontal position of the prompt window, centered on the screen.
 
-    // Create a new window for the prompt with specified dimensions and position.
+    // Create the prompt window
     WINDOW *prompt_win = derwin(win, height, width, start_y, start_x);
-
     if (!prompt_win) {
         return "";  ///< Return empty string if window creation fails.
     }
 
-    // Set up the border and title for the prompt window.
+    // Draw the border and title
     box(prompt_win, 0, 0);
     mvwprintw(prompt_win, 1, 2, "%s", title.substr(0, std::max(0, width - 4)).c_str());
-    mvwprintw(prompt_win, 2, 2, "Input: ");
     wrefresh(win);
     wrefresh(prompt_win);
-    curs_set(1);  ///< Make the cursor visible.
 
-    char input[256] = {0};  ///< Buffer to hold the user input.
-    int input_len = 0;  ///< Current length of the input string.
-    int cursor_pos = 0;  ///< Position of the cursor within the input string.
-    int ch;  ///< Variable to store user input character.
-    int view_start = 0;  ///< Starting position for scrolling input text.
-    const int max_visible = width - 4;  ///< Maximum number of characters visible in the input area.
+    // Cursor settings
+    curs_set(1);  ///< Make the cursor visible.
+    char input[256] = {0};  ///< Input buffer for storing user input.
+    int input_len = 0;  ///< Length of the input text.
+    int cursor_pos = 0;  ///< Position of the cursor.
+    int view_start = 0;  ///< Scrolling position (text view start).
+    const int max_visible = width - 5;  ///< Maximum number of characters visible in the prompt window.
 
     while (1) {
-        werase(prompt_win);  ///< Clear the prompt window for redrawing.
-        box(prompt_win, 0, 0);  ///< Redraw the border around the window.
+        werase(prompt_win);  ///< Clear the window for redrawing.
+        box(prompt_win, 0, 0);  ///< Redraw the border.
         mvwprintw(prompt_win, 0, 2, "%s", title.substr(0, std::max(0, width - 4)).c_str());
 
-        // Print the input string, applying scrolling logic when necessary.
-        if (input_len > max_visible) {
-            mvwprintw(prompt_win, 1, 2, "%s", &input[view_start]);  ///< Display scrolled input.
-        } else {
-            mvwprintw(prompt_win, 1, 2, "%s", input);  ///< Display the full input if it fits.
+        // Display the visible part of the input text
+        // If the cursor is near the right edge of the visible area, scroll to the right.
+        if (cursor_pos - view_start >= max_visible) {
+            view_start = cursor_pos - max_visible + 1;  // Adjust view_start so the cursor is visible.
         }
 
-        // Move the cursor to the correct position within the input text.
-        int cursor_x = 2 + cursor_pos - view_start;  ///< Calculate horizontal position of the cursor.
-        wmove(prompt_win, 1, cursor_x);  ///< Move the cursor within the window.
-        wrefresh(prompt_win);  ///< Refresh the window to reflect the changes.
+        // If the cursor is near the left edge of the visible area, scroll to the left.
+        if (cursor_pos - view_start < 0) {
+            view_start = cursor_pos;  // Adjust view_start so the cursor is at the start of the visible area.
+        }
 
-        ch = getch();  ///< Wait for user input and capture the pressed key.
+        // Now, print the visible portion of the input text based on the adjusted view_start.
+        if (input_len - view_start > max_visible) {
+            mvwprintw(prompt_win, 1, 2, "%.*s", max_visible, &input[view_start]);
+        } else {
+            mvwprintw(prompt_win, 1, 2, "%s", &input[view_start]);
+        }
+
+        // Calculate the cursor's x position
+        int cursor_x = 2 + cursor_pos - view_start;
+        if (cursor_x >= max_visible) cursor_x = max_visible + 1;
+        wmove(prompt_win, 1, cursor_x);  ///< Move the cursor.
+        wrefresh(prompt_win);  ///< Refresh the window to show updates.
+
+        int ch = getch();  ///< Capture the user input.
 
         switch (ch) {
-            case '\n':  ///< Enter key pressed, finalize input and exit the loop.
-                delwin(prompt_win);  ///< Delete the prompt window.
+            case '\n':  ///< Enter key pressed, return the input text.
+                delwin(prompt_win);
                 curs_set(0);  ///< Hide the cursor.
-                return std::string(input);  ///< Return the input string.
-                break;
-
+                return std::string(input);
+            
             case KEY_BACKSPACE:
-            case 127:  ///< Handle backspace key for text deletion.
-                if (input_len > 0 && cursor_pos > 0) {
-                    // Shift the characters left from the cursor position.
+            case 127:  ///< Handle backspace.
+                if (cursor_pos > 0) {
+                    // Shift characters left if there's text to delete.
                     for (int i = cursor_pos - 1; i < input_len - 1; i++) {
-                        input[i] = input[i + 1];  ///< Shift characters left.
+                        input[i] = input[i + 1];
                     }
                     input[--input_len] = '\0';  ///< Null-terminate the string.
                     cursor_pos--;  ///< Move the cursor left.
                 }
                 break;
 
-            case KEY_RIGHT:  ///< Handle right arrow key for cursor movement.
+            case KEY_RIGHT:  ///< Right arrow key.
                 if (cursor_pos < input_len) {
-                    cursor_pos++;  ///< Move cursor right within the input string.
-                } else if (cursor_pos < input_len && input_len > max_visible) {
-                    // Scroll input if cursor reaches the end of visible text.
-                    if (view_start < input_len - max_visible) {
-                        view_start++;  ///< Scroll input to the right.
-                    }
+                    cursor_pos++;  ///< Move cursor right.
                 }
                 break;
 
-            case KEY_LEFT:  ///< Handle left arrow key for cursor movement.
+            case KEY_LEFT:  ///< Left arrow key.
                 if (cursor_pos > 0) {
-                    cursor_pos--;  ///< Move cursor left within the input string.
+                    cursor_pos--;  ///< Move cursor left.
                 } else if (view_start > 0) {
-                    // Scroll input if cursor reaches the start of visible text.
-                    view_start--;  ///< Scroll input to the left.
+                    view_start--;  ///< Scroll input text to the left.
                 }
                 break;
 
-            default:  ///< Handle printable characters.
-                if (ch >= 32 && ch <= 126) {
-                    if (input_len < sizeof(input) - 1) {
-                        // Insert character at the current cursor position.
-                        for (int i = input_len; i > cursor_pos; i--) {
-                            input[i] = input[i - 1];  ///< Shift characters to the right.
-                        }
-                        input[cursor_pos++] = (char)ch;  ///< Insert the new character.
-                        input_len++;  ///< Increment the length of the input.
-                        input[input_len] = '\0';  ///< Null-terminate the string.
+            default:  ///< Handle regular characters.
+                if (ch >= 32 && ch <= 126 && input_len < sizeof(input) - 1) {
+                    // Insert the character at the cursor position.
+                    for (int i = input_len; i > cursor_pos; i--) {
+                        input[i] = input[i - 1];
+                    }
+                    input[cursor_pos++] = (char)ch;
+                    input_len++;
+                    input[input_len] = '\0';  ///< Null-terminate the string.
 
-                        // Handle scrolling when the input exceeds the visible space.
-                        if (input_len > max_visible) {
-                            if (view_start < input_len - max_visible) {
-                                view_start++;  ///< Scroll input to the right if needed.
-                            }
-                        }
+                    // Scroll input text if necessary when the cursor goes out of view.
+                    if (cursor_pos - view_start >= max_visible && view_start < input_len - max_visible) {
+                        view_start++;  ///< Scroll text to the right.
                     }
                 }
                 break;
         }
     }
 
-    std::string result = input;  ///< Finalize the input as a string.
+    delwin(prompt_win);  ///< Delete the prompt window after use.
     curs_set(0);  ///< Hide the cursor.
-    delwin(prompt_win);  ///< Delete the prompt window after usage.
-    return result;  ///< Return the user input as a string.
+    return std::string(input);  ///< Return the input string.
 }
