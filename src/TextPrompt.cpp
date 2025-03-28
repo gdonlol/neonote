@@ -19,7 +19,7 @@ TextPrompt::TextPrompt(WINDOW *win_in, std::string title_in){
  */
 std::string TextPrompt::prompt() {
     int height = 3;  ///< Height of the prompt window.
-    int width = COLS / 2;  ///< Width of the prompt window, half the screen width.
+    int width = COLS * 0.9;  ///< Width of the prompt window
     int start_y = (LINES - height) / 2;  ///< Vertical position of the prompt window, centered on the screen.
     int start_x = (COLS - width) / 2;  ///< Horizontal position of the prompt window, centered on the screen.
 
@@ -41,7 +41,7 @@ std::string TextPrompt::prompt() {
     int input_len = 0;  ///< Length of the input text.
     int cursor_pos = 0;  ///< Position of the cursor.
     int view_start = 0;  ///< Scrolling position (text view start).
-    const int max_visible = width - 5;  ///< Maximum number of characters visible in the prompt window.
+    const int max_visible = width - 4;  ///< Maximum number of characters visible in the prompt window.
 
     while (1) {
         werase(prompt_win);  ///< Clear the window for redrawing.
