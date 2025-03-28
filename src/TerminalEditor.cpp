@@ -138,7 +138,7 @@ void TerminalEditor::handleInputContent(int ch) {
 void TerminalEditor::handleInputSidebar(int ch) {
     // Sidebar navigation logic would go here in the future.
     int len_files = fileManager.getFiles().size() + 2;
-    std::string lol; 
+    std::string input; 
     switch (ch) {
         case 15:
         case 4:
@@ -160,21 +160,23 @@ void TerminalEditor::handleInputSidebar(int ch) {
             break;
         case KEY_F(2):
         case 18:
-            lol = ui.displayPrompt("Test title 1 LONG TITLE ASDASDASDASDAD");
+            input = ui.displayPrompt("Rename note");
+            ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+            ui.displayContent(lines, row, col, scroll_row, scroll_col);
+            break;
+        case KEY_DC:
+            
+            if(fileManager.getFiles().size() > 1){
+                input = ui.displayPrompt("Delete permanently? (Y/N)");
+                if(input == "Y" || input == "y"){
+                    fileManager.deleteFile(fileManager.getFiles()[sidebar_index--]);
+                    fileManager.loadFile(fileManager.getFiles()[sidebar_index], lines, current_file);
+                    adjustCursorPosition();  /**< Adjust cursor position based on current content. */
+                }
+            }
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             ui.displayContent(lines, row, col, scroll_row, scroll_col);
             refresh();
-            break;
-        case KEY_DC:
-            if(fileManager.getFiles().size() > 1){
-                fileManager.deleteFile(fileManager.getFiles()[sidebar_index--]);
-                fileManager.loadFile(fileManager.getFiles()[sidebar_index], lines, current_file);
-                
-                ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
-                adjustCursorPosition();  /**< Adjust cursor position based on current content. */
-                ui.displayContent(lines, row, col, scroll_row, scroll_col);
-                refresh();
-            }
             break;
         case '\n':
             if (sidebar_index < fileManager.getFiles().size()){
@@ -215,6 +217,6 @@ void TerminalEditor::adjustCursorPosition() {
  * exiting the application.
  */
 void TerminalEditor::cleanup() {
-    fileManager.saveFile(fileManager.getFiles()[0], lines);  /**< Save the current file. */
+    fileManager.saveFile(current_file, lines);  /**< Save the current file. */
     ui.cleanup();  /**< Clean up the UI (e.g., end ncurses session). */
 }
