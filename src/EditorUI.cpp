@@ -46,6 +46,7 @@ void EditorUI::renderUI(int sidebar_width, const std::vector<std::string> &files
  * @param files A vector of strings representing the file names to be displayed.
  */
 void EditorUI::renderSidebar(int sidebar_width, const std::vector<std::string> &files, int sidebar_index) {
+    wclear(sidebar); 
     box(sidebar, 0, 0);
     mvwhline(sidebar, 5, 1, ACS_HLINE, sidebar_width - 2);
     if(sidebar_index == files.size()) wattron(sidebar, COLOR_PAIR(1));

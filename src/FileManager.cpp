@@ -125,11 +125,20 @@ void FileManager::newFile(){
     while(1){
         dupeId++;
         string path = appDataPath + "/Untitled" + std::to_string(dupeId) + ".md";
-        ifstream file(path);
-        if(!file.good()){
+        if(!filesystem::exists(path)){
             files.push_back("Untitled" + std::to_string(dupeId));
             saveFile("Untitled" + std::to_string(dupeId), vector<string>{""});
             break;
+        }
+    }
+}
+
+void FileManager::deleteFile(const string &filename){
+    string path = appDataPath + "/" + filename + ".md";  /**< Construct the full file path. */
+    if(filesystem::exists(path)){
+        filesystem::remove(path);
+        for(int i = 0; i < files.size(); i++){
+            if (files[i] == filename) files.erase(files.begin() + i);
         }
     }
 }

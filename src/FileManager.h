@@ -11,6 +11,7 @@ public:
     void loadFile(const std::string &filename, std::vector<std::string> &lines, std::string &current_file);
     void saveFile(const std::string &filename, const std::vector<std::string> &lines);
     void newFile();
+    void deleteFile(const std::string &filename);
     
 private:
     std::string appDataPath;

@@ -165,6 +165,17 @@ void TerminalEditor::handleInputSidebar(int ch) {
             ui.displayContent(lines, row, col, scroll_row, scroll_col);
             refresh();
             break;
+        case KEY_DC:
+            if(fileManager.getFiles().size() > 1){
+                fileManager.deleteFile(fileManager.getFiles()[sidebar_index--]);
+                fileManager.loadFile(fileManager.getFiles()[sidebar_index], lines, current_file);
+                
+                ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+                adjustCursorPosition();  /**< Adjust cursor position based on current content. */
+                ui.displayContent(lines, row, col, scroll_row, scroll_col);
+                refresh();
+            }
+            break;
         case '\n':
             if (sidebar_index < fileManager.getFiles().size()){
                 fileManager.saveFile(current_file, lines);
