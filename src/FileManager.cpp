@@ -142,3 +142,19 @@ void FileManager::deleteFile(const string &filename){
         }
     }
 }
+
+void FileManager::renameFile(const string &filename, string newName){
+    string oldPath = appDataPath + "/" + filename + ".md";
+    string newPath = appDataPath + "/" + newName + ".md";
+
+    if (filesystem::exists(oldPath) && !filesystem::exists(newPath)) {
+        filesystem::rename(oldPath, newPath);
+
+        for (auto &file : files) {
+            if (file == filename) {
+                file = newName;
+                break;
+            }
+        }
+    }
+}

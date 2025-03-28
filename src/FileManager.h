@@ -12,6 +12,7 @@ public:
     void saveFile(const std::string &filename, const std::vector<std::string> &lines);
     void newFile();
     void deleteFile(const std::string &filename);
+    void renameFile(const std::string &filename, std::string newName);
     
 private:
     std::string appDataPath;
