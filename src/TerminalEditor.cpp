@@ -185,6 +185,13 @@ void TerminalEditor::handleInputSidebar(int ch) {
                 adjustCursorPosition();  /**< Adjust cursor position based on current content. */
                 ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);  /**< Redraw the content after input. */
             }
+            if (sidebar_index == fileManager.getFiles().size() + 1){
+                //render calendar here
+                ui.renderCalendar();
+            }
+            else {
+                //render kanban here
+            }
             break;
     }
 }

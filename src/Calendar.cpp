@@ -6,7 +6,9 @@
 
 using namespace std;
 
-Calendar::Calendar(WINDOW *content):content(){}
+Calendar::Calendar(WINDOW *content){
+    this->content = content;
+}
 
 void Calendar::addEvent(const Event& event) {
     events.push_back(event);
@@ -66,5 +68,8 @@ int Calendar::getFirstDayOfMonth(int month, int year) const {
 
 void Calendar::renderCalendar(){
     wclear(content);
+    box(content, 0,0);
     mvwprintw(content, 2, 2, "%s", "calendar placeholder");
+    wrefresh(content);
+    getch();
 }
