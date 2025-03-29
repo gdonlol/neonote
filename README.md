@@ -2,6 +2,10 @@
 
 Clone the repository.
 
+```
+git clone https://github.com/gdonlol/neonote.git
+```
+
 Navigate to project directory in your terminal and use `make` to compile the program or `make run` to compile and run.
 
 -   The compiled binary will be located in the `bin/` folder.
