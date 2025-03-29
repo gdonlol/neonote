@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 #include "TextPrompt.h"
-#include "Calendar.h"
 
 /**
  * @brief Constructor for the EditorUI class.
@@ -179,11 +178,6 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
     
     // Apply the total asterisk offset to cursor position
     wmove(content, row - scroll_row + 2, col - scroll_col + 2 - total_asterisk_offset);
-}
-
-void EditorUI::renderCalendar(){
-    Calendar calendar(content);
-    calendar.renderCalendar();
 }
 
 std::string EditorUI::displayPrompt(std::string title){

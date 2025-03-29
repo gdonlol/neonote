@@ -6,6 +6,7 @@
 #include <string>
 #include "FileManager.h"
 #include "EditorUI.h"
+#include "Calendar.h"
 
 class TerminalEditor {
 public:
@@ -18,6 +19,7 @@ public:
 private:
     FileManager fileManager;
     EditorUI ui;
+    Calendar calendar;
     
     int row;
     int col;

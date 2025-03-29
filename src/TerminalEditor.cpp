@@ -17,7 +17,7 @@ using std::string;
  */
 TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, 
                                WINDOW *content_in, const std::vector<std::string> &files_in)
-    : fileManager(), ui(win_in, sidebar_in, content_in),
+    : fileManager(), ui(win_in, sidebar_in, content_in), calendar(content_in),
       row(0), col(0), scroll_row(0), scroll_col(0), focused_div(0), sidebar_index(0), sidebar_width(COLS * 0.25){
 
     // Load initial file from file manager
@@ -45,13 +45,17 @@ TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in,
  * @param ch The character code representing the user's input.
  */
 void TerminalEditor::handleInput(int ch) {
-    if (focused_div == 0) {
+    if (focused_div == 0) { //**< 0 = content */
         handleInputContent(ch);  /**< Handle input in the content area of the editor. */
         adjustCursorPosition();  /**< Adjust cursor position based on current content. */
         ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);  /**< Redraw the content after input. */
-    } else {
+    } else if (focused_div == 1) { //**< 1 = sidebar */
         handleInputSidebar(ch);  /**< Handle input in the sidebar area. */
-    }   
+    }
+    else if (focused_div == 2) { //**< 2 = kanban */
+    }
+    else if (focused_div == 3) { //**< 3 = calendar */
+    } 
 }
 
 /**
@@ -142,9 +146,19 @@ void TerminalEditor::handleInputSidebar(int ch) {
     switch (ch) {
         case 15:
         case 4:
-            focused_div = 0; /**< Flip focused_div. */
-            curs_set(1);
-            ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);
+            if (sidebar_index < fileManager.getFiles().size()){
+                focused_div = 0; /**< Flip focused_div to content.  */
+                curs_set(1);
+                ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);
+            }
+            else if (sidebar_index == fileManager.getFiles().size()){
+                //kanban swap
+                focused_div = 2; /**< Flip focused_div to kanban. */
+            }
+            else{
+                //calendar swap
+                focused_div = 3; /**< Flip focused_div to calendar. */
+            }
             break;
         case KEY_UP: 
             sidebar_index = (sidebar_index - 1 + len_files) % len_files;
@@ -185,12 +199,12 @@ void TerminalEditor::handleInputSidebar(int ch) {
                 adjustCursorPosition();  /**< Adjust cursor position based on current content. */
                 ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);  /**< Redraw the content after input. */
             }
-            if (sidebar_index == fileManager.getFiles().size() + 1){
-                //render calendar here
-                ui.renderCalendar();
+            else if (sidebar_index == fileManager.getFiles().size()){
+                //render kanban here
             }
             else {
-                //render kanban here
+                //render calendar here
+                calendar.renderCalendar();
             }
             break;
     }
