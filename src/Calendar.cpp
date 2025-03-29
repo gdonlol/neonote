@@ -2,24 +2,14 @@
 #include <iostream>
 #include <chrono>
 #include <ctime>
+#include <ncurses.h>
 
 using namespace std;
 
+Calendar::Calendar(WINDOW *content):content(){}
+
 void Calendar::addEvent(const Event& event) {
     events.push_back(event);
-    std::cout << "Event added: " << event.toString() << std::endl;
-}
-
-void Calendar::printEvents() const {
-    std::cout << "\n--- Calendar Events ---\n";
-    for (const auto& event : events) {
-        std::cout << event.toString() << std::endl;
-    }
-    std::cout << "-----------------------\n";
-}
-
-std::vector<Event> Calendar::getEvents() const {
-    return events;
 }
 
 // get current day of the month
@@ -71,4 +61,10 @@ int Calendar::getFirstDayOfMonth(int month, int year) const {
 
     mktime(&time_in);
     return time_in.tm_wday; // 0 = sunday, 6 = saturday
+}
+
+
+void Calendar::renderCalendar(){
+    wclear(content);
+    mvwprintw(content, 2, 2, "%s", "calendar placeholder");
 }
