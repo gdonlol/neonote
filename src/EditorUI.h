@@ -11,8 +11,8 @@ public:
     
     void renderUI(int sidebar_width, const std::vector<std::string> &files);
     void displayContent(const std::vector<std::string> &lines, 
-                       int row, int col, 
-                       int scroll_row, int scroll_col);
+                       int row, int col, int scroll_row,
+                       int scroll_col, std::string title);
     void renderSidebar(int sidebar_width, const std::vector<std::string> &files, int sidebar_index);
     void cleanup();
     std::string displayPrompt(std::string title);

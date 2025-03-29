@@ -79,10 +79,13 @@ void EditorUI::renderSidebar(int sidebar_width, const std::vector<std::string> &
  * @param scroll_col The column index for the scrolling.
  */
 void EditorUI::displayContent(const std::vector<std::string> &lines, 
-                            int row, int col, 
-                            int scroll_row, int scroll_col) {
+                            int row, int col, int scroll_row,
+                            int scroll_col, std::string title) {
     werase(content);
     box(content, 0, 0);
+    wattron(content, A_BOLD);
+    mvwprintw(content, 1, 2, "%s", title.substr(0, std::max(0, static_cast<int>((COLS * 0.75) - 4))).c_str());
+    wattroff(content, A_BOLD);
     renderContent(lines, row, col, scroll_row, scroll_col);
     wrefresh(content);
 }

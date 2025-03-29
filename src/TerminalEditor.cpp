@@ -33,7 +33,7 @@ TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in,
 
     // Render the initial UI and display the loaded content
     ui.renderUI(sidebar_width, initialFiles);  /**< Render the user interface with the list of files. */
-    ui.displayContent(lines, row, col, scroll_row, scroll_col);  /**< Display the loaded content in the editor. */
+    ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);  /**< Display the loaded content in the editor. */
 }
 
 /**
@@ -48,7 +48,7 @@ void TerminalEditor::handleInput(int ch) {
     if (focused_div == 0) {
         handleInputContent(ch);  /**< Handle input in the content area of the editor. */
         adjustCursorPosition();  /**< Adjust cursor position based on current content. */
-        ui.displayContent(lines, row, col, scroll_row, scroll_col);  /**< Redraw the content after input. */
+        ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);  /**< Redraw the content after input. */
     } else {
         handleInputSidebar(ch);  /**< Handle input in the sidebar area. */
     }   
@@ -144,7 +144,7 @@ void TerminalEditor::handleInputSidebar(int ch) {
         case 4:
             focused_div = 0; /**< Flip focused_div. */
             curs_set(1);
-            ui.displayContent(lines, row, col, scroll_row, scroll_col);
+            ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);
             break;
         case KEY_UP: 
             sidebar_index = (sidebar_index - 1 + len_files) % len_files;
@@ -163,7 +163,7 @@ void TerminalEditor::handleInputSidebar(int ch) {
             input = ui.displayPrompt("Rename note");
             fileManager.renameFile(fileManager.getFiles()[sidebar_index], input);
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
-            ui.displayContent(lines, row, col, scroll_row, scroll_col);
+            ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);
             break;
         case KEY_DC:
             if(fileManager.getFiles().size() > 1){
@@ -175,7 +175,7 @@ void TerminalEditor::handleInputSidebar(int ch) {
                 }
             }
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
-            ui.displayContent(lines, row, col, scroll_row, scroll_col);
+            ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);
             refresh();
             break;
         case '\n':
@@ -183,7 +183,7 @@ void TerminalEditor::handleInputSidebar(int ch) {
                 fileManager.saveFile(current_file, lines);
                 fileManager.loadFile(fileManager.getFiles()[sidebar_index], lines, current_file);
                 adjustCursorPosition();  /**< Adjust cursor position based on current content. */
-                ui.displayContent(lines, row, col, scroll_row, scroll_col);  /**< Redraw the content after input. */
+                ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);  /**< Redraw the content after input. */
             }
             break;
     }
