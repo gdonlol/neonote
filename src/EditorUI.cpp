@@ -84,7 +84,7 @@ void EditorUI::displayContent(const std::vector<std::string> &lines,
     werase(content);
     box(content, 0, 0);
     wattron(content, A_BOLD);
-    mvwprintw(content, 1, 2, "%s", title.substr(0, std::max(0, static_cast<int>((COLS * 0.75) - 4))).c_str());
+    mvwprintw(content, 1, ((COLS * 0.75)-title.length()) / 2, "%s", title.substr(0, std::max(0, static_cast<int>((COLS * 0.75) - 4))).c_str());
     wattroff(content, A_BOLD);
     renderContent(lines, row, col, scroll_row, scroll_col);
     wrefresh(content);
