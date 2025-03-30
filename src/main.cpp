@@ -41,7 +41,7 @@ void draw_screen() {
             mvwprintw(win, rowPrint + 1, (COLS - 4) / 2, "exit");  /**< Print "exit" with highlight. */
             wattroff(win, COLOR_PAIR(1));  /**< Disable color pair 1. */
         }
-        mvwprintw(win, (LINES - 1), (COLS - 25) / 2, "Credits: Gordon Xu, Allen Zhu");
+        mvwprintw(win, (LINES - 1), (COLS - 25) / 2, "Credits: Gordon Xu, Allen Zhu, Emily Atyeo");
         wrefresh(win);  /**< Refresh the main window to reflect changes. */
     }
 }
@@ -72,7 +72,7 @@ int main() {
     init_pair(5, COLOR_BLUE | A_UNDERLINE, COLOR_BLACK);       // H4 - Underline
     init_pair(6, COLOR_MAGENTA | A_UNDERLINE, COLOR_BLACK);    // H5 - Underline
     init_pair(7, COLOR_CYAN | A_DIM | A_UNDERLINE, COLOR_BLACK);   // H6 - Dim + Underline
-    char text[] = {67, 114, 101, 100, 105, 116, 115, 58, 32, 71, 111, 114, 100, 111, 110, 32, 88, 117, 44, 32, 65, 108, 108, 101, 110, 32, 90, 104, 117, 0};
+    char text[] = {67, 114, 101, 100, 105, 116, 115, 58, 32, 71, 111, 114, 100, 111, 110, 32, 88, 117, 44, 32, 65, 108, 108, 101, 110, 32, 90, 104, 117, 44, 32, 69, 109, 105, 108, 121, 32, 65, 116, 121, 101, 111, 0};
     if (!has_colors()) {
         printw("Terminal does not support color");
         getch();
@@ -97,7 +97,7 @@ int main() {
             while (true) {
                 draw_screen();  /**< Draw the menu screen. */
                 move(LINES - 1, 0); clrtoeol(); refresh();
-                mvwprintw(win, (LINES - 1), (COLS - 25) / 2, text); 
+                mvwprintw(win, (LINES - 1), (COLS - sizeof(text)) / 2, text); 
                 wrefresh(win);
                 input = getch();  /**< Get user input. */
                 

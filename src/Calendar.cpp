@@ -4,6 +4,7 @@
 #include <ctime>
 #include <ncurses.h>
 #include <algorithm>
+#include "Event.h"
 
 using namespace std;
 
@@ -13,6 +14,8 @@ using namespace std;
  */
 Calendar::Calendar(WINDOW *content) {
     this->content = content;
+    Event event(1, "asdasd", "asdasd", "sadasd");
+    events.push_back(event);
 }
 
 /**
@@ -186,7 +189,7 @@ void Calendar::renderCalendar() {
         }
     }
 
-    WINDOW *events = derwin(
+    WINDOW *eventswin = derwin(
         content, 
         LINES - 4,
         ((COLS * 0.75) / 2 )- 4,
@@ -194,9 +197,17 @@ void Calendar::renderCalendar() {
         ((COLS * 0.75) / 2) + 2
     );
     refresh();
-    mvwprintw(events, 0, 0, "%s", "Events");
-    wrefresh(events);
-
+    mvwprintw(eventswin, 0, 0, "%s", "Events");
+    wrefresh(eventswin);
+    int y = 1;
+    for (const Event& event : events) {
+        // Print the event details (id, title, description, date, etc.)
+        mvwhline(eventswin, y++, 0, ACS_HLINE, ((COLS * 0.75) / 2 )- 4);
+        mvwprintw(eventswin, y++, 0, "Event ID: %d", event.getId());
+        mvwprintw(eventswin, y++, 0, "Title: %s", event.getTitle().c_str());
+        mvwprintw(eventswin, y++, 0, "Description: %s", event.getDescription().c_str());
+        mvwprintw(eventswin, y++, 0, "Date: %s", event.getDate().c_str());
+    }
     //Refresh the main content window
     wrefresh(content);
 
