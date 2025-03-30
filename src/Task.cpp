@@ -28,3 +28,6 @@ void Task::setDescription(const std::string& newDescription) { description = new
 
 // Setter function to update the Task status
 void Task::setStatus(const std::string& newStatus) { status = newStatus; }
+
+// Setter function to update the Task description
+void Task::setDueDate(const std::string& newDueDate) { dueDate = newDueDate; }

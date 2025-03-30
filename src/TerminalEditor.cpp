@@ -17,7 +17,7 @@ using std::string;
  */
 TerminalEditor::TerminalEditor(WINDOW *win_in, WINDOW *sidebar_in, 
                                WINDOW *content_in, const std::vector<std::string> &files_in)
-    : fileManager(), ui(win_in, sidebar_in, content_in), calendar(content_in),
+    : fileManager(), ui(win_in, sidebar_in, content_in), calendar(content_in), taskManager(content_in),
       row(0), col(0), scroll_row(0), scroll_col(0), focused_div(0), sidebar_index(0), sidebar_width(COLS * 0.25){
 
     // Load initial file from file manager
@@ -214,6 +214,7 @@ void TerminalEditor::handleInputSidebar(int ch) {
             }
             else if (sidebar_index == fileManager.getFiles().size()){
                 //render kanban here
+                taskManager.renderTasks();
             }
             else {
                 //render calendar here

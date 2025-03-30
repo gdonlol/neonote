@@ -7,6 +7,7 @@
 #include "FileManager.h"
 #include "EditorUI.h"
 #include "Calendar.h"
+#include "TaskManager.h"
 
 class TerminalEditor {
 public:
@@ -20,6 +21,7 @@ private:
     FileManager fileManager;
     EditorUI ui;
     Calendar calendar;
+    TaskManager taskManager; 
     
     int row;
     int col;
