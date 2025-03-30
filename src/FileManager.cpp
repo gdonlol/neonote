@@ -63,13 +63,9 @@ void FileManager::scanExistingFiles() {
  */
 void FileManager::createDefaultFileIfNeeded() {
     if (files.empty()) {
-        string filePath = appDataPath + "/Untitled1.md";  /**< Default file path. */
-        ofstream file(filePath);  /**< Open the file for writing. */
-        if (!file) {
-            throw runtime_error("Default file creation failed");  /**< Throw error if file creation fails. */
-        }
-        file.close();  /**< Close the file after writing. */
-        files.push_back("Untitled1");  /**< Add the default file to the list of files. */
+        // Run the read me shell script
+        system("./move_readme.sh");    
+        files.push_back("README");
     }
 }
 

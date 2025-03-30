@@ -195,7 +195,8 @@ void TerminalEditor::handleInputSidebar(int ch) {
             if(fileManager.getFiles().size() > 1){
                 input = ui.displayPrompt("Delete permanently? (Y/N)");
                 if(input == "Y" || input == "y"){
-                    fileManager.deleteFile(fileManager.getFiles()[sidebar_index--]);
+                    fileManager.deleteFile(fileManager.getFiles()[sidebar_index]);
+                    sidebar_index = std::max(sidebar_index - 1, 0);
                     fileManager.loadFile(fileManager.getFiles()[sidebar_index], lines, current_file);
                     adjustCursorPosition();  /**< Adjust cursor position based on current content. */
                 }
