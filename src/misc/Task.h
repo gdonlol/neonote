@@ -9,19 +9,11 @@ public:
     // Constructor: Initializes a task with an ID, title, description, and due date.
     Task(int id, const std::string& title, const std::string& description, const std::string& dueDate);
     
-    // Returns the unique ID of the task
+    // Getter methods:
     int getId() const;
-
-    // Returns the task's title
     std::string getTitle() const;
-
-    // Returns the task's description
     std::string getDescription() const;
-
-    // Returns the current status of the task (e.g., "To Do", "In Progress", "Done")
     std::string getStatus() const;
-
-    // Returns the due date of the task
     std::string getDueDate() const;
 
     // Setter methods:

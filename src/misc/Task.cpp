@@ -30,6 +30,16 @@ std::string Task::getDueDate() const {
     return dueDate;
 }
 
+// Setter function to update the Task title
+void Task::setTitle(const std::string& newTitle) {
+    title = newTitle;
+}
+
+// Setter function to update the Task description
+void Task::setDescription(const std::string& newDescription) {
+    description = newDescription;
+}
+
 // Setter function to update the Task status
 void Task::setStatus(const std::string& newStatus) {
     status = newStatus;
