@@ -20,7 +20,12 @@ void draw_screen() {
     if (curr_window == 0) {
         // Draw the main menu
         curs_set(0);  /**< Hide the cursor. */
-        mvwprintw(win, (LINES - 11) / 2, (COLS - 8) / 2, "neonote.");  /**< Print "neonote" in the center. */
+        mvwprintw(win, (LINES - 11) / 2 - 5, (COLS - 40) / 2, "    _   __           _   __      __     ");
+        mvwprintw(win, (LINES - 11) / 2 - 4, (COLS - 40) / 2, "   / | / /__  ____  / | / /___  / /____ ");
+        mvwprintw(win, (LINES - 11) / 2 - 3, (COLS - 40) / 2, "  /  |/ / _ \\/ __ \\/  |/ / __ \\/ __/ _ \\");
+        mvwprintw(win, (LINES - 11) / 2 - 2, (COLS - 40) / 2, " / /|  /  __/ /_/ / /|  / /_/ / /_/  __/");
+        mvwprintw(win, (LINES - 11) / 2 - 1, (COLS - 40) / 2, "/_/ |_/\\___/\\____/_/ |_/\\____/\\__/\\___/ ");    
+    
         int rowPrint = (LINES - 2) / 2;
 
         // Menu options: "my notes" and "exit"
