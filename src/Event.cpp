@@ -25,11 +25,6 @@ std::string Event::getDescription() const { return description; }
 // Returns the date of the event
 std::string Event::getDate() const { return date; }
 
-// Returns the start time of the event
-std::string Event::getStartTime() { return startTime; }
-
-// Returns the end time of the event
-std::string Event::getEndTime() { return endTime; }
 
 // SETTER METHODS
 // Updates the event's title
@@ -40,9 +35,3 @@ void Event::setDescription(const std::string& newDescription) { description = ne
 
 // Updates the event's date
 void Event::setDate(const std::string& newDate) { date = newDate; }
-
-// Sets the start time of the event
-void Event::setStartTime(const std::string& newStartTime) { startTime = newStartTime; }
-
-// Sets the end time of the event
-void Event::setEndTime(const std::string& newEndTime) {endTime = newEndTime; }
