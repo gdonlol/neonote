@@ -84,6 +84,7 @@ void TerminalEditor::handleInputContent(int ch) {
         case KEY_RIGHT: 
             if (col < lines[row].length()) col++;  /**< Move the cursor right. */
             break;
+        case 127:
         case KEY_BACKSPACE:
             if (col > 0) {  /**< Delete the character to the left of the cursor. */
                 lines[row].erase(col - 1, 1);
