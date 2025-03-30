@@ -63,7 +63,7 @@ int main() {
     intrflush(stdscr, FALSE);  /**< Disable automatic flushing of the input buffer. */
     start_color();  /**< Initialize color functionality. */
     // Initialize color pairs for headers with custom attributes
-    init_pair(1, COLOR_BLACK, COLOR_WHITE) // Inverted highlight
+    init_pair(1, COLOR_BLACK, COLOR_WHITE); // Inverted highlight
     init_pair(2, COLOR_RED | A_BOLD | A_UNDERLINE, COLOR_BLACK);    // H1 - Bold + Underline
     init_pair(3, COLOR_GREEN | A_UNDERLINE, COLOR_BLACK);      // H2 - Underline
     init_pair(4, COLOR_YELLOW | A_UNDERLINE, COLOR_BLACK);     // H3 - Underline
