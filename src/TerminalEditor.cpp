@@ -104,15 +104,27 @@ void TerminalEditor::handleInputContent(int ch) {
         case 19: // Ctrl+S
             fileManager.saveFile(fileManager.getFiles()[0], lines);  /**< Save the current file. */
             break;
-        case 2: // Ctrl+B - Insert ** for bold
-            lines[row].insert(col, "**");
-            col += 2;
+        case 2: // Ctrl+B - Handle bold markdown
+            if (col + 2 <= lines[row].length() && lines[row].substr(col, 2) == "**") {
+                // If we're at existing **, just move cursor right past them
+                col += 2;
+            } else {
+                // First press: insert **** and move left 2 positions
+                lines[row].insert(col, "****");
+                col += 2; // Position cursor in the middle
+            }
             break;
-        case 9: // Ctrl+I - Insert * for italic
-            lines[row].insert(col, "*");
-            col++;
+        case 9: // Ctrl+I - Handle italic markdown
+            if (col < lines[row].length() && lines[row][col] == '*') {
+                // If we're at existing *, just move cursor right past it
+                col++;
+            } else {
+                // Insert * and stay at position (user types between the asterisks)
+                lines[row].insert(col, "**");
+		col += 1;
+            }
             break;
-        case 14: // Ctrl+N - New file
+	case 14: // Ctrl+N - New file
             fileManager.newFile(); /**< Push new file to files vector. */
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             break;
