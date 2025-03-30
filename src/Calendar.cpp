@@ -141,8 +141,8 @@ void Calendar::renderCalendar() {
     int firstDay = getFirstDayOfMonth(currentMonth, year);
 
     //Grid Layout: Defines dimensions of each day sub-window.
-    const int dayWidth = ((COLS - 1) * 0.75) / 7;  //**< Width of each day window
-    const int dayHeight = 4;                 //**< Height of each day window
+    const int dayWidth = (((COLS - 1) * 0.75) / 2) / 7;  //**< Width of each day window
+    const int dayHeight = 3;                 //**< Height of each day window
 
     int startY = 6;                          //**< Starting Y position for the first row
     int startX = 2 + (firstDay * dayWidth);  //**< Starting X position based on the first weekday
@@ -165,12 +165,12 @@ void Calendar::renderCalendar() {
         dayWindows.push_back(dayWin);  //**< Store the window for later cleanup
 
         box(dayWin, 0, 0);  //**< Draw the border
-        mvwprintw(dayWin, 2, 2, "%2d", day);  //**< Display day number
+        mvwprintw(dayWin, 1, 2, "%2d", day);  //**< Display day number
 
         //Highlight the current day
         if (day == currentDay) {
             wattron(dayWin, A_REVERSE);
-            mvwprintw(dayWin, 2, 2, "%2d", day);
+            mvwprintw(dayWin, 1, 2, "%2d", day);
             wattroff(dayWin, A_REVERSE);
         }
 
@@ -185,6 +185,17 @@ void Calendar::renderCalendar() {
             startX = 2;  //**< Reset to the first column
         }
     }
+
+    WINDOW *events = derwin(
+        content, 
+        LINES - 4,
+        ((COLS * 0.75) / 2 )- 4,
+        2,
+        ((COLS * 0.75) / 2) + 2
+    );
+    refresh();
+    mvwprintw(events, 0, 0, "%s", "Events");
+    wrefresh(events);
 
     //Refresh the main content window
     wrefresh(content);
