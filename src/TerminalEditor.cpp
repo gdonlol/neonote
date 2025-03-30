@@ -95,6 +95,80 @@ void TerminalEditor::handleInputContent(int ch) {
                 row--;
             }
             break;
+        case 29: // Ctrl + ]
+            if (col > 0) {
+                // Skip any spaces immediately left
+                while (col > 0 && lines[row][col-1] == ' ') {
+                    col--;
+                }
+                // Jump to start of word
+                while (col > 0 && lines[row][col-1] != ' ') {
+                    col--;
+                }
+            }
+            break;
+
+        case 28: // Ctrl + "\"
+            if (col < lines[row].length()) {
+                // Skip current word
+                while (col < lines[row].length() && lines[row][col] != ' ') {
+                    col++;
+                }
+                // Skip spaces to next word
+                while (col < lines[row].length() && lines[row][col] == ' ') {
+                    col++;
+                }
+            }
+            break;
+
+        case ' ': {
+            bool shouldExpand = false;
+            int numStart = col - 1;
+            
+            while (numStart > 0 && isdigit(lines[row][numStart - 1])) {
+                numStart--;
+            }
+            
+            if (numStart < col - 1 && lines[row][col - 1] == '.') {
+                shouldExpand = true;
+                for (int i = 0; i < numStart; ++i) {
+                    if (lines[row][i] != ' ') {
+                        shouldExpand = false;
+                        break;
+                    }
+                }
+                
+                if (shouldExpand) {
+                    string numberPart = lines[row].substr(numStart, col - numStart);
+                    lines[row].replace(numStart, col - numStart, "    " + numberPart + " ");
+                    col = numStart + 5 + numberPart.length();
+                }
+            }
+            else if (col >= 1 && lines[row][col - 1] == '-') {
+                shouldExpand = true;
+                for (int i = 0; i < col - 1; ++i) {
+                    if (lines[row][i] != ' ') {
+                        shouldExpand = false;
+                        break;
+                    }
+                }
+                if (shouldExpand) {
+                    lines[row].replace(col - 1, 1, "    - ");
+                    col += 5;
+                }
+            }
+
+            if (!shouldExpand) {
+                lines[row].insert(col, " ");
+                col++;
+            }
+            break;
+        }
+	case KEY_CTAB:
+        case KEY_BTAB:
+            lines[row].insert(col, "    ");
+            col += 4;
+            break;
         case '\n': 
             lines.insert(lines.begin() + row + 1, lines[row].substr(col));  /**< Insert a new line at the current cursor position. */
             lines[row].resize(col);  /**< Resize the current line to the cursor position. */
@@ -122,6 +196,22 @@ void TerminalEditor::handleInputContent(int ch) {
                 // Insert * and stay at position (user types between the asterisks)
                 lines[row].insert(col, "**");
 		col += 1;
+            }
+            break;
+        case 8:  // Ctrl+Backspace - delete work
+        case KEY_DC:
+            if (col > 0) {
+                int word_start = col - 1;
+                // Skip trailing spaces
+                while (word_start >= 0 && lines[row][word_start] == ' ') {
+                    word_start--;
+                }
+                // Skip the word itself
+                while (word_start >= 0 && lines[row][word_start] != ' ') {
+                    word_start--;
+                }
+                lines[row].erase(word_start + 1, col - (word_start + 1));
+                col = word_start + 1;
             }
             break;
 	case 14: // Ctrl+N - New file
