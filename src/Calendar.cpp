@@ -93,52 +93,76 @@ int Calendar::getFirstDayOfMonth(int month, int year) const {
 }
 
 /**
- * @brief Renders the calendar for the current month and year.
- *        Displays the month, year, and highlights the current day.
+ * @brief Renders the calendar for the current month.
+ * 
+ * This function creates a grid of sub-windows inside the `content` window to represent 
+ * each day of the month. It displays the current month and year, highlights the current day, 
+ * and organizes the days in a weekly format.
  */
 void Calendar::renderCalendar() {
     wclear(content);
     box(content, 0, 0);
 
-    // Display the month and year
+    //Display Header: Shows the current month, year, and weekdays.
     int currentMonth = getCurrentMonth();
     int year = getCurrentYear();
-    mvwprintw(content, 2, 2, "%d/%d", currentMonth, year);  //**< Display as MM/YYYY */
-    mvwprintw(content, 3, 2, "S  M  T  W  T  F  S");
+    mvwprintw(content, 2, 2, "%d/%d", currentMonth, year);  //**< Display "MM/YYYY"
 
-    // Get days in the current month and the first day
+    //Month Details: Calculates the number of days and the first weekday.
     int daysInMonth = getDaysInMonth(currentMonth, year);
     int firstDay = getFirstDayOfMonth(currentMonth, year);
 
-    // Print the calendar days
-    int row = 4;
-    int col = 2 + (firstDay * 3);
+    //Grid Layout: Defines dimensions of each day sub-window.
+    const int dayWidth = ((COLS - 1) * 0.75) / 7;  //**< Width of each day window
+    const int dayHeight = 4;                 //**< Height of each day window
 
+    int startY = 6;                          //**< Starting Y position for the first row
+    int startX = 2 + (firstDay * dayWidth);  //**< Starting X position based on the first weekday
+
+    //Draw headers
+    const char* weekdays[] = {"S", "M", "T", "W", "T", "F", "S"};
+    int headerY = 4;
+    int headerX = 2;
+    for (int i = 0; i < 7; ++i) {
+        mvwprintw(content, headerY, headerX + (i * dayWidth) + (dayWidth / 2) - 1, "%s", weekdays[i]);
+    }
+
+    int currentDay = getCurrentDay();        //**< Get the current day for highlighting
+
+    std::vector<WINDOW*> dayWindows;         //**< Store sub-windows for cleanup
+
+    //Render Grid: Creates sub-windows and displays day numbers.
     for (int day = 1; day <= daysInMonth; ++day) {
-        mvwprintw(content, row, col, "%2d", day);
+        WINDOW* dayWin = derwin(content, dayHeight, dayWidth, startY, startX);  //**< Create day sub-window
+        dayWindows.push_back(dayWin);  //**< Store the window for later cleanup
 
-        col += 3;  //**< Move to the next column */
+        box(dayWin, 0, 0);  //**< Draw the border
+        mvwprintw(dayWin, 2, 2, "%2d", day);  //**< Display day number
 
-        // Move to the next row at the end of the week
+        //Highlight the current day
+        if (day == currentDay) {
+            wattron(dayWin, A_REVERSE);
+            mvwprintw(dayWin, 2, 2, "%2d", day);
+            wattroff(dayWin, A_REVERSE);
+        }
+
+        wrefresh(dayWin);
+
+        //Move to the next day position
+        startX += dayWidth;
+
+        //Move to the next row at the end of the week
         if ((firstDay + day) % 7 == 0) {
-            row++;
-            col = 2;  //**< Reset to the first column of the week */
+            startY += dayHeight;
+            startX = 2;  //**< Reset to the first column
         }
     }
 
-    // Highlight the current day
-    int currentDay = getCurrentDay();
-
-    // Calculate the position of the current day
-    row = 4 + (firstDay + currentDay - 1) / 7;
-    col = 2 + ((firstDay + currentDay - 1) % 7) * 3;
-
-    // Ensure the current day is within the valid range before highlighting
-    if (currentDay <= daysInMonth) {
-        wattron(content, A_REVERSE);  //**< Invert colors for the current day */
-        mvwprintw(content, row, col, "%2d", currentDay);
-        wattroff(content, A_REVERSE);
-    }
-
+    //Refresh the main content window
     wrefresh(content);
+
+    //Cleanup: Free memory by deleting all sub-windows.
+    for (auto win : dayWindows) {
+        delwin(win);
+    }
 }
