@@ -145,7 +145,7 @@ void Calendar::renderCalendar() {
 
     //Grid Layout: Defines dimensions of each day sub-window.
     const int dayWidth = (((COLS - 1) * 0.75) / 2) / 7;  //**< Width of each day window
-    const int dayHeight = 3;                 //**< Height of each day window
+    const int dayHeight = (LINES * 0.75) / 7;                 //**< Height of each day window
 
     int startY = 6;                          //**< Starting Y position for the first row
     int startX = 2 + (firstDay * dayWidth);  //**< Starting X position based on the first weekday
