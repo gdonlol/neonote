@@ -10,6 +10,8 @@ class Calendar {
 public:
         Calendar(WINDOW *content);
         void addEvent(const Event& event);
+        void removeEvent(int eventId);
+        void updateEvent(int eventId, Event& updatedEvent);
 
         int getCurrentDay() const;
         int getCurrentMonth() const;

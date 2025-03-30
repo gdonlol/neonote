@@ -3,6 +3,7 @@
 #include <chrono>
 #include <ctime>
 #include <ncurses.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -20,6 +21,33 @@ Calendar::Calendar(WINDOW *content) {
  */
 void Calendar::addEvent(const Event& event) {
     events.push_back(event);
+}
+
+/**
+ * @brief Removes an event from the calendar by its ID.
+ * @param eventId The ID of the event to remove.
+ */
+void Calendar::removeEvent(int eventId) {
+    auto it = std::remove_if(events.begin(), events.end(), 
+                             [eventId](const Event& event) { return event.getId() == eventId; });
+
+    if (it != events.end()) {
+        events.erase(it, events.end());
+    }
+}
+
+/**
+ * @brief Updates an existing event in the calendar.
+ * @param eventId The ID of the event to update.
+ * @param updatedEvent The new event data.
+ */
+void Calendar::updateEvent(int eventId, Event& updatedEvent) {
+    for (auto& event : events) {
+        if (event.getId() == eventId) {
+            event = updatedEvent;
+            return;
+        }
+    }
 }
 
 /**
