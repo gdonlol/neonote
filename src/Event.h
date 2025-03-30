@@ -6,24 +6,31 @@
 class Event {
 public:
     Event(int id, const std::string& title, const std::string& description, const std::string& date);
+    
     std::string toString() const;
 
-    // getters
-    std::string getTitle() const { return title; }
-    std::string getDescription() const { return description; }
-    std::string getDate() const { return date; }
-    int getId() const { return id; }
+    // Getter Methods:
+    std::string getTitle() const;
+    std::string getDescription() const;
+    std::string getDate() const;
+    int getId() const;
+    std::string getStartTime();
+    std::string getEndTime();
 
-    // Setter Methods
+    // Setter Methods:
     void setTitle(const std::string& newTitle);
     void setDescription(const std::string& newDescription);
     void setDate(const std::string& newDate);
+    void setStartTime(const std::string& newStartTime);
+    void setEndTime(const std::string& newEndTime);
     
 private:
     int id;
     std::string title;
     std::string description;
-    std::string date; // Date is stored as a string for simplicity.
+    std::string date; // Date stored as a string for simplicity.
+    std::string startTime;
+    std::string endTime;
 };
 
 #endif // EVENT_H
