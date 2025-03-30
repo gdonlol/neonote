@@ -110,13 +110,38 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
     int max_cols = COLS * 0.75 - 4;
     static bool bold_on = false;
     static bool italics_on = false;
-    int total_asterisk_offset = 0; // Track total asterisk offset up to cursor position
-    int line_asterisk_offset = 0;  // Track asterisk offset for current line
+    int total_asterisk_offset = 0;
+    int line_asterisk_offset = 0;
+    int total_header_offset = 0;
 
-    // Calculate the total asterisk offset up to the cursor position
+    // Calculate the total formatting offset up to the cursor position
     if (row >= scroll_row && row < scroll_row + max_lines) {
         std::string cursor_line = lines[row];
+        bool is_header = (cursor_line.length() > 0 && cursor_line[0] == '#');
+        int header_level = 0;
+        size_t header_start = 0;
+        
+        if (is_header) {
+            header_level = 1;
+            while (header_level < cursor_line.length() && cursor_line[header_level] == '#' && header_level < 6) {
+                header_level++;
+            }
+            if (header_level <= 6 && (cursor_line.length() == header_level || cursor_line[header_level] == ' ')) {
+                header_start = (cursor_line[header_level] == ' ') ? header_level + 1 : header_level;
+                if (col <= header_start) {
+                    total_header_offset = col;
+                } else {
+                    total_header_offset = header_start;
+                }
+            }
+        }
+
         for (size_t pos = 0; pos < col && pos < cursor_line.length(); ++pos) {
+            // Skip header markers
+            if (is_header && pos < header_start) {
+                continue;
+            }
+
             if (pos + 1 < cursor_line.length() && cursor_line[pos] == '*' && cursor_line[pos + 1] == '*') {
                 total_asterisk_offset += 2;
                 pos++;
@@ -144,7 +169,30 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
             if (italics_on) wattroff(content, A_ITALIC);
             bold_on = italics_on = false;
 
+            // Handle markdown headers
+            int header_level = 0;
+            size_t header_start = 0;
+            bool in_header = false;
+            
+            if (line.length() > 0 && line[0] == '#') {
+                header_level = 1;
+                while (header_level < line.length() && line[header_level] == '#' && header_level < 6) {
+                    header_level++;
+                }
+                if (header_level <= 6 && (line.length() == header_level || line[header_level] == ' ')) {
+                    in_header = true;
+                    header_start = (line[header_level] == ' ') ? header_level + 1 : header_level;
+                    wattron(content, COLOR_PAIR(header_level + 1));
+                }
+            }
+
             for (size_t pos = scroll_col; pos < line.length() && x < max_cols + 2; ++pos) {
+                // Skip header markers
+                if (in_header && pos < header_start) {
+                    line_asterisk_offset += 1;
+                    continue;
+                }
+
                 // Handle formatting marks
                 if (pos + 1 < line.length() && line[pos] == '*' && line[pos + 1] == '*') {
                     bold_on = !bold_on;
@@ -170,16 +218,19 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
                 mvwaddch(content, i + 2, x, line[pos]);
                 ++x;
             }
+
+            if (in_header) {
+                wattroff(content, COLOR_PAIR(header_level + 1));
+            }
         }
     }
 
     if (bold_on) wattroff(content, A_BOLD);
     if (italics_on) wattroff(content, A_ITALIC);
     
-    // Apply the total asterisk offset to cursor position
-    wmove(content, row - scroll_row + 2, col - scroll_col + 2 - total_asterisk_offset);
+    // Apply the total formatting offsets to cursor position
+    wmove(content, row - scroll_row + 2, col - scroll_col + 2 - total_asterisk_offset - total_header_offset);
 }
-
 std::string EditorUI::displayPrompt(std::string title){
     TextPrompt prompt(win, title);
     return prompt.prompt();

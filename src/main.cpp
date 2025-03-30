@@ -62,8 +62,14 @@ int main() {
     keypad(stdscr, TRUE);  /**< Enable keypad input (e.g., arrow keys). */
     intrflush(stdscr, FALSE);  /**< Disable automatic flushing of the input buffer. */
     start_color();  /**< Initialize color functionality. */
-    init_pair(1, COLOR_BLACK, COLOR_WHITE);  /**< Define color pair 1 (black text on white background). */
-
+    // Initialize color pairs for headers with custom attributes
+    init_pair(1, COLOR_WHITE, COLOR_BLACK);                     // Default text
+    init_pair(2, COLOR_RED | A_BOLD | A_UNDERLINE, COLOR_BLACK);    // H1 - Bold + Underline
+    init_pair(3, COLOR_GREEN | A_UNDERLINE, COLOR_BLACK);      // H2 - Underline
+    init_pair(4, COLOR_YELLOW | A_UNDERLINE, COLOR_BLACK);     // H3 - Underline
+    init_pair(5, COLOR_BLUE | A_UNDERLINE, COLOR_BLACK);       // H4 - Underline
+    init_pair(6, COLOR_MAGENTA | A_UNDERLINE, COLOR_BLACK);    // H5 - Underline
+    init_pair(7, COLOR_CYAN | A_DIM | A_UNDERLINE, COLOR_BLACK);   // H6 - Dim + Underline
     if (!has_colors()) {
         printw("Terminal does not support color");
         getch();
