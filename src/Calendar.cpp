@@ -68,6 +68,9 @@ Calendar::Calendar(WINDOW *content): selectedEvent(-1) {
 
 /**
  * @brief Renders the calendar to the screen.
+ * 
+ * This method clears the content window, draws the calendar with 
+ * weekday headers, highlights the current day, and displays events.
  */
 void Calendar::renderCalendar() {
     wclear(content);  ///< Clear content window
@@ -180,6 +183,10 @@ void Calendar::renderCalendar() {
 
 /**
  * @brief Adds an event to the calendar.
+ * 
+ * This method saves the event to disk and adds it to the list of events 
+ * displayed in the calendar.
+ * 
  * @param event The event to add.
  */
 void Calendar::addEvent(const Event& event) {
@@ -201,6 +208,10 @@ void Calendar::addEvent(const Event& event) {
 
 /**
  * @brief Removes an event from the calendar.
+ * 
+ * This method deletes the event file from disk and removes the event 
+ * from the list of events.
+ * 
  * @param index The index of the event to remove.
  */
 void Calendar::removeEvent(int index) {
@@ -224,6 +235,10 @@ void Calendar::removeEvent(int index) {
 
 /**
  * @brief Updates an existing event.
+ * 
+ * This method updates an event in the list of events based on the 
+ * provided event ID.
+ * 
  * @param eventId The ID of the event to update.
  * @param updatedEvent The updated event.
  */
@@ -266,8 +281,13 @@ int Calendar::getCurrentYear() const {
     return now->tm_year + 1900;
 }
 
+
 /**
  * @brief Gets the number of days in a month.
+ * 
+ * This method returns the number of days in a specified month, 
+ * accounting for leap years.
+ * 
  * @param month The month (1-12).
  * @param year The year.
  * @return The number of days in the month.
@@ -282,6 +302,9 @@ int Calendar::getDaysInMonth(int month, int year) const {
 
 /**
  * @brief Gets the first weekday of the month.
+ * 
+ * This method calculates the first day of the month (0=Sunday, 6=Saturday).
+ * 
  * @param month The month (1-12).
  * @param year The year.
  * @return The first weekday (0=Sunday, 6=Saturday).

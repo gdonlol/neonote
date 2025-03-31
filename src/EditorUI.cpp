@@ -338,7 +338,16 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
     wmove(content, row - scroll_row + 2, cursor_col);
 }
 
-
+/**
+ * @brief Displays the prompt and captures user input.
+ * 
+ * This method creates a `TextPrompt` object with the given title and 
+ * returns the input provided by the user.
+ * 
+ * @param title The title to be displayed at the prompt.
+ * 
+ * @return A string containing the user input.
+ */
 std::string EditorUI::displayPrompt(std::string title){
     TextPrompt prompt(win, title);
     return prompt.prompt();

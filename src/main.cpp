@@ -11,7 +11,11 @@ using namespace std;
 /**
  * @brief Main function that initializes the application and runs the main loop.
  * 
- * @return 0 if the program exits successfully.
+ * This function sets up the ncurses environment, creates the main window and sidebar, and handles 
+ * the resizing of the terminal. It also manages the flow between the main menu and the editor window 
+ * based on user input. The program runs continuously until the user exits.
+ * 
+ * @return 0 if the program exits successfully. Returns 1 if initialization fails.
  */
 int main() {
     // Initialize ncurses

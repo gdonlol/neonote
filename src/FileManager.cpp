@@ -49,7 +49,6 @@ void FileManager::initializeAppDirectory() {
  * 
  * Iterates through the directory and adds the filenames (without extensions) to the `files` vector.
  */
-
  void FileManager::scanExistingFiles() {
     for (const auto &entry : std::filesystem::directory_iterator(appDataPath)) {
         if (std::filesystem::is_regular_file(entry)) {
@@ -81,6 +80,7 @@ vector<string> FileManager::getFiles() const {
     return files;  /**< Return the list of files. */
 }
 
+
 /**
  * @brief Loads the contents of a specified file into a vector of strings.
  * 
@@ -88,6 +88,7 @@ vector<string> FileManager::getFiles() const {
  * 
  * @param filename The name of the file to load (without the ".md" extension).
  * @param lines A reference to the vector that will hold the lines of the file.
+ * @param current_file A reference to a string that will hold the name of the current file being loaded.
  */
 void FileManager::loadFile(const string &filename, vector<string> &lines, std::string &current_file) {
     string path = appDataPath + "/" + filename + ".md";  /**< Construct the full file path. */
@@ -119,6 +120,12 @@ void FileManager::saveFile(const string &filename, const vector<string> &lines) 
     file.close();  /**< Close the file after writing. */
 }
 
+/**
+ * @brief Creates a new untitled file in the application directory.
+ * 
+ * Attempts to create a new untitled file by generating a name like "Untitled1.md", "Untitled2.md", etc.
+ * The new file is saved as an empty markdown file and added to the list of files.
+ */
 void FileManager::newFile(){
     int dupeId = 0;
     while(1){
@@ -132,6 +139,13 @@ void FileManager::newFile(){
     }
 }
 
+/**
+ * @brief Deletes a specified file from the application directory.
+ * 
+ * Removes the file with the given name from both the file system and the `files` vector.
+ * 
+ * @param filename The name of the file to delete (without the ".md" extension).
+ */
 void FileManager::deleteFile(const string &filename){
     string path = appDataPath + "/" + filename + ".md";  /**< Construct the full file path. */
     if(filesystem::exists(path)){
@@ -142,6 +156,15 @@ void FileManager::deleteFile(const string &filename){
     }
 }
 
+/**
+ * @brief Renames a specified file in the application directory.
+ * 
+ * Renames the file both on the file system and in the `files` vector.
+ * 
+ * @param filename The current name of the file to rename (without the ".md" extension).
+ * @param newName The new name for the file (without the ".md" extension).
+ * @param current_file A reference to a string that will hold the name of the newly renamed file.
+ */
 void FileManager::renameFile(const string &filename, string newName, string &current_file){
     string oldPath = appDataPath + "/" + filename + ".md";
     string newPath = appDataPath + "/" + newName + ".md";

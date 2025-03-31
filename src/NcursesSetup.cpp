@@ -1,11 +1,32 @@
 #include "NcursesSetup.h"
 
+/**
+ * @brief Constructs an NcursesSetup object.
+ * 
+ * This constructor initializes the Ncurses setup object, but no specific actions are performed here. 
+ * The object will be fully initialized by the `initialize()` method.
+ */
 NcursesSetup::NcursesSetup() {}
 
+/**
+ * @brief Destroys the NcursesSetup object and cleans up resources.
+ * 
+ * This destructor calls the `cleanup()` method to properly end the Ncurses session and release any resources
+ * allocated during the setup.
+ */
 NcursesSetup::~NcursesSetup() {
     cleanup();
 }
 
+/**
+ * @brief Initializes the Ncurses environment for terminal-based UI.
+ * 
+ * This method sets up the Ncurses library for terminal-based user interface functionality. It initializes
+ * color support, sets terminal modes (like noecho, raw input, etc.), and checks for color support in the terminal.
+ * If color support is unavailable, the function will display a message and return `false`.
+ * 
+ * @return `true` if the Ncurses setup is successful, otherwise `false`.
+ */
 bool NcursesSetup::initialize() {
     // ncurses setup
     initscr();
@@ -37,6 +58,11 @@ bool NcursesSetup::initialize() {
     return true;
 }
 
+/**
+ * @brief Cleans up the Ncurses session.
+ * 
+ * This method ends the Ncurses session and restores the terminal to its normal state.
+ */
 void NcursesSetup::cleanup() {
     endwin();
 }

@@ -1,11 +1,21 @@
 #include "Event.h"
 #include <sstream>
 
-// Constructor definition
+/**
+ * @class Event
+ * @brief Represents an event with an ID, title, description, and date.
+ * 
+ * This class provides methods to access and modify the event's details, such as its title, description,
+ * and date. It also includes a method to convert the event's details into a string representation.
+ */
 Event::Event(int id, const std::string& title, const std::string& description, const std::string& date)
     : id(id), title(title), description(description), date(date) {}
 
-// toString method definition
+/**
+ * @brief Converts the event's details to a string representation.
+ * 
+ * @return A string representing the event, including its ID, title, date, and description.
+ */
 std::string Event::toString() const {
     std::ostringstream oss;
     oss << "Event ID: " << id << ", Title: " << title << ", Date: " << date << "]\n" << "   Description: " << description;
@@ -13,25 +23,53 @@ std::string Event::toString() const {
 }
 
 // GETTER METHODS
-// Returns the event's unique identifier
+/**
+ * @brief Returns the event's unique identifier.
+ * 
+ * @return The event's ID.
+ */
 int Event::getId() const { return id; }
 
-// Returns the title of the event
+/**
+ * @brief Returns the title of the event.
+ * 
+ * @return The event's title.
+ */
 std::string Event::getTitle() const { return title; }
 
-// Returns the description of the event
+/**
+ * @brief Returns the description of the event.
+ * 
+ * @return The event's description.
+ */
 std::string Event::getDescription() const { return description; }
 
-// Returns the date of the event
+/**
+ * @brief Returns the date of the event.
+ * 
+ * @return The event's date.
+ */
 std::string Event::getDate() const { return date; }
 
 
 // SETTER METHODS
-// Updates the event's title
+/**
+ * @brief Updates the event's title.
+ * 
+ * @param newTitle The new title to set for the event.
+ */
 void Event::setTitle(const std::string& newTitle) { title = newTitle; }
 
-// Updates the event's description
+/**
+ * @brief Updates the event's description.
+ * 
+ * @param newDescription The new description to set for the event.
+ */
 void Event::setDescription(const std::string& newDescription) { description = newDescription; }
 
-// Updates the event's date
+/**
+ * @brief Updates the event's date.
+ * 
+ * @param newDate The new date to set for the event.
+ */
 void Event::setDate(const std::string& newDate) { date = newDate; }
