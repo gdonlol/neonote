@@ -55,6 +55,12 @@ void TerminalEditor::handleInput(int ch) {
     else if (focused_div == 2) { //**< 2 = kanban */
     }
     else if (focused_div == 3) { //**< 3 = calendar */
+        switch(ch){
+            case 15:
+            case 4:
+                focused_div = 1; /**< Flip focused_div. */
+                break;
+        }
     } 
 }
 

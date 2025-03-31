@@ -5,6 +5,12 @@
 #include <ncurses.h>
 #include <algorithm>
 #include "Event.h"
+#include <fstream>
+#include <sstream>
+#include <dirent.h>
+#include <sys/types.h>
+#include <string>
+#include <vector>
 
 using namespace std;
 
@@ -14,8 +20,30 @@ using namespace std;
  */
 Calendar::Calendar(WINDOW *content) {
     this->content = content;
-    Event event(1, "asdasd", "asdasd", "sadasd");
-    events.push_back(event);
+    std::string path = getenv("HOME");
+    path += "/.local/share/neonote/events";
+
+    DIR *dir = opendir(path.c_str());
+    if (dir) {
+        struct dirent *entry;
+        while ((entry = readdir(dir)) != NULL) {
+            if (entry->d_type == DT_REG) { //**< Ensure it's a regular file */
+                std::string file_path = path + "/" + entry->d_name;
+                std::ifstream file(file_path);
+                if (file.is_open()) {
+                    std::string line1, line2, line3, line4;
+                    std::getline(file, line1);
+                    std::getline(file, line2);
+                    std::getline(file, line3);
+                    std::getline(file, line4);
+                    Event event(1, line1, line2, line3);
+                    events.push_back(event);
+                    file.close();
+                }
+            }
+        }
+        closedir(dir);
+    }
 }
 
 /**
@@ -23,6 +51,24 @@ Calendar::Calendar(WINDOW *content) {
  * @param event The event to add.
  */
 void Calendar::addEvent(const Event& event) {
+    // Get the directory path
+    std::string path = getenv("HOME");
+    path += "/.local/share/neonote/events";
+
+    // Create a file path using the event's ID
+    std::string file_path = path + "/" + std::to_string(event.getId());
+
+    // Open the file for writing
+    std::ofstream file(file_path);
+    if (file.is_open()) {
+        // Write each parameter of the event to the file
+        file << event.getTitle() << std::endl;
+        file << event.getDate() << std::endl;
+        file << event.getDescription() << std::endl;
+        file.close();
+    }
+
+    // Add the event to the events vector
     events.push_back(event);
 }
 
