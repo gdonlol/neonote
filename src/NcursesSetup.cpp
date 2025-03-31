@@ -38,13 +38,13 @@ bool NcursesSetup::initialize() {
     intrflush(stdscr, FALSE);
 
     start_color();
-    init_color(COLOR_BLACK, 150, 150, 150); // Grey
-    init_color(COLOR_RED, 555, 110, 1000); // Purple 1
-    init_color(COLOR_GREEN, 580, 200, 965); // Purple 2
-    init_color(COLOR_YELLOW, 615, 285, 925); // Purple 3
-    init_color(COLOR_BLUE, 635, 375, 880); // Purple 4
-    init_color(COLOR_MAGENTA, 670, 470, 845); // Purple 5
-    init_color(COLOR_CYAN, 700, 565, 800); // Purple 6
+    init_color(COLOR_BLACK, 150, 150, 150); 	// Grey
+    init_color(COLOR_RED, 555, 110, 1000); 	// Purple 1
+    init_color(COLOR_GREEN, 580, 200, 965); 	// Purple 2
+    init_color(COLOR_YELLOW, 615, 285, 925); 	// Purple 3
+    init_color(COLOR_BLUE, 635, 375, 880); 	// Purple 4
+    init_color(COLOR_MAGENTA, 670, 470, 845); 	// Purple 5
+    init_color(COLOR_CYAN, 700, 565, 800); 	// Purple 6
 
     init_pair(1, COLOR_BLACK, COLOR_WHITE); // Inverted highlight
     init_pair(2, COLOR_RED, -1);    // H1

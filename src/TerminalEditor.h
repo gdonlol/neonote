@@ -15,6 +15,7 @@ public:
                  const std::vector<std::string> &files);
     
     void handleInput(int ch);
+    void redraw();
     void cleanup();
     
 private:

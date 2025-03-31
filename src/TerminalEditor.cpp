@@ -418,6 +418,50 @@ void TerminalEditor::adjustCursorPosition() {
     else if (col >= scroll_col + max_cols) scroll_col = col - max_cols + 1;  /**< Scroll right if the cursor goes beyond visible columns. */
 }
 
+void TerminalEditor::redraw() {
+    int current_lines, current_cols;
+    getmaxyx(stdscr, current_lines, current_cols);
+    
+    sidebar_width = current_cols * 0.25;
+    int content_width = current_cols - sidebar_width;
+
+    switch (focused_div) {
+            
+        case 1: // Sidebar
+	    ui.displayContent(lines, row, col, scroll_row, scroll_col, current_file);
+            break;
+            
+        case 2: // Kanban
+            taskManager.renderTasks();
+            break;
+            
+        case 3: // Calendar
+            calendar.renderCalendar();
+            break;
+    }
+    wresize(ui.getMainWindow(), current_lines, current_cols);
+    wresize(ui.getSidebar(), current_lines, sidebar_width);
+    wresize(ui.getContent(), current_lines, content_width);
+    
+    mvwin(ui.getSidebar(), 0, 0);
+    mvwin(ui.getContent(), 0, sidebar_width);
+    ui.renderUI(sidebar_width, fileManager.getFiles());
+
+    ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+    ui.displayContent(lines, row, col, scroll_row, scroll_col, current_file);
+    ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+
+    curs_set(focused_div == 0 ? 1 : 0); // Show cursor only in content editor
+    if (focused_div == 0) {
+        wmove(ui.getContent(), row - scroll_row, col - scroll_col);
+    }
+    
+    wrefresh(ui.getMainWindow());
+    wrefresh(ui.getSidebar());
+    wrefresh(ui.getContent());
+    refresh();
+}
+
 /**
  * @brief Cleans up resources before exiting the editor.
  * 

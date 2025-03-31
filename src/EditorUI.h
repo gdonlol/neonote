@@ -16,6 +16,10 @@ public:
     void renderSidebar(int sidebar_width, const std::vector<std::string> &files, int sidebar_index);
     void cleanup();
     std::string displayPrompt(std::string title);
+    
+    WINDOW* getMainWindow() const { return win; }
+    WINDOW* getSidebar() const { return sidebar; }
+    WINDOW* getContent() const { return content; }
         
 private:
     WINDOW *win;

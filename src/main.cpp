@@ -51,7 +51,8 @@ int main() {
             sidebar_width = current_cols * 0.25;
             content_width = current_cols - sidebar_width;
 
-            wresize(sidebar, current_lines, sidebar_width);
+            wresize(win, current_lines, current_cols);
+	    wresize(sidebar, current_lines, sidebar_width);
             wresize(content, current_lines, content_width);
             mvwin(sidebar, 0, 0);
             mvwin(content, 0, sidebar_width);
@@ -80,7 +81,27 @@ int main() {
             TerminalEditor terminal_editor(win, sidebar, content, vector<string>());
 
             while (true) {
-                int input = getch();
+            getmaxyx(stdscr, current_lines, current_cols);
+            if (current_cols != prev_cols || current_lines != prev_lines) {
+                clear();
+                wclear(win);
+                refresh();
+
+                sidebar_width = current_cols * 0.25;
+                content_width = current_cols - sidebar_width;
+
+                wresize(win, current_lines, current_cols);
+                wresize(sidebar, current_lines, sidebar_width);
+                wresize(content, current_lines, content_width);
+                mvwin(sidebar, 0, 0);
+                mvwin(content, 0, sidebar_width);
+
+                prev_cols = current_cols;
+                prev_lines = current_lines;
+                
+                terminal_editor.redraw();
+            }
+	    int input = getch();
 
                 if (input == 17 || input == KEY_F(1)) { // Ctrl+Q or F1 to exit
                     terminal_editor.cleanup();
