@@ -11,6 +11,7 @@
 #include <sys/types.h>
 #include <string>
 #include <vector>
+#include <filesystem>
 
 using namespace std;
 
@@ -23,6 +24,12 @@ Calendar::Calendar(WINDOW *content) {
     std::string path = getenv("HOME");
     path += "/.local/share/neonote/events";
 
+    // Check if the directory exists, if not, create it
+    if (!std::filesystem::exists(path)) {
+        std::filesystem::create_directory(path);
+    }
+
+    // Open the directory to read files
     DIR *dir = opendir(path.c_str());
     if (dir) {
         struct dirent *entry;
