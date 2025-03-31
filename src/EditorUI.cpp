@@ -136,25 +136,20 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
     int max_cols = COLS * 0.75 - 4;
     static bool bold_on = false;
     static bool italics_on = false;
-    static bool in_inline_code = false;  // Track inline code state
+    static bool in_inline_code = false;
     int total_asterisk_offset = 0;
     int line_asterisk_offset = 0;
     int total_header_offset = 0;
     int code_block_indent_offset = 0;
-    int total_backtick_offset = 0;  // Track backtick characters to offset cursor
+    int total_backtick_offset = 0;
 
-    // Track code block state for cursor position calculation
-    bool in_code_block_for_cursor = false;
-    
-    // Calculate code block state up to the cursor line
-    for (int i = 0; i <= row; ++i) {
-        if (i < lines.size()) {
-            std::string line = lines[i];
-            
-            // Handle code blocks (triple backticks)
-            if (line.rfind("```", 0) == 0) { // Starts with ```
-                in_code_block_for_cursor = !in_code_block_for_cursor;
-            }
+    // Determine code block state for the entire document
+    std::vector<bool> code_block_states(lines.size() + 1, false);
+    bool current_code_block_state = false;
+    for (size_t i = 0; i < lines.size(); ++i) {
+        code_block_states[i] = current_code_block_state;
+        if (lines[i].rfind("```", 0) == 0) {
+            current_code_block_state = !current_code_block_state;
         }
     }
 
@@ -165,10 +160,8 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
         int header_level = 0;
         size_t header_start = 0;
         
-        // Check if we're in a code block at cursor position
-        bool current_line_in_code = in_code_block_for_cursor;
+        bool current_line_in_code = code_block_states[row];
         
-        // Add 2-space indentation offset if in code block
         if (current_line_in_code) {
             code_block_indent_offset = 2;
         }
@@ -189,21 +182,17 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
         }
 
         for (size_t pos = 0; pos < col && pos < cursor_line.length(); ++pos) {
-            // Skip header markers
             if (is_header && pos < header_start) {
                 continue;
             }
 
-            // Skip formatting characters in code blocks
             if (current_line_in_code) {
                 continue;
             }
 
-            // Handle inline code backticks
             if (cursor_line[pos] == '`') {
-                // Check if it's an escaped backtick
                 if (pos > 0 && cursor_line[pos-1] == '\\') {
-                    total_backtick_offset -= 1; // The backslash was already counted
+                    total_backtick_offset -= 1;
                 } else {
                     total_backtick_offset += 1;
                 }
@@ -225,9 +214,6 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
         }
     }
 
-    // Track code block state while rendering
-    bool in_code_block = false;
-
     // Render all lines
     for (int i = 0; i < max_lines; ++i) {
         int line_index = scroll_row + i;
@@ -241,10 +227,10 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
             if (in_inline_code) wattroff(content, COLOR_PAIR(9));
             bold_on = italics_on = in_inline_code = false;
 
-            // Handle code blocks (triple backticks)
+            bool current_line_in_code = code_block_states[line_index];
             bool is_backtick_line = line.rfind("```", 0) == 0;
+
             if (is_backtick_line) {
-                in_code_block = !in_code_block;
                 // Color the backtick line but hide the backticks
                 wattron(content, COLOR_PAIR(9));
                 for (; x < max_cols + 2; ++x) {
@@ -253,8 +239,6 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
                 wattroff(content, COLOR_PAIR(9));
                 continue;
             }
-
-            bool current_line_in_code = in_code_block;
 
             if (current_line_in_code) {
                 wattron(content, COLOR_PAIR(9));
@@ -288,17 +272,13 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
             }
 
             for (size_t pos = scroll_col; pos < line.length() && x < max_cols + 2; ++pos) {
-                // Skip header markers
                 if (in_header && pos < header_start) {
                     line_asterisk_offset += 1;
                     continue;
                 }
 
-                // Handle inline code blocks (single backticks)
                 if (!current_line_in_code && line[pos] == '`') {
-                    // Check if it's an escaped backtick
                     if (pos > 0 && line[pos-1] == '\\') {
-                        // Just print the backtick without formatting
                         mvwaddch(content, i + 2, x, line[pos]);
                         x++;
                         continue;
@@ -314,7 +294,6 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
                     continue;
                 }
 
-                // Handle formatting marks (only outside code blocks and not in inline code)
                 if (!current_line_in_code && !in_inline_code) {
                     if (pos + 1 < line.length() && line[pos] == '*' && line[pos + 1] == '*') {
                         bold_on = !bold_on;
@@ -358,12 +337,11 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
     
     // Apply the total formatting offsets to cursor position
     int cursor_col = col - scroll_col + 2 - total_asterisk_offset - total_header_offset - total_backtick_offset;
-    if (in_code_block_for_cursor) {
+    if (code_block_states[row]) {
         cursor_col += code_block_indent_offset;
     }
     wmove(content, row - scroll_row + 2, cursor_col);
 }
-
 /**
  * @brief Displays the prompt and captures user input.
  * 

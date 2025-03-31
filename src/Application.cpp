@@ -1,8 +1,9 @@
 #include "Application.h"
 #include <ncurses.h>
 
-Application::Application() : main_menu_(nullptr) {
-    // MainMenu initialized after main_window_ is created
+Application::Application() 
+    : main_menu_(nullptr),
+      terminal_editor_(nullptr, nullptr, nullptr, {}) {
 }
 
 Application::~Application() {
@@ -125,7 +126,7 @@ void Application::handle_resize() {
     if (current_cols != previous_dimensions_.cols || current_lines != previous_dimensions_.lines) {
         
         // Blanks entire terminal and refreshes
-        wclear(main_window_.get());
+        werase(main_window_.get());
         refresh();
 
         setup_window_layout(current_lines, current_cols);
@@ -135,7 +136,7 @@ void Application::handle_resize() {
             main_menu_.display();
         }
 	else if (current_window_ == WindowState::Editor) {
-            TerminalEditor editor(main_window_.get(), sidebar_.get(), content_.get(), {});
+//            TerminalEditor editor(main_window_.get(), sidebar_.get(), content_.get(), {});
 	}
     }
 }
@@ -150,12 +151,15 @@ void Application::handle_main_menu() {
         running_ = false;
     } else if (main_menu_.getCurrentWindow() != 0) {
         current_window_ = WindowState::Editor;
+        terminal_editor_ = TerminalEditor(main_window_.get(), 
+                                        sidebar_.get(), 
+                                        content_.get(), 
+                                        {});
     }
 }
 
 
 void Application::handle_editor() {
-    TerminalEditor editor(main_window_.get(), sidebar_.get(), content_.get(), {});
     
     while (current_window_ == WindowState::Editor) {
         handle_resize();
@@ -167,7 +171,7 @@ void Application::handle_editor() {
             break;
         }
         
-        editor.handleInput(input);
+        terminal_editor_.handleInput(input);
     }
 }
 

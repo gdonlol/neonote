@@ -45,6 +45,7 @@ private:
 
     NcursesSetup ncurses_setup_;
     MainMenu main_menu_;
+    TerminalEditor terminal_editor_;
     WindowState current_window_{WindowState::MainMenu};
     bool running_{true};
     Dimensions previous_dimensions_;
