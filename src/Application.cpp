@@ -1,4 +1,4 @@
-#include "application.h"
+#include "Application.h"
 #include <ncurses.h>
 
 Application::Application() : main_menu_(nullptr) {
