@@ -123,6 +123,12 @@ void Application::handle_resize() {
         if (current_window_ == WindowState::MainMenu) {
             main_menu_.display();
         }
+	else if (current_window_ == WindowState::Editor) {
+            TerminalEditor editor(main_window_.get(), sidebar_.get(), content_.get(), {});
+            wrefresh(main_window_.get());
+	    wrefresh(sidebar_.get());
+	    wrefresh(content_.get());
+	}
     }
 }
 
