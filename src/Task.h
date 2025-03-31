@@ -7,7 +7,8 @@
 class Task {
 public:
     // Constructor: Initializes a task with an ID, title, description, and due date.
-    Task(int id, const std::string& title, const std::string& description, const std::string& dueDate);
+    Task(int id, const std::string& title, const std::string& status,
+        const std::string& description = "", const std::string& dueDate = "");
     
     // Getter methods:
     int getId() const;

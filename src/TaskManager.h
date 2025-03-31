@@ -30,6 +30,9 @@ public:
     // Renders all tasks
     void renderTasks();
 
+    // Prompt user for task
+    void promptForTask();
+
 private:
     std::vector<Task> tasks;
     WINDOW* content;

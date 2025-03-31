@@ -2,8 +2,9 @@
 #include <sstream>
 
 // Constructor: Initializes a Task object with provided values.
-Task::Task(int id, const std::string& title, const std::string& description, const std::string& dueDate)
-    : id(id), title(title), description(description), status("To Do"), dueDate(dueDate) {}
+Task::Task(int id, const std::string& title, const std::string& status, 
+    const std::string& description, const std::string& dueDate)
+: id(id), title(title), status(status), description(description), dueDate(dueDate) {}
 
 // Getter function for Task ID
 int Task::getId() const { return id; }
