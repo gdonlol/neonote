@@ -170,18 +170,21 @@ void TaskManager::moveSelection(int direction){
 
         case 2:  // Left
             currentType = (currentType - 1 + 3) % 3;  //**< Circular navigation for columns */
-            currentSelected = std::min(currentSelected, (int)tasks[currentType].size() - 1);
+            currentSelected = std::min(currentSelected, tasks[currentType].size() == 0 ? 0: (int)tasks[currentType].size() - 1);
             break;
 
         case 3:  // Right
             currentType = (currentType + 1) % 3;  //**< Circular navigation for columns */
-            currentSelected = std::min(currentSelected, (int)tasks[currentType].size() - 1);
+            currentSelected = std::min(currentSelected, tasks[currentType].size() == 0 ? 0: (int)tasks[currentType].size() - 1);
             break;
     }
 }
 
-Task TaskManager::getSelectedTask(){
-    return tasks[currentType][currentSelected];
+int TaskManager::getSelectedTaskId() {
+    if (currentType >= tasks.size() || currentSelected >= tasks[currentType].size()) {
+        return -1;
+    }
+    return tasks[currentType][currentSelected].getId();
 }
 
 /**
@@ -220,7 +223,6 @@ void TaskManager::moveTaskPopup(int taskId) {
             mvwprintw(popup, i + 2, 3, "%s", categories[i].c_str());
             wattroff(popup, A_REVERSE);
         }
-
         wrefresh(popup);
 
         // Handle input

@@ -388,7 +388,9 @@ void TerminalEditor::handleInputKanban(int ch){
             taskManager.renderTasks();  /**< Refresh task display. */
             break;
         case '\n': // Enter to move task
-            taskManager.moveTaskPopup(taskManager.getSelectedTask().getId());
+            taskManager.moveTaskPopup(taskManager.getSelectedTaskId());
+            taskManager.renderTasks();  /**< Refresh task display. */
+            ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             break;
     }
 }

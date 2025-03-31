@@ -40,7 +40,7 @@ public:
 
     void moveSelection(int direction);
     
-    Task getSelectedTask();
+    int getSelectedTaskId();
 
 private:
     std::vector<std::vector<Task>> tasks = {{}, {}, {}};
