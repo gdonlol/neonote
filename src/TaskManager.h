@@ -43,6 +43,10 @@ public:
     void setCurrentSelected(int index);
     int getCurrentSelected();
 
+    void moveSelection(int direction);
+    
+    Task getSelectedTask();
+
 private:
     std::vector<std::vector<Task>> tasks = {{}, {}, {}};
     WINDOW* content;

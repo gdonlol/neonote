@@ -154,6 +154,36 @@ void TaskManager::renderTasks() {
     delwin(doneWin);
 }
 
+void TaskManager::moveSelection(int direction){
+    switch (direction) {
+        case 0:  // Up
+            if (!tasks[currentType].empty()) {
+                currentSelected = (currentSelected - 1 + tasks[currentType].size()) % tasks[currentType].size();
+            }
+            break;
+
+        case 1:  // Down
+            if (!tasks[currentType].empty()) {
+                currentSelected = (currentSelected + 1) % tasks[currentType].size();
+            }
+            break;
+
+        case 2:  // Left
+            currentType = (currentType - 1 + 3) % 3;  // Circular navigation for columns
+            currentSelected = std::min(currentSelected, (int)tasks[currentType].size() - 1);
+            break;
+
+        case 3:  // Right
+            currentType = (currentType + 1) % 3;  // Circular navigation for columns
+            currentSelected = std::min(currentSelected, (int)tasks[currentType].size() - 1);
+            break;
+    }
+}
+
+Task TaskManager::getSelectedTask(){
+    return tasks[currentType][currentSelected];
+}
+
 /**
  * @brief Prompts the user for task details and adds the task to the list.
  * 

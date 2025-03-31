@@ -367,6 +367,22 @@ void TerminalEditor::handleInputKanban(int ch){
                 ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             }
             break;
+            case KEY_UP:
+            taskManager.moveSelection(0);
+            taskManager.renderTasks();  /**< Refresh task display. */
+            break;
+        case KEY_DOWN:
+            taskManager.moveSelection(1);
+            taskManager.renderTasks();  /**< Refresh task display. */
+            break;
+        case KEY_LEFT:
+            taskManager.moveSelection(2);
+            taskManager.renderTasks();  /**< Refresh task display. */
+            break;
+        case KEY_RIGHT:
+            taskManager.moveSelection(3);
+            taskManager.renderTasks();  /**< Refresh task display. */
+            break;
         case '\n': // Enter to move task
             int taskId = taskManager.nextFree() - 1; 
             if (taskId >= 0) {
