@@ -16,25 +16,29 @@
 using namespace std;
 
 /**
- * @brief Constructor for the Calendar class.
- * @param content Pointer to the ncurses window where the calendar will be rendered.
+ * @class Calendar
+ * @brief Represents a calendar to manage events.
+ * 
+ * Handles event rendering, loading from disk, and interactions.
+ * 
+ * @author Gordon Xu
  */
 Calendar::Calendar(WINDOW *content): selectedEvent(-1) {
     this->content = content;
     std::string path = getenv("HOME");
     path += "/.local/share/neonote/events";
 
-    // Check if the directory exists, if not, create it
+    // Create events directory if it doesn't exist
     if (!std::filesystem::exists(path)) {
         std::filesystem::create_directory(path);
     }
 
-    // Open the directory to read files
+    // Load events from the directory
     DIR *dir = opendir(path.c_str());
     if (dir) {
         struct dirent *entry;
         while ((entry = readdir(dir)) != NULL) {
-            if (entry->d_type == DT_REG) { //**< Ensure it's a regular file */
+            if (entry->d_type == DT_REG) {
                 std::string file_path = path + "/" + entry->d_name;
                 std::ifstream file(file_path);
                 if (file.is_open()) {
@@ -44,13 +48,12 @@ Calendar::Calendar(WINDOW *content): selectedEvent(-1) {
                     std::getline(file, line3);
                     std::getline(file, line4);
 
-                    // Extract the numeric part of the filename
                     std::string filename = entry->d_name;
                     int eventId = 0;
                     try {
-                        eventId = std::stoi(filename);  //**< Convert string to int */
+                        eventId = std::stoi(filename);
                     } catch (const std::invalid_argument& e) {
-                        exit(0);
+                        exit(0);  // Invalid file name, exit
                     }
 
                     Event event(eventId, line1, line2, line3);
@@ -64,60 +67,53 @@ Calendar::Calendar(WINDOW *content): selectedEvent(-1) {
 }
 
 /**
- * @brief Renders the calendar for the current month.
- * 
- * This function creates a grid of sub-windows inside the `content` window to represent 
- * each day of the month. It displays the current month and year, highlights the current day, 
- * and organizes the days in a weekly format.
+ * @brief Renders the calendar to the screen.
  */
 void Calendar::renderCalendar() {
-    wclear(content);
-    box(content, 0, 0);
+    wclear(content);  ///< Clear content window
+    box(content, 0, 0);  ///< Draw border
 
-    // Get the terminal dimensions
     int maxY, maxX;
-    getmaxyx(content, maxY, maxX);
+    getmaxyx(content, maxY, maxX);  ///< Get window size
 
-    // Use content dimensions
     int contentMaxY, contentMaxX;
-    getmaxyx(content, contentMaxY, contentMaxX);
+    getmaxyx(content, contentMaxY, contentMaxX);  ///< Get content window size
 
-    // Display Header: Shows the current month, year, and weekdays.
+    // Print current month/year
     int currentMonth = getCurrentMonth();
     int year = getCurrentYear();
-    mvwprintw(content, 2, 2, "%d/%d", currentMonth, year);  // **< Display "MM/YYYY"
+    mvwprintw(content, 2, 2, "%d/%d", currentMonth, year);
 
-    // Month Details: Calculates the number of days and the first weekday.
     int daysInMonth = getDaysInMonth(currentMonth, year);
     int firstDay = getFirstDayOfMonth(currentMonth, year);
 
-    // Dynamic grid layout using content size
-    int dayWidth = (contentMaxX / 2) / 7;        // **< Width of each day window
-    int dayHeight = (contentMaxY * 0.75) / 7;     // **< Height of each day window
+    int dayWidth = (contentMaxX / 2) / 7;
+    int dayHeight = (contentMaxY * 0.75) / 7;
 
-    int startY = 6;                               // **< Starting Y position for the first row
-    int startX = 2 + (firstDay * dayWidth);       // **< Starting X position based on the first weekday
+    int startY = 6;
+    int startX = 2 + (firstDay * dayWidth);
 
-    // Draw headers
     const char* weekdays[] = {"S", "M", "T", "W", "T", "F", "S"};
     int headerY = 4;
     int headerX = 2;
+
+    // Print weekday headers
     for (int i = 0; i < 7; ++i) {
         mvwprintw(content, headerY, headerX + (i * dayWidth) + (dayWidth / 2) - 1, "%s", weekdays[i]);
     }
 
-    int currentDay = getCurrentDay();           // **< Get the current day for highlighting
-    std::vector<WINDOW*> dayWindows;            // **< Store sub-windows for cleanup
+    int currentDay = getCurrentDay();
+    std::vector<WINDOW*> dayWindows;
 
-    // Render Grid: Creates sub-windows and displays day numbers.
+    // Draw calendar days
     for (int day = 1; day <= daysInMonth; ++day) {
-        WINDOW* dayWin = derwin(content, dayHeight, dayWidth, startY, startX);  // **< Create day sub-window
-        dayWindows.push_back(dayWin);                                           // **< Store for cleanup
+        WINDOW* dayWin = derwin(content, dayHeight, dayWidth, startY, startX);
+        dayWindows.push_back(dayWin);
 
-        box(dayWin, 0, 0);                                                      // **< Draw the border
-        mvwprintw(dayWin, 1, 2, "%2d", day);                                    // **< Display day number
+        box(dayWin, 0, 0);  ///< Draw day border
+        mvwprintw(dayWin, 1, 2, "%2d", day);
 
-        // Highlight the current day
+        // Highlight current day
         if (day == currentDay) {
             wattron(dayWin, A_REVERSE);
             mvwprintw(dayWin, 1, 2, "%2d", day);
@@ -126,24 +122,22 @@ void Calendar::renderCalendar() {
 
         wrefresh(dayWin);
 
-        // Move to the next day position
         startX += dayWidth;
 
-        // Move to the next row at the end of the week
+        // Move to next row if needed
         if ((firstDay + day) % 7 == 0) {
             startY += dayHeight;
-            startX = 2;  // Reset to the first column
+            startX = 2;
         }
     }
 
-    // Render the events panel using content dimensions
+    // Draw events window
     int eventsWinHeight = contentMaxY - 4;
     int eventsWinWidth = (contentMaxX / 2) - 4;
     int eventsWinY = 2;
     int eventsWinX = (contentMaxX / 2) + 3;
 
     WINDOW* eventswin = derwin(content, eventsWinHeight, eventsWinWidth, eventsWinY, eventsWinX);
-    
     refresh();
     mvwprintw(eventswin, 0, 0, "%s", "Events");
     wrefresh(eventswin);
@@ -152,16 +146,17 @@ void Calendar::renderCalendar() {
     int lineWidth = eventsWinWidth - 1;
     int i = 0; 
 
-    // Display events or a placeholder message
+    // No events message
     if (events.empty()) {
         mvwprintw(eventswin, ++y, 0, "%s", "No events (Ctrl + N)");
     }
     
+    // Display events
     for (const Event& event : events) {
         mvwhline(eventswin, y++, 0, ACS_HLINE, lineWidth);
 
-        if (selectedEvent == i) wattron(eventswin, A_REVERSE);  // Highlight selected event
-        
+        if (selectedEvent == i) wattron(eventswin, A_REVERSE);
+
         std::string title = "Title: " + event.getTitle();
         mvwprintw(eventswin, y++, 0, "%s", (title + std::string(lineWidth - title.length(), ' ')).c_str());
 
@@ -175,10 +170,9 @@ void Calendar::renderCalendar() {
         ++i;
     }
 
-    // Refresh the main content window
     wrefresh(content);
 
-    // Cleanup: Free memory by deleting all sub-windows.
+    // Clean up day windows
     for (auto win : dayWindows) {
         delwin(win);
     }
@@ -189,33 +183,24 @@ void Calendar::renderCalendar() {
  * @param event The event to add.
  */
 void Calendar::addEvent(const Event& event) {
-    // Get the directory path
     std::string path = getenv("HOME");
     path += "/.local/share/neonote/events";
 
-    // Create a file path using the event's ID
     std::string file_path = path + "/" + std::to_string(event.getId());
 
-    // Open the file for writing
     std::ofstream file(file_path);
     if (file.is_open()) {
-        // Write each parameter of the event to the file
         file << event.getTitle() << std::endl;
         file << event.getDate() << std::endl;
         file << event.getDescription() << std::endl;
         file.close();
     }
 
-    // Add the event to the events vector
-    events.push_back(event);
+    events.push_back(event);  ///< Add event to list
 }
 
 /**
- * @brief Removes an event from the calendar by its ID.
- * @param eventId The ID of the event to remove.
- */
-/**
- * @brief Removes an event from the calendar by its index and deletes its file.
+ * @brief Removes an event from the calendar.
  * @param index The index of the event to remove.
  */
 void Calendar::removeEvent(int index) {
@@ -228,20 +213,19 @@ void Calendar::removeEvent(int index) {
     path += "/.local/share/neonote/events/" + std::to_string(eventId);
 
     if (std::filesystem::exists(path)) {
-        std::filesystem::remove(path);
+        std::filesystem::remove(path);  ///< Delete event file
     }
 
-    events.erase(events.begin() + index);
+    events.erase(events.begin() + index);  ///< Remove event from list
     if (selectedEvent >= static_cast<int>(events.size())) {
         selectedEvent = static_cast<int>(events.size()) - 1;
     }
 }
 
-
 /**
- * @brief Updates an existing event in the calendar.
+ * @brief Updates an existing event.
  * @param eventId The ID of the event to update.
- * @param updatedEvent The new event data.
+ * @param updatedEvent The updated event.
  */
 void Calendar::updateEvent(int eventId, Event& updatedEvent) {
     for (auto& event : events) {
@@ -254,7 +238,7 @@ void Calendar::updateEvent(int eventId, Event& updatedEvent) {
 
 /**
  * @brief Gets the current day of the month.
- * @return The current day (1-31).
+ * @return The current day.
  */
 int Calendar::getCurrentDay() const {
     time_t t = time(nullptr);
@@ -264,7 +248,7 @@ int Calendar::getCurrentDay() const {
 
 /**
  * @brief Gets the current month.
- * @return The current month as an integer (1 = January, 12 = December).
+ * @return The current month.
  */
 int Calendar::getCurrentMonth() const {
     time_t t = time(nullptr);
@@ -274,7 +258,7 @@ int Calendar::getCurrentMonth() const {
 
 /**
  * @brief Gets the current year.
- * @return The current year (e.g., 2025).
+ * @return The current year.
  */
 int Calendar::getCurrentYear() const {
     time_t t = time(nullptr);
@@ -283,66 +267,4 @@ int Calendar::getCurrentYear() const {
 }
 
 /**
- * @brief Gets the number of days in a specified month and year.
- * @param month The month (1-12).
- * @param year The year (e.g., 2025).
- * @return The number of days in the month.
- */
-int Calendar::getDaysInMonth(int month, int year) const {
-    if (month == 2) {
-        // Handle leap years
-        if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
-            return 29;
-        }
-        return 28;
-    }
-
-    // April, June, September, November have 30 days
-    if (month == 4 || month == 6 || month == 9 || month == 11) {
-        return 30;
-    }
-
-    // All other months have 31 days
-    return 31;
-}
-
-/**
- * @brief Gets the starting day of the specified month and year.
- * @param month The month (1-12).
- * @param year The year (e.g., 2025).
- * @return The starting day of the month (0 = Sunday, 6 = Saturday).
- */
-int Calendar::getFirstDayOfMonth(int month, int year) const {
-    tm time_in = {};
-    time_in.tm_year = year - 1900;     //**< Year since 1900 */
-    time_in.tm_mon = month - 1;        //**< Month (0-11) */
-    time_in.tm_mday = 1;               //**< First day of the month */
-
-    mktime(&time_in);
-    return time_in.tm_wday;            //**< 0 = Sunday, 6 = Saturday */
-}
-
-int Calendar::nextFree() {
-    std::filesystem::path eventsDir = std::filesystem::path(getenv("HOME")) / ".local" / "share" / "neonote" / "events";
-    
-    int index = 0;
-    while (true) {
-        std::filesystem::path filePath = eventsDir / std::to_string(index);
-        if (!std::filesystem::exists(filePath)) {
-            return index;
-        }
-        index++;
-    }
-}
-
-int Calendar::getSelectedEvent(){
-    return selectedEvent;
-}
-
-void Calendar::setSelectedEvent(int index){
-    selectedEvent = index;
-}
-
-std::vector<Event> Calendar::getEvents(){
-    return events;
-}
+ * @brief Gets the number of days in
