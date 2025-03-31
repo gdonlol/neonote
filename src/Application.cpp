@@ -96,7 +96,9 @@ void Application::main_loop() {
         handle_resize();
         
         if (current_window_ == WindowState::MainMenu) {
-            handle_main_menu();
+            wclear(main_window_.get());
+            refresh();
+	    handle_main_menu();
         } else {
             handle_editor();
         }
@@ -146,7 +148,8 @@ void Application::handle_editor() {
         
         const int input = getch();
         if (input == 17 || input == KEY_F(1)) { // Ctrl+Q or F1
-            current_window_ = WindowState::MainMenu;
+            main_menu_.returnToMenu();
+	    current_window_ = WindowState::MainMenu;
             break;
         }
         
