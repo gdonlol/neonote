@@ -1,4 +1,7 @@
-# How to run
+# <u>Neonote</u>
+A terminal-based, markdown text editor with task management, calendar scheduling, and more.
+
+# <u>How to run</u>
 Clone the repository.
 
 ```
@@ -10,14 +13,13 @@ Navigate to project directory in your terminal and use `make` to compile the pro
 - The compiled binary will be located in the `bin/` folder.
 - If the `bin/` directory doesn’t exist, `make` will automatically create it.
 
-# Dependencies
-
+# <u>Dependencies</u>
 Neonote relies on the following dependencies for proper compilation and execution.
 
-## `g++` (GCC)
-## **ncurses Library**
-    - Used for terminal-based UI rendering.
-    - Install commands for common Linux distributions:
+1. ## `g++` (GCC)
+2. ## **ncurses Library**
+- Used for terminal-based UI rendering.
+- Install commands for common Linux distributions:
 ### **Debian/Ubuntu**:
 ```
 sudo apt install libncurses5-dev libncursesw5-dev
@@ -30,7 +32,7 @@ sudo pacman -S ncurses
 ```
 sudo dnf install ncurses-devel
 ```
-## **GNU Make**
+3. ## **GNU Make**
 - Used to build the project using the provided `Makefile`.
 - Install commands:
 ### **Debian/Ubuntu**:
@@ -46,27 +48,27 @@ sudo pacman -S make
 sudo dnf install make
 ```
 
-# Description - CS3307 Group 14
+# <u>Description - CS3307 Group 14</u>
 Beautiful, fast, and fully featured text editor in the terminal for users who wish to keep their workflow in one place. This project will incorporate planning features similar to Notion to streamline personal productivity but be optimized for terminal use with a graphical TUI (text-based user interface). The text editor will integrate tools for task management, calendar scheduling, and more, while being optimized for a keyboard-driven workflow in a terminal environment.
 
 This software will be developed in C++ and will run virtually on a Raspberry Pi. We do not require a physical Raspberry Pi kit for this project.
 
-# Features
+# <u>Features</u>
 - Markdown editing
 - Keyboard user-centric, efficient keybinds for everything
 - Kanban board todo list for productivity
 - Calendars for event planning
 - Interface for list of pages on sidebar
 
-# Keybinds Guide
+# <u>Keybinds Guide</u>
 This guide provides an overview of the keybindings available in the terminal editor, covering both content editing and sidebar navigation.
 
-## Main Menu Navigation
+1. ## Main Menu Navigation
 - Arrow Up (↑) or `k` - Moves up the menu options.
 - Arrow Down (↓) or `j` - Moves down the menu options.
 - Enter (⏎) or `\n` - Selects the currently highlighted menu option (either "my notes" or "exit").
 
-## Content Editing Mode
+2. ## Content Editing Mode
 - Arrow Keys (↑, ↓, ←, →) - Move the cursor up, down, left, or right.
 - Backspace (⌫) - Deletes the character to the left of the cursor.
 - Enter (⏎) - Inserts a new line at the current cursor position.
@@ -80,7 +82,7 @@ This guide provides an overview of the keybindings available in the terminal edi
 - `Ctrl + \` - Skip to the next word.
 - Printable Characters (`A-Z`, `0-9`, `Symbols`) - Inserts the typed character at the cursor position.
 
-## Sidebar Navigation Mode
+3. ## Sidebar Navigation Mode
 - Arrow Up (↑) - Moves up the file list.
 - Arrow Down (↓) - Moves down the file list.
 - Enter (⏎) - Loads the selected file or page into the editor.
@@ -89,6 +91,6 @@ This guide provides an overview of the keybindings available in the terminal edi
 - `Ctrl + T` - Create a new task for the kanban board (click enter to confirm after typing in new name).
 - `Ctrl + P` - Move an existing task into a new category (to do, in progress or done).
 
-## Cursor and Scroll Adjustments
+4. ## Cursor and Scroll Adjustments
 - Cursor movement is restricted within the text bounds.
 - Scrolling occurs automatically when the cursor moves beyond the visible area.
