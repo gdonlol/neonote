@@ -19,7 +19,7 @@ using namespace std;
  * @brief Constructor for the Calendar class.
  * @param content Pointer to the ncurses window where the calendar will be rendered.
  */
-Calendar::Calendar(WINDOW *content): selectedEvent(-1) {
+Calendar::Calendar(WINDOW *content): selectedEvent(-1), eventsScrollOffset(0) {
     this->content = content;
     std::string path = getenv("HOME");
     path += "/.local/share/neonote/events";
@@ -152,17 +152,18 @@ void Calendar::renderCalendar() {
     int lineWidth = eventsWinWidth - 1;
     int lineHeight = 4; 
     int maxVisibleEvents = eventsWinHeight / lineHeight;
-    int scrollOffset = 0;
 
-    if (selectedEvent >= scrollOffset + maxVisibleEvents) {
-        scrollOffset = selectedEvent - maxVisibleEvents + 1;
+    if (selectedEvent < eventsScrollOffset) {
+        eventsScrollOffset = std::max(selectedEvent, 0);
+    } else if (selectedEvent >= eventsScrollOffset + maxVisibleEvents) {
+        eventsScrollOffset = selectedEvent - maxVisibleEvents + 1;
     }
 
     // Display events or a placeholder message
     if (events.empty()) {
         mvwprintw(eventswin, ++y, 0, "%s", "No events (Ctrl + N)");
     } else{
-        for (int i = scrollOffset; i < std::min(scrollOffset + maxVisibleEvents, (int)events.size()); ++i) {
+        for (int i = eventsScrollOffset; i < std::min(eventsScrollOffset + maxVisibleEvents, (int)events.size()); ++i) {
             mvwhline(eventswin, y++, 0, ACS_HLINE, lineWidth);
 
             if (selectedEvent == i) wattron(eventswin, A_REVERSE);  // Highlight selected event

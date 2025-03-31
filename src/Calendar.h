@@ -31,6 +31,7 @@ private:
     WINDOW *content;
 
     int selectedEvent;
+    int eventsScrollOffset;
 };
 
 #endif // CALENDAR_H
