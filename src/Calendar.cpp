@@ -141,9 +141,11 @@ void Calendar::renderCalendar() {
     wrefresh(eventswin);
     int y = 1;
     int lineWidth = ((COLS * 0.75) / 2) - 4;
+    int i = 0; 
     for (const Event& event : events) {
         mvwhline(eventswin, y++, 0, ACS_HLINE, lineWidth);
-        if (selectedEvent == event.getId()) wattron(eventswin, A_REVERSE);
+
+        if (selectedEvent == i) wattron(eventswin, A_REVERSE);  // Compare against index
         
         std::string title = "Title: " + event.getTitle();
         mvwprintw(eventswin, y++, 0, "%s", (title + std::string(lineWidth - title.length(), ' ')).c_str());
@@ -155,6 +157,8 @@ void Calendar::renderCalendar() {
         mvwprintw(eventswin, y++, 0, "%s", (date + std::string(lineWidth - date.length(), ' ')).c_str());
         
         wattroff(eventswin, A_REVERSE);
+        
+        ++i;
     }
     //Refresh the main content window
     wrefresh(content);

@@ -69,11 +69,11 @@ void TerminalEditor::handleInput(int ch) {
                 calendar.renderCalendar();
                 ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
                 break;
-            case KEY_DOWN:
+            case KEY_UP:
                 calendar.setSelectedEvent(std::max(0, calendar.getSelectedEvent() - 1));
                 calendar.renderCalendar();
                 break;
-            case KEY_UP:
+            case KEY_DOWN:
                 calendar.setSelectedEvent(std::min(calendar.getEvents().size() - 1, static_cast<size_t>(calendar.getSelectedEvent()) + 1));
                 calendar.renderCalendar();
                 break;
