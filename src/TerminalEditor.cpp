@@ -314,6 +314,13 @@ void TerminalEditor::handleInputSidebar(int ch) {
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);
             break;
+        case 20: // Ctrl+T - Add new task
+            input = ui.displayPrompt("Enter new task:");
+            if (!input.empty()) {
+                taskManager.addTask(input); /**< Add new task to task manager. */
+                taskManager.renderTasks();  /**< Refresh task display. */
+            }
+            break;
         case KEY_DC:
             if(fileManager.getFiles().size() > 1){
                 input = ui.displayPrompt("Delete permanently? (Y/N)");

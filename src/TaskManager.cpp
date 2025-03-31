@@ -17,9 +17,14 @@ TaskManager::TaskManager(WINDOW* content) : content(content) {
  * @brief Adds a task to the list.
  * @param task The task to add.
  */
+void TaskManager::addTask(const std::string& title) {
+    int newTaskId = nextFree();
+    std::string defaultStatus = "To Do";
+    tasks.emplace_back(newTaskId, title, defaultStatus);
+}
+
 void TaskManager::addTask(const Task& task) {
     tasks.push_back(task);
-    renderTasks();
 }
 
 /**
@@ -121,7 +126,6 @@ void TaskManager::renderTasks() {
             doneY += 5;
         }
     }
-
     wrefresh(content);
 }
 

@@ -13,6 +13,8 @@ public:
     TaskManager(WINDOW* content);
 
     // Adds a new task to the task list
+    void addTask(const std::string& title);
+
     void addTask(const Task& task);
 
     // Removes a task from the list based on its ID
