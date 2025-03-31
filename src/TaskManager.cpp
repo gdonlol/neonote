@@ -87,46 +87,63 @@ void TaskManager::renderTasks() {
     box(content, 0, 0);
 
     int maxY, maxX;
-    getmaxyx(content, maxY, maxX); // Get the height and width of the window
+    getmaxyx(content, maxY, maxX);  // Get the height and width of the window
 
-    int y = 2;
-    int xToDo = 2;           // Starting X position for "To Do" column
-    int xInProgress = 40;     // Starting X position for "In Progress" column
-    int xDone = 80;           // Starting X position for "Done" column
+    // Calculate dimensions for the columns
+    int colWidth = (maxX - 2) / 3;        // Divide window into 3 equal parts
+    int colHeight = maxY - 2;       // Leave space for borders
 
-    // Column headers
-    mvwprintw(content, y, xToDo, "--- To Do ---");
-    mvwprintw(content, y, xInProgress, "--- In Progress ---");
-    mvwprintw(content, y, xDone, "--- Done ---");
+    // Create derwin windows for each column
+    WINDOW* todoWin = derwin(content, colHeight, colWidth, 1, 1);
+    WINDOW* inProgressWin = derwin(content, colHeight, colWidth, 1, colWidth + 1);
+    WINDOW* doneWin = derwin(content, colHeight, colWidth, 1, 2 * colWidth + 1);
 
-    // Initialize the Y position for tasks in each column
-    int todoY = y + 2;
-    int inProgressY = y + 2;
-    int doneY = y + 2;
+    // Render headers
+    mvwprintw(todoWin, 0, (colWidth - 10) / 2, "--- To Do ---");
+    box(todoWin, 0, 0);
 
-    // Loop through tasks and display them in the appropriate column based on status
+    box(inProgressWin, 0, 0);
+    box(doneWin, 0, 0);
+
+    mvwprintw(inProgressWin, 0, (colWidth - 15) / 2, "--- In Progress ---");
+    mvwprintw(doneWin, 0, (colWidth - 9) / 2, "--- Done ---");
+
+    // Y positions for tasks in each column
+    int todoY = 2, inProgressY = 2, doneY = 2;
+
+    // Loop through tasks and display them in the appropriate column
     for (const auto& task : tasks) {
         if (task.getStatus() == "To Do") {
-            mvwprintw(content, todoY, xToDo, "ID: %d", task.getId());
-            mvwprintw(content, todoY + 1, xToDo, "Title: %s", task.getTitle().c_str());
-            mvwprintw(content, todoY + 2, xToDo, "Status: %s", task.getStatus().c_str());
-            mvwprintw(content, todoY + 3, xToDo, "---------------------");
+            mvwprintw(todoWin, todoY, 1, "ID: %d", task.getId());
+            mvwprintw(todoWin, todoY + 1, 1, "Title: %s", task.getTitle().c_str());
+            mvwprintw(todoWin, todoY + 2, 1, "Status: %s", task.getStatus().c_str());
+            mvwprintw(todoWin, todoY + 3, 1, "---------------------");
             todoY += 5;
         } else if (task.getStatus() == "In Progress") {
-            mvwprintw(content, inProgressY, xInProgress, "ID: %d", task.getId());
-            mvwprintw(content, inProgressY + 1, xInProgress, "Title: %s", task.getTitle().c_str());
-            mvwprintw(content, inProgressY + 2, xInProgress, "Status: %s", task.getStatus().c_str());
-            mvwprintw(content, inProgressY + 3, xInProgress, "---------------------");
+            mvwprintw(inProgressWin, inProgressY, 1, "ID: %d", task.getId());
+            mvwprintw(inProgressWin, inProgressY + 1, 1, "Title: %s", task.getTitle().c_str());
+            mvwprintw(inProgressWin, inProgressY + 2, 1, "Status: %s", task.getStatus().c_str());
+            mvwprintw(inProgressWin, inProgressY + 3, 1, "---------------------");
             inProgressY += 5;
         } else if (task.getStatus() == "Done") {
-            mvwprintw(content, doneY, xDone, "ID: %d", task.getId());
-            mvwprintw(content, doneY + 1, xDone, "Title: %s", task.getTitle().c_str());
-            mvwprintw(content, doneY + 2, xDone, "Status: %s", task.getStatus().c_str());
-            mvwprintw(content, doneY + 3, xDone, "---------------------");
+            mvwprintw(doneWin, doneY, 1, "ID: %d", task.getId());
+            mvwprintw(doneWin, doneY + 1, 1, "Title: %s", task.getTitle().c_str());
+            mvwprintw(doneWin, doneY + 2, 1, "Status: %s", task.getStatus().c_str());
+            mvwprintw(doneWin, doneY + 3, 1, "---------------------");
             doneY += 5;
         }
     }
+
+    // Refresh all windows
+    wrefresh(todoWin);
+    wrefresh(inProgressWin);
+    wrefresh(doneWin);
     wrefresh(content);
+
+    // Clean up windows
+    delwin(todoWin);
+    delwin(inProgressWin);
+    delwin(doneWin);
 }
 
 // Function to prompt the user for task details and add it
