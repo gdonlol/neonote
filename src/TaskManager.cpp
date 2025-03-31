@@ -207,8 +207,16 @@ void TaskManager::renderTasks() {
     for (int col = 0; col < 3; ++col) {
         WINDOW* drawWin = (col == 0) ? todoWin : (col == 1) ? inProgressWin : doneWin;
 
+        int maxVisibleEvents = (colHeight / 3) - 1;
+
+        if (currentSelected < colOffset[col]) {
+            colOffset[col] = std::max(currentSelected, 0);
+        } else if (currentSelected >= colOffset[col] + maxVisibleEvents) {
+            colOffset[col] = currentSelected - maxVisibleEvents + 1;
+        }
+        
         int y = 3;
-        for (int i = 0; i < tasks[col].size(); ++i) {
+        for (int i = colOffset[col]; i < std::min(colOffset[col] + maxVisibleEvents, (int)tasks[col].size()); ++i) {
             bool isSelected = (currentType == col && currentSelected == i);
 
             if (isSelected) {

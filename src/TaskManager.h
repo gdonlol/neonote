@@ -46,6 +46,8 @@ private:
 
     int currentSelected;
     int currentType;
+
+    std::vector<int> colOffset = {0, 0, 0};
 };
 
 #endif // TASKMANAGER_H
