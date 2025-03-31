@@ -19,7 +19,7 @@ using namespace std;
  * @brief Constructor for the Calendar class.
  * @param content Pointer to the ncurses window where the calendar will be rendered.
  */
-Calendar::Calendar(WINDOW *content) {
+Calendar::Calendar(WINDOW *content): selectedEvent(-1) {
     this->content = content;
     std::string path = getenv("HOME");
     path += "/.local/share/neonote/events";
@@ -43,7 +43,17 @@ Calendar::Calendar(WINDOW *content) {
                     std::getline(file, line2);
                     std::getline(file, line3);
                     std::getline(file, line4);
-                    Event event(1, line1, line2, line3);
+
+                    // Extract the numeric part of the filename
+                    std::string filename = entry->d_name;
+                    int eventId = 0;
+                    try {
+                        eventId = std::stoi(filename);  //**< Convert string to int */
+                    } catch (const std::invalid_argument& e) {
+                        exit(0);
+                    }
+
+                    Event event(eventId, line1, line2, line3);
                     events.push_back(event);
                     file.close();
                 }
@@ -124,19 +134,31 @@ void Calendar::renderCalendar() {
         LINES - 4,
         ((COLS * 0.75) / 2 )- 4,
         2,
-        ((COLS * 0.75) / 2) + 2
+        ((COLS * 0.75) / 2) + 4
     );
     refresh();
     mvwprintw(eventswin, 0, 0, "%s", "Events");
     wrefresh(eventswin);
     int y = 1;
+    int lineWidth = ((COLS * 0.75) / 2) - 4;
+    int i = 0; 
     for (const Event& event : events) {
-        // Print the event details (id, title, description, date, etc.)
-        mvwhline(eventswin, y++, 0, ACS_HLINE, ((COLS * 0.75) / 2 )- 4);
-        mvwprintw(eventswin, y++, 0, "Event ID: %d", event.getId());
-        mvwprintw(eventswin, y++, 0, "Title: %s", event.getTitle().c_str());
-        mvwprintw(eventswin, y++, 0, "Description: %s", event.getDescription().c_str());
-        mvwprintw(eventswin, y++, 0, "Date: %s", event.getDate().c_str());
+        mvwhline(eventswin, y++, 0, ACS_HLINE, lineWidth);
+
+        if (selectedEvent == i) wattron(eventswin, A_REVERSE);  // Compare against index
+        
+        std::string title = "Title: " + event.getTitle();
+        mvwprintw(eventswin, y++, 0, "%s", (title + std::string(lineWidth - title.length(), ' ')).c_str());
+
+        std::string description = "Description: " + event.getDescription();
+        mvwprintw(eventswin, y++, 0, "%s", (description + std::string(lineWidth - description.length(), ' ')).c_str());
+        
+        std::string date = "Date: " + event.getDate();
+        mvwprintw(eventswin, y++, 0, "%s", (date + std::string(lineWidth - date.length(), ' ')).c_str());
+        
+        wattroff(eventswin, A_REVERSE);
+        
+        ++i;
     }
     //Refresh the main content window
     wrefresh(content);
@@ -281,4 +303,16 @@ int Calendar::nextFree() {
         }
         index++;
     }
+}
+
+int Calendar::getSelectedEvent(){
+    return selectedEvent;
+}
+
+void Calendar::setSelectedEvent(int index){
+    selectedEvent = index;
+}
+
+std::vector<Event> Calendar::getEvents(){
+    return events;
 }

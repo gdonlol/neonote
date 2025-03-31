@@ -53,24 +53,8 @@ void TerminalEditor::handleInput(int ch) {
         handleInputSidebar(ch);  /**< Handle input in the sidebar area. */
     }
     else if (focused_div == 2) { //**< 2 = kanban */
-        string task_title, task_desc, task_due_date;
-        switch(ch) {
-            case 15:
-            case 4: // Switch focus
-                focused_div = 1; 
-                break;
-            case 14: // Add a new task
-                task_title = ui.displayPrompt("Task Name");
-                task_desc = ui.displayPrompt("Task Description");
-                task_due_date = ui.displayPrompt("Task Due Date");
-                Task new_task(taskManager.nextFree(), task_title, "To Do", task_desc, task_due_date); 
-                taskManager.addTask(new_task);
-                taskManager.renderTasks();
-                ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
-                break;
-        }
     }
-    else if (focused_div == 3) { //**< 3 = calendar */
+    else if (focused_div == 3) { //**< 3 = handleinputcalendar */
         string event_title, event_desc, event_date;
         switch(ch){
             case 15:
@@ -81,11 +65,19 @@ void TerminalEditor::handleInput(int ch) {
                 event_title = ui.displayPrompt("Event Name");
                 event_desc = ui.displayPrompt("Event Description");
                 event_date = ui.displayPrompt("Event Date");
-                Event event_in(calendar.nextFree(), event_title, event_desc, event_date);
-                calendar.addEvent(event_in);
+                calendar.addEvent(Event(calendar.nextFree(), event_title, event_desc, event_date));
                 calendar.renderCalendar();
                 ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
-            }
+                break;
+            case KEY_UP:
+                calendar.setSelectedEvent(std::max(0, calendar.getSelectedEvent() - 1));
+                calendar.renderCalendar();
+                break;
+            case KEY_DOWN:
+                calendar.setSelectedEvent(std::min(calendar.getEvents().size() - 1, static_cast<size_t>(calendar.getSelectedEvent()) + 1));
+                calendar.renderCalendar();
+                break;
+        }
     } 
 }
 
@@ -291,6 +283,8 @@ void TerminalEditor::handleInputSidebar(int ch) {
             }
             else{
                 //calendar swap
+                calendar.setSelectedEvent(0);
+                calendar.renderCalendar();
                 focused_div = 3; /**< Flip focused_div to calendar. */
             }
             break;
@@ -348,6 +342,7 @@ void TerminalEditor::handleInputSidebar(int ch) {
             }
             else {
                 //render calendar here
+                calendar.setSelectedEvent(0);
                 calendar.renderCalendar();
             }
             break;
