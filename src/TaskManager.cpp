@@ -125,7 +125,6 @@ void TaskManager::renderTasks() {
     WINDOW* todoWin = derwin(content, colHeight, colWidth, 1, 1);
     WINDOW* inProgressWin = derwin(content, colHeight, colWidth, 1, colWidth + 1);
     WINDOW* doneWin = derwin(content, colHeight, colWidth, 1, 2 * colWidth + 1);
-
     // Render headers
     mvwprintw(todoWin, 0, (colWidth - 10) / 2, "--- To Do ---");
     mvwprintw(inProgressWin, 0, (colWidth - 15) / 2, "--- In Progress ---");
