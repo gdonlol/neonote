@@ -67,7 +67,9 @@ void TerminalEditor::handleInput(int ch) {
                 event_date = ui.displayPrompt("Event Date");
                 Event event_in(calendar.nextFree(), event_title, event_desc, event_date);
                 calendar.addEvent(event_in);
-        }
+                calendar.renderCalendar();
+                ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+            }
     } 
 }
 

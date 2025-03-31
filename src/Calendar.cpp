@@ -171,7 +171,6 @@ void Calendar::addEvent(const Event& event) {
 
     // Add the event to the events vector
     events.push_back(event);
-    renderCalendar();
 }
 
 /**
