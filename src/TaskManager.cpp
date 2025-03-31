@@ -80,12 +80,19 @@ void TaskManager::moveTask(int taskId, int type) {
     if (type < 0 || type >= tasks.size()) {
         return;
     }
+
     for (auto& taskList : tasks) {
-        for (auto it = taskList.begin(); it != taskList.end(); ++it) {
+        for (auto it = taskList.begin(); it != taskList.end();) {  
             if (it->getId() == taskId) {
-                tasks[type].push_back(*it);
-                taskList.erase(it);
+                if (&taskList != &tasks[type]) {
+                    tasks[type].push_back(*it);
+                    it = taskList.erase(it);
+                } else {
+                    ++it;
+                }
                 return;
+            } else {
+                ++it;
             }
         }
     }
@@ -192,22 +199,22 @@ int TaskManager::getSelectedTaskId() {
  * @param taskId The ID of the task to move.
  */
 void TaskManager::moveTaskPopup(int taskId) {
+    if(taskId == - 1)return;
     const std::vector<std::string> categories = {"To Do", "In Progress", "Completed"};
     const std::vector<int> categoriesType = {0, 1, 2};
 
     int highlight = 0;
     int choice = -1;
 
-    // Get screen dimensions
     int maxY, maxX;
-    getmaxyx(content, maxY, maxX);
-
+    getmaxyx(stdscr, maxY, maxX);
+    
     // Popup dimensions
     int popupHeight = categories.size() + 4;
     int popupWidth = 20;
     int startY = (maxY - popupHeight) / 2;
     int startX = (maxX - popupWidth) / 2;
-
+    
     // Create popup window
     WINDOW* popup = newwin(popupHeight, popupWidth, startY, startX);
     box(popup, 0, 0);
