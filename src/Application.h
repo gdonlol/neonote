@@ -7,6 +7,7 @@
 #include "TerminalEditor.h"
 #include "MainMenu.h"
 #include "NcursesSetup.h"
+#include "Settings.h"
 
 class Application {
 public:

@@ -1,15 +1,49 @@
+/**
+ * @file Application.cpp
+ * @brief Main application implementation for NeoNote
+ * @author Allen Zhu
+ * @author Gordon Xu
+ * @date 2024-03-31
+ */
+
 #include "Application.h"
 #include <ncurses.h>
 
+/**
+ * @class Application
+ * @brief Main application class managing terminal editor and main menu interfaces
+ * 
+ * Handles initialization, window management, and the main event loop for NeoNote.
+ * Manages transitions between main menu and editor and handles resizes.
+ */
+
+/**
+ * @brief Default constructor for Application
+ *
+ * Initializes member bariables with default values and null pointers.
+ * Actual windows created in initalize().
+ */
 Application::Application() 
     : main_menu_(nullptr),
       terminal_editor_(nullptr, nullptr, nullptr, {}) {
 }
 
+/**
+ * @brief Destructor for Application
+ *
+ * Ensures cleanup for ncurses resources and windows.
+ */
 Application::~Application() {
     cleanup();
 }
 
+/**
+ * @brief Initizes the application in ncurses
+ * @return If initialzation succeeded
+ *
+ * Sets up ncurses enviroment and creates windows.
+ * Needs to be called before running main app loop.
+ */
 bool Application::initialize() {
     if (!ncurses_setup_.initialize()) {
         return false;
@@ -20,7 +54,10 @@ bool Application::initialize() {
 }
 
 /**
- * @ brief Ensures that the `WINDOW` object is properly cleaned up when the `std::unique_ptr` goes out of scope or reset
+ * @brief Deletes Window object
+ * @param win Window pointer to deleted window
+ *
+ * Uses delwin(win) to deallocate the window.
  */
 void Application::WindowDeleter::operator()(WINDOW* win) const {
     if (win) {
@@ -30,7 +67,10 @@ void Application::WindowDeleter::operator()(WINDOW* win) const {
 
 
 /**
- * @brief Creates and initialises parent container for all UI elements
+ * @brief Creates and initializes parent container for all UI elements
+ *
+ * Creates the main window container and divides it into sidebar and content area.
+ * Initializes the main menue
  */
 void Application::create_windows() {
     main_window_ = std::unique_ptr<WINDOW, WindowDeleter>(
@@ -51,20 +91,28 @@ void Application::create_windows() {
 }
 
 /**
- * @brief Calculates sidebar width relative to container size
- * @return A pair of the sidebar size and the window size
+ * @brief Calculates window layout dimentions
+ * @param total_cols Widths of terminal
+ * @return Pair containing sidebar width and content width
+ *
+ * Uses a ratio (25% by default) of the width of the terminal for the sidebar.
+ * Remaining space is for the content.
  */
 std::pair<int, int> Application::calculate_layout(int total_cols) const {
-    static constexpr double SIDEBAR_WIDTH_RATIO = 0.25;
     const int sidebar = static_cast<int>(total_cols * SIDEBAR_WIDTH_RATIO);
     return {sidebar, total_cols - sidebar};
 }
 
 /**
- * @brief 
+ * @brief Sets up or updates the window layout
+ * @param lines Current number of rows
+ * @param cols Current number of columns
+ *
+ * Handles resizing and repositioning of all windows when terminal dimentiosn change.
+ * Redraws borders and refreshes all windows to maintain consistant appearance.
  */
 void Application::setup_window_layout(int lines, int cols) {
-    // Define variables
+    // Calculate new dimentions
     auto [sidebar_width, content_width] = calculate_layout(cols);
     
     // Resize main window first
@@ -89,7 +137,11 @@ void Application::setup_window_layout(int lines, int cols) {
 }
 
 /**
- * @brief Runs the main loop
+ * @brief Runs the main app loop
+ * @return Application exit code (0 for sucess, 1 for initialization failure)
+ *
+ * Initializes the application and enters the main app loop
+ * Returns when the user exits NeoNote
  */
 int Application::run() {
     if (!initialize()) {
@@ -101,7 +153,10 @@ int Application::run() {
 }
 
 /**
- * @brief Main logic loop of program
+ * @brief Main app loop
+ *
+ * Continuously processes user input and window transitions until exit.
+ * Manages state transitions between the main menu and editor UIs.
  */
 void Application::main_loop() {
     while (running_) {
@@ -116,6 +171,13 @@ void Application::main_loop() {
         }
     }
 }
+
+/**
+ * @brief Handles terminal resize events
+ *
+ * Checks for terminal dimension changes and updates the window accordingly.
+ * Maintains UI consistency across resizes.
+ */
 
 void Application::handle_resize() {
     // Retrieve terminal size
@@ -136,12 +198,23 @@ void Application::handle_resize() {
             main_menu_.display();
         }
 	else if (current_window_ == WindowState::Editor) {
-//            TerminalEditor editor(main_window_.get(), sidebar_.get(), content_.get(), {});
+//            switch(terminal_editor_.currently_displaying() {
+//                case 1:
+//
+//		case 2:
+//
+//		case 3:
+
 	}
     }
 }
 
-
+/**
+ * @brief Handles main menu interaction
+ *
+ * Displays the main menu and processes user input.
+ * Manages transitions between menu state to editor state/exit
+ */
 void Application::handle_main_menu() {
     main_menu_.display();
     const int input = getch();
@@ -149,7 +222,8 @@ void Application::handle_main_menu() {
 
     if (main_menu_.shouldExit()) {
         running_ = false;
-    } else if (main_menu_.getCurrentWindow() != 0) {
+    } else if (main_menu_.getCurrentWindow() != 0) { ///< "new note"
+	// Creates new editor instance
         current_window_ = WindowState::Editor;
         terminal_editor_ = TerminalEditor(main_window_.get(), 
                                         sidebar_.get(), 
@@ -158,14 +232,19 @@ void Application::handle_main_menu() {
     }
 }
 
-
+/**
+ * @brief Handles editor interaction
+ *
+ * Process user input in the editor mode. Sends signals to terminal editor
+ * and transitions back to main menu when exited
+ */
 void Application::handle_editor() {
-    
     while (current_window_ == WindowState::Editor) {
         handle_resize();
-        
+     
         const int input = getch();
-        if (input == 17 || input == KEY_F(1)) { // Ctrl+Q or F1
+        if (input == MENU_SHORTCUT) {
+            terminal_editor_.cleanup();
             main_menu_.returnToMenu();
 	    current_window_ = WindowState::MainMenu;
             break;
@@ -175,7 +254,12 @@ void Application::handle_editor() {
     }
 }
 
-
+/**
+ * @brief Cleans up application resources
+ *
+ * Properly deallocates windows and resets terminal state before exit.
+ * Ensures clean termination of ncurses.
+ */
 void Application::cleanup() {
     if (sidebar_) {
         wclear(sidebar_.get());
