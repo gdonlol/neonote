@@ -139,13 +139,36 @@ void TaskManager::renderTasks() {
 
         int y = 2;
         for (int i = 0; i < tasks[col].size(); ++i) {
-            if(currentType == col && currentSelected == i){ wattron(drawWin, COLOR_PAIR(3)); }
-            mvwhline(drawWin, y++, 1, ACS_HLINE, colWidth - 2);
-            if(currentType == col && currentSelected == i){ wattroff(drawWin, COLOR_PAIR(3)); }
+            bool isSelected = (currentType == col && currentSelected == i);
 
-            mvwprintw(drawWin, y++, 1, "%s", tasks[col][i].getTitle().c_str());
-            mvwprintw(drawWin, y++, 1, "#%d", tasks[col][i].getId());
-            ++y;
+            if (isSelected) {
+                wattron(drawWin, A_REVERSE);
+            }
+
+            std::string title = " " + tasks[col][i].getTitle() + " ";
+            std::string id = " #" + std::to_string(tasks[col][i].getId()) + " ";
+
+            // Elipsis overflow
+            if (title.length() > colWidth - 2) {
+                title = title.substr(0, colWidth - 5) + "...";
+            }
+
+            // Pad both lines to fit the column width
+            while (title.length() < colWidth - 2) {
+                title += " ";
+            }
+            while (id.length() < colWidth - 2) {
+                id += " ";
+            }
+
+            // Draw the task with padding and inverted color if selected
+            mvwprintw(drawWin, y++, 1, "%s", title.c_str());
+            mvwprintw(drawWin, y++, 1, "%s", id.c_str());
+            y++;  // Add spacing between tasks
+
+            if (isSelected) {
+                wattroff(drawWin, A_REVERSE);  // Turn off inversion
+            }
         }
     }
 

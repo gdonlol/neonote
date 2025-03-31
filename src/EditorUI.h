@@ -31,6 +31,8 @@ private:
     void renderContent(const std::vector<std::string> &lines, 
                       int row, int col, 
                       int scroll_row, int scroll_col);
+
+    std::string formatWithEllipsis(const std::string& text, int maxWidth);
 };
 
 #endif

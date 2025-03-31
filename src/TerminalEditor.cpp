@@ -283,6 +283,7 @@ void TerminalEditor::handleInputSidebar(int ch) {
             }
             else if (sidebar_index == fileManager.getFiles().size()){
                 //kanban swap
+                taskManager.renderTasks();
                 last_focused_div = focused_div;
                 focused_div = 2; /**< Flip focused_div to kanban. */
             }

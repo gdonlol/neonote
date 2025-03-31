@@ -36,6 +36,13 @@ void EditorUI::renderUI(int sidebar_width, const std::vector<std::string> &files
     wrefresh(content);
 }
 
+std::string EditorUI::formatWithEllipsis(const std::string& text, int maxWidth)  {
+    if ((int)text.length() > maxWidth) {
+        return text.substr(0, maxWidth - 3) + "...";
+    }
+    return text;
+};
+
 /**
  * @brief Renders the sidebar with the list of files and additional content.
  * 
@@ -49,28 +56,37 @@ void EditorUI::renderSidebar(int sidebar_width, const std::vector<std::string> &
     werase(sidebar); 
     box(sidebar, 0, 0);
     mvwhline(sidebar, 5, 1, ACS_HLINE, sidebar_width - 2);
-    if(sidebar_index == files.size()) wattron(sidebar, COLOR_PAIR(1));
-    mvwprintw(sidebar, 2, 2, "%s", std::string("My Tasks").substr(0, std::max(0, sidebar_width - 4)).c_str());
+
+    
+
+    if (sidebar_index == files.size()) wattron(sidebar, COLOR_PAIR(1));
+    mvwprintw(sidebar, 2, 2, "%s", formatWithEllipsis("My Tasks", sidebar_width - 4).c_str());
     wattroff(sidebar, COLOR_PAIR(1));
 
-    if(sidebar_index == files.size() + 1) wattron(sidebar, COLOR_PAIR(1));
-    mvwprintw(sidebar, 3, 2, "%s", std::string("Calendar").substr(0, std::max(0, sidebar_width - 4)).c_str());
+    if (sidebar_index == files.size() + 1) wattron(sidebar, COLOR_PAIR(1));
+    mvwprintw(sidebar, 3, 2, "%s", formatWithEllipsis("Calendar", sidebar_width - 4).c_str());
     wattroff(sidebar, COLOR_PAIR(1));
-    
 
     int maxVisibleFiles = LINES - 9;
     int filesVector = (int)files.size();
+
     if (sidebar_index < sidebarScrollOffset) {
         sidebarScrollOffset = std::max(sidebar_index, 0);
     } else if (sidebar_index >= sidebarScrollOffset + maxVisibleFiles && sidebar_index < filesVector) {
         sidebarScrollOffset = sidebar_index - maxVisibleFiles + 1;
     }
+
     int j = 0;
     for (int i = sidebarScrollOffset; i < std::min(sidebarScrollOffset + maxVisibleFiles, filesVector); i++) {
-        if(i == sidebar_index) wattron(sidebar, COLOR_PAIR(1));
-        mvwprintw(sidebar, 7 + j++, 2, "%s", files[i].substr(0, std::max(0, sidebar_width - 4)).c_str());
+        if (i == sidebar_index) wattron(sidebar, COLOR_PAIR(1));
+
+        // Apply ellipsis overflow to the file names
+        std::string fileName = formatWithEllipsis(files[i], sidebar_width - 4);
+        mvwprintw(sidebar, 7 + j++, 2, "%s", fileName.c_str());
+
         wattroff(sidebar, COLOR_PAIR(1));
     }
+
     wrefresh(sidebar);
 }
 
@@ -93,7 +109,8 @@ void EditorUI::displayContent(const std::vector<std::string> &lines,
     werase(content);
     box(content, 0, 0);
     wattron(content, A_BOLD);
-    mvwprintw(content, 1, ((COLS * 0.75)-title.length()) / 2, "%s", title.substr(0, std::max(0, static_cast<int>((COLS * 0.75) - 4))).c_str());
+    std::string formattedTitle = formatWithEllipsis(title, std::max(0, static_cast<int>((COLS * 0.75) - 4)));
+    mvwprintw(content, 1, ((COLS * 0.75) - formattedTitle.length()) / 2, "%s", formattedTitle.c_str());
     wattroff(content, A_BOLD);
     renderContent(lines, row, col, scroll_row, scroll_col);
     wrefresh(content);
