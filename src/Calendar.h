@@ -20,6 +20,7 @@ public:
         int getFirstDayOfMonth(int month, int year) const;
 
         void renderCalendar();
+        int nextFree();
     
 private:
     std::vector<Event> events;

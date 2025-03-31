@@ -55,11 +55,18 @@ void TerminalEditor::handleInput(int ch) {
     else if (focused_div == 2) { //**< 2 = kanban */
     }
     else if (focused_div == 3) { //**< 3 = calendar */
+        string event_title, event_desc, event_date;
         switch(ch){
             case 15:
             case 4:
                 focused_div = 1; /**< Flip focused_div. */
                 break;
+            case 14:
+                event_title = ui.displayPrompt("Event Name");
+                event_desc = ui.displayPrompt("Event Name");
+                event_date = ui.displayPrompt("Event Name");
+                Event event_in(calendar.nextFree(), event_title, event_desc, event_date);
+                calendar.addEvent(event_in);
         }
     } 
 }
