@@ -234,7 +234,6 @@ void TaskManager::promptForTask() {
     renderTasks();
 }
 
-<<<<<<< HEAD
 /**
  * @brief Listens for user input, including special key presses.
  * 
@@ -258,8 +257,6 @@ void TaskManager::listenForInput() {
  * @brief Prompts the user to move a task to a different status via a popup.
  * @param taskId The ID of the task to move.
  */
-=======
->>>>>>> ecdd0c6 (asdasd)
 void TaskManager::moveTaskPopup(int taskId) {
     const std::vector<std::string> categories = {"To Do", "In Progress", "Completed"};
     int highlight = 0;
