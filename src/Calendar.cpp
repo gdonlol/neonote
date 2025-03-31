@@ -142,6 +142,9 @@ void Calendar::renderCalendar() {
     int y = 1;
     int lineWidth = ((COLS * 0.75) / 2) - 4;
     int i = 0; 
+    if(events.empty()) {
+        mvwprintw(eventswin, ++y, 0, "%s", "No events (Ctrl + N)");
+    }
     for (const Event& event : events) {
         mvwhline(eventswin, y++, 0, ACS_HLINE, lineWidth);
 
@@ -199,14 +202,29 @@ void Calendar::addEvent(const Event& event) {
  * @brief Removes an event from the calendar by its ID.
  * @param eventId The ID of the event to remove.
  */
-void Calendar::removeEvent(int eventId) {
-    auto it = std::remove_if(events.begin(), events.end(), 
-                             [eventId](const Event& event) { return event.getId() == eventId; });
+/**
+ * @brief Removes an event from the calendar by its index and deletes its file.
+ * @param index The index of the event to remove.
+ */
+void Calendar::removeEvent(int index) {
+    if (index < 0 || index >= static_cast<int>(events.size())) {
+        std::cerr << "Invalid event index.\n";
+        return;
+    }
+    int eventId = events[index].getId();
+    std::string path = getenv("HOME");
+    path += "/.local/share/neonote/events/" + std::to_string(eventId);
 
-    if (it != events.end()) {
-        events.erase(it, events.end());
+    if (std::filesystem::exists(path)) {
+        std::filesystem::remove(path);
+    }
+
+    events.erase(events.begin() + index);
+    if (selectedEvent >= static_cast<int>(events.size())) {
+        selectedEvent = static_cast<int>(events.size()) - 1;
     }
 }
+
 
 /**
  * @brief Updates an existing event in the calendar.

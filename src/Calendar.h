@@ -10,7 +10,7 @@ class Calendar {
 public:
     Calendar(WINDOW *content);
     void addEvent(const Event& event);
-    void removeEvent(int eventId);
+    void removeEvent(int index);
     void updateEvent(int eventId, Event& updatedEvent);
     std::vector<Event> getEvents();
 

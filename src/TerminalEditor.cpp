@@ -55,7 +55,7 @@ void TerminalEditor::handleInput(int ch) {
     else if (focused_div == 2) { //**< 2 = kanban */
     }
     else if (focused_div == 3) { //**< 3 = handleinputcalendar */
-        string event_title, event_desc, event_date;
+        string event_title, event_desc, event_date, input;
         switch(ch){
             case 15:
             case 4:
@@ -76,6 +76,15 @@ void TerminalEditor::handleInput(int ch) {
             case KEY_DOWN:
                 calendar.setSelectedEvent(std::min(calendar.getEvents().size() - 1, static_cast<size_t>(calendar.getSelectedEvent()) + 1));
                 calendar.renderCalendar();
+                break;
+            case KEY_DC:
+                input = ui.displayPrompt("Delete permanently? (Y/N)");
+                if(input == "Y" || input == "y"){
+                    calendar.removeEvent(calendar.getSelectedEvent());
+                }
+                ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+                calendar.renderCalendar();
+                refresh();
                 break;
         }
     } 
@@ -308,13 +317,6 @@ void TerminalEditor::handleInputSidebar(int ch) {
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);
             break;
-        case 20: // Ctrl+T - Add new task
-            input = ui.displayPrompt("Enter new task:");
-            if (!input.empty()) {
-                taskManager.addTask(input); /**< Add new task to task manager. */
-                taskManager.renderTasks();  /**< Refresh task display. */
-            }
-            break;
         case KEY_DC:
             if(fileManager.getFiles().size() > 1){
                 input = ui.displayPrompt("Delete permanently? (Y/N)");
@@ -342,6 +344,7 @@ void TerminalEditor::handleInputSidebar(int ch) {
             }
             else {
                 //render calendar here
+                focused_div = 3;
                 calendar.setSelectedEvent(0);
                 calendar.renderCalendar();
             }
