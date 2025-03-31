@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -Wall -Wextra -g
 LDFLAGS = -lncurses
 
-SRC = src/main.cpp src/TerminalEditor.cpp src/EditorUI.cpp src/FileManager.cpp src/TextPrompt.cpp src/Calendar.cpp src/Event.cpp src/TaskManager.cpp src/Task.cpp
+SRC = src/*
 TARGET = bin/neonote
 
 all: $(TARGET)
