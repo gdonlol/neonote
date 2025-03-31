@@ -100,11 +100,6 @@ void TaskManager::renderTasks() {
 
     // Render headers
     mvwprintw(todoWin, 0, (colWidth - 10) / 2, "--- To Do ---");
-    box(todoWin, 0, 0);
-
-    box(inProgressWin, 0, 0);
-    box(doneWin, 0, 0);
-
     mvwprintw(inProgressWin, 0, (colWidth - 15) / 2, "--- In Progress ---");
     mvwprintw(doneWin, 0, (colWidth - 9) / 2, "--- Done ---");
 

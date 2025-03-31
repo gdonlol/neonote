@@ -140,7 +140,7 @@ void Calendar::renderCalendar() {
     int eventsWinHeight = contentMaxY - 4;
     int eventsWinWidth = (contentMaxX / 2) - 4;
     int eventsWinY = 2;
-    int eventsWinX = (contentMaxX / 2) + 1;
+    int eventsWinX = (contentMaxX / 2) + 3;
 
     WINDOW* eventswin = derwin(content, eventsWinHeight, eventsWinWidth, eventsWinY, eventsWinX);
     
@@ -149,7 +149,7 @@ void Calendar::renderCalendar() {
     wrefresh(eventswin);
 
     int y = 1;
-    int lineWidth = eventsWinWidth;
+    int lineWidth = eventsWinWidth - 1;
     int i = 0; 
 
     // Display events or a placeholder message
