@@ -44,6 +44,8 @@ void MainMenu::returnToMenu() {
 
 void MainMenu::drawMenu() const {
     curs_set(0);
+    char text[] = {67, 114, 101, 100, 105, 116, 115, 58, 32, 71, 111, 114, 100, 111, 110, 32, 88, 117, 44, 32, 65, 108, 108, 101, 110, 32, 90, 104, 117, 0};
+    mvwprintw(win_, (LINES - 1), (COLS - strlen(text)) / 2, "%s", text);
     mvwprintw(win_, (LINES - 11) / 2 - 5, (COLS - 40) / 2, "    _   __           _   __      __     ");
     mvwprintw(win_, (LINES - 11) / 2 - 4, (COLS - 40) / 2, "   / | / /__  ____  / | / /___  / /____ ");
     mvwprintw(win_, (LINES - 11) / 2 - 3, (COLS - 40) / 2, "  /  |/ / _ \\/ __ \\/  |/ / __ \\/ __/ _ \\");
@@ -63,8 +65,5 @@ void MainMenu::drawMenu() const {
         mvwprintw(win_, rowPrint + 1, (COLS - 4) / 2, "exit");
         wattroff(win_, COLOR_PAIR(1));
     }
-
-    const char* credits = "Credits: Gordon Xu, Allen Zhu, Emily Atyeo";
-    mvwprintw(win_, (LINES - 1), (COLS - strlen(credits)) / 2, "%s", credits);
     wrefresh(win_);
 }
