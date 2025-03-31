@@ -21,7 +21,7 @@ using namespace std;
  * 
  * Handles event rendering, loading from disk, and interactions.
  * 
- * @author [Your Name]
+ * @author Gordon Xu
  */
 Calendar::Calendar(WINDOW *content): selectedEvent(-1) {
     this->content = content;
