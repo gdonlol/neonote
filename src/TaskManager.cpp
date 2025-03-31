@@ -7,6 +7,9 @@
 
 /**
  * @brief Constructor for TaskManager.
+ * 
+ * Initializes a TaskManager with the given ncurses window where tasks will be displayed.
+ * 
  * @param content Pointer to the ncurses window where tasks will be displayed.
  */
 TaskManager::TaskManager(WINDOW* content) : content(content) {
@@ -14,8 +17,12 @@ TaskManager::TaskManager(WINDOW* content) : content(content) {
 }
 
 /**
- * @brief Adds a task to the list.
- * @param task The task to add.
+ * @brief Adds a task to the task list with the given title.
+ * 
+ * This function creates a new task with a unique ID, default status ("To Do"), 
+ * and the given title. The task is then added to the task list.
+ * 
+ * @param title The title of the task to be added.
  */
 void TaskManager::addTask(const std::string& title) {
     int newTaskId = nextFree();
@@ -23,13 +30,23 @@ void TaskManager::addTask(const std::string& title) {
     tasks.emplace_back(newTaskId, title, defaultStatus);
 }
 
+/**
+ * @brief Adds an existing task to the task list.
+ * 
+ * This function adds an already created Task object to the list of tasks.
+ * 
+ * @param task The Task object to be added to the task list.
+ */
 void TaskManager::addTask(const Task& task) {
     tasks.push_back(task);
 }
 
 /**
- * @brief Removes a task by ID.
- * @param taskId The ID of the task to remove.
+ * @brief Removes a task from the task list by its ID.
+ * 
+ * This function searches for a task by its ID and removes it from the task list.
+ * 
+ * @param taskId The ID of the task to be removed.
  */
 void TaskManager::removeTask(int taskId) {
     auto it = std::find_if(tasks.begin(), tasks.end(), [taskId](const Task& t) {
@@ -42,9 +59,13 @@ void TaskManager::removeTask(int taskId) {
 }
 
 /**
- * @brief Updates an existing task.
- * @param taskId The ID of the task to update.
- * @param updatedTask The new task data.
+ * @brief Updates an existing task with new data.
+ * 
+ * This function searches for a task by its ID and replaces it with the provided
+ * updated task data.
+ * 
+ * @param taskId The ID of the task to be updated.
+ * @param updatedTask The new Task object containing updated task data.
  */
 void TaskManager::updateTask(int taskId, const Task& updatedTask) {
     auto it = std::find_if(tasks.begin(), tasks.end(), [taskId](const Task& t) {
@@ -58,8 +79,12 @@ void TaskManager::updateTask(int taskId, const Task& updatedTask) {
 
 /**
  * @brief Moves a task to a new status.
- * @param taskId The ID of the task to move.
- * @param newStatus The new status for the task.
+ * 
+ * This function searches for a task by its ID and updates its status to the
+ * provided new status.
+ * 
+ * @param taskId The ID of the task to be moved.
+ * @param newStatus The new status to assign to the task.
  */
 void TaskManager::moveTask(int taskId, const std::string& newStatus) {
     for (auto& task : tasks) {
@@ -72,8 +97,8 @@ void TaskManager::moveTask(int taskId, const std::string& newStatus) {
 }
 
 /**
- * @brief Gets all tasks.
- * @return A reference to the task list.
+ * @brief Gets a reference to the list of all tasks.
+ * @return A reference to the vector containing all tasks.
  */
 const std::vector<Task>& TaskManager::getTasks() const {
     return tasks;
@@ -81,6 +106,9 @@ const std::vector<Task>& TaskManager::getTasks() const {
 
 /**
  * @brief Renders the tasks in the ncurses window.
+ * 
+ * This function clears the window and displays the list of tasks divided by their
+ * status into three columns: "To Do", "In Progress", and "Done".
  */
 void TaskManager::renderTasks() {
     wclear(content);
@@ -141,7 +169,12 @@ void TaskManager::renderTasks() {
     delwin(doneWin);
 }
 
-// Function to prompt the user for task details and add it
+/**
+ * @brief Prompts the user for task details and adds the task to the list.
+ * 
+ * This function prompts the user to enter a task's title and status, validates the
+ * inputs, and adds the new task to the list.
+ */
 void TaskManager::promptForTask() {
     char title[100];
     char status[20];
@@ -202,7 +235,10 @@ void TaskManager::promptForTask() {
 }
 
 /**
- * @brief Listens for key press events, including Ctrl + 't' for task input.
+ * @brief Listens for user input, including special key presses.
+ * 
+ * This function listens for key press events and triggers actions such as
+ * prompting for a new task when the user presses Ctrl + T (ASCII value 20).
  */
 void TaskManager::listenForInput() {
     int ch;
@@ -217,6 +253,10 @@ void TaskManager::listenForInput() {
     }
 }
 
+/**
+ * @brief Prompts the user to move a task to a different status via a popup.
+ * @param taskId The ID of the task to move.
+ */
 void TaskManager::moveTaskPopup(int taskId) {
     const std::vector<std::string> categories = {"To Do", "In Progress", "Completed"};
     int highlight = 0;
@@ -276,6 +316,10 @@ void TaskManager::moveTaskPopup(int taskId) {
     }
 }
 
+/**
+ * @brief Finds and returns the next available task ID.
+ * @return The next available task ID.
+ */
 int TaskManager::nextFree() {
     int nextId = 1;
     for (const auto& task : tasks) {
