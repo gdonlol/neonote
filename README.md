@@ -1,7 +1,7 @@
-# <u>Neonote</u>
+# Neonote
 A terminal-based, markdown text editor with task management, calendar scheduling, and more.
 
-# <u>How to run</u>
+# How to run
 Clone the repository.
 
 ```
@@ -13,54 +13,54 @@ Navigate to project directory in your terminal and use `make` to compile the pro
 - The compiled binary will be located in the `bin/` folder.
 - If the `bin/` directory doesn’t exist, `make` will automatically create it.
 
-# <u>Dependencies</u>
+# Dependencies
 Neonote relies on the following dependencies for proper compilation and execution.
 
 1. ## `g++` (GCC)
 2. ## **ncurses Library**
 - Used for terminal-based UI rendering.
 - Install commands for common Linux distributions:
-### **Debian/Ubuntu**:
+### 2.1 **Debian/Ubuntu**:
 ```
 sudo apt install libncurses5-dev libncursesw5-dev
 ```
-### **Arch Linux**:
+### 2.2 **Arch Linux**:
 ```
 sudo pacman -S ncurses
 ```
-### **Fedora/RHEL**:
+### 2.3 **Fedora/RHEL**:
 ```
 sudo dnf install ncurses-devel
 ```
 3. ## **GNU Make**
 - Used to build the project using the provided `Makefile`.
 - Install commands:
-### **Debian/Ubuntu**:
+### 3.1 **Debian/Ubuntu**:
 ```
 sudo apt install make
 ```
-### **Arch Linux**:
+### 3.2 **Arch Linux**:
 ```
 sudo pacman -S make
 ```
-### **Fedora/RHEL**:
+### 3.3 **Fedora/RHEL**:
 ```
 sudo dnf install make
 ```
 
-# <u>Description - CS3307 Group 14</u>
+# Description - CS3307 Group 14
 Beautiful, fast, and fully featured text editor in the terminal for users who wish to keep their workflow in one place. This project will incorporate planning features similar to Notion to streamline personal productivity but be optimized for terminal use with a graphical TUI (text-based user interface). The text editor will integrate tools for task management, calendar scheduling, and more, while being optimized for a keyboard-driven workflow in a terminal environment.
 
 This software will be developed in C++ and will run virtually on a Raspberry Pi. We do not require a physical Raspberry Pi kit for this project.
 
-# <u>Features</u>
+# Features
 - Markdown editing
 - Keyboard user-centric, efficient keybinds for everything
 - Kanban board todo list for productivity
 - Calendars for event planning
 - Interface for list of pages on sidebar
 
-# <u>Keybinds Guide</u>
+# Keybinds Guide
 This guide provides an overview of the keybindings available in the terminal editor, covering both content editing and sidebar navigation.
 
 1. ## Main Menu Navigation
