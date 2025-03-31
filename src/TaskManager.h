@@ -36,6 +36,10 @@ public:
     
     int getSelectedTaskId();
 
+    void swapIn();
+
+    void swapOut();
+
 private:
     std::vector<std::vector<Task>> tasks = {{}, {}, {}};
     WINDOW* content;

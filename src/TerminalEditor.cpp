@@ -283,6 +283,7 @@ void TerminalEditor::handleInputSidebar(int ch) {
             }
             else if (sidebar_index == fileManager.getFiles().size()){
                 //kanban swap
+                taskManager.swapIn();
                 taskManager.renderTasks();
                 last_focused_div = focused_div;
                 focused_div = 2; /**< Flip focused_div to kanban. */
@@ -361,6 +362,8 @@ void TerminalEditor::handleInputKanban(int ch){
         case 15:
         case 4:
             last_focused_div = focused_div;
+            taskManager.swapOut();
+            taskManager.renderTasks();
             focused_div = 1; /**< Flip focused_div. */
             break;
         case 14: // Ctrl+N - Add new task

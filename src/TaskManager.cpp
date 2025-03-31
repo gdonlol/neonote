@@ -15,7 +15,7 @@
  * 
  * @param content Pointer to the ncurses window where tasks will be displayed.
  */
-TaskManager::TaskManager(WINDOW* content) : content(content), currentSelected(0), currentType(0) {
+TaskManager::TaskManager(WINDOW* content) : content(content), currentSelected(-1), currentType(-1) {
     this->content = content;
 
     const char* homeDir = getenv("HOME");
@@ -188,15 +188,26 @@ void TaskManager::renderTasks() {
     WINDOW* doneWin = derwin(content, colHeight, colWidth, 1, 2 * colWidth + 1);
 
     // Render headers
-    mvwprintw(todoWin, 0, (colWidth - 10) / 2, "--- To Do ---");
-    mvwprintw(inProgressWin, 0, (colWidth - 15) / 2, "--- In Progress ---");
-    mvwprintw(doneWin, 0, (colWidth - 9) / 2, "--- Done ---");
+    if(currentType == 0) wattron(todoWin, COLOR_PAIR(6));
+    mvwprintw(todoWin, 0, (colWidth - 6) / 2, "To Do");
+    mvwhline(todoWin, 1, 0, ACS_HLINE, colWidth);
+    wattroff(todoWin, COLOR_PAIR(6));
+
+    if(currentType == 1) wattron(inProgressWin, COLOR_PAIR(6));
+    mvwprintw(inProgressWin, 0, (colWidth - 11) / 2, "In Progress");
+    mvwhline(inProgressWin, 1, 0, ACS_HLINE, colWidth);
+    wattroff(inProgressWin, COLOR_PAIR(6));
+
+    if(currentType == 2) wattron(doneWin, COLOR_PAIR(6));
+    mvwprintw(doneWin, 0, (colWidth - 4) / 2, "Done");
+    mvwhline(doneWin, 1, 0, ACS_HLINE, colWidth);
+    wattroff(doneWin, COLOR_PAIR(6));
 
     // Display tasks in each column
     for (int col = 0; col < 3; ++col) {
         WINDOW* drawWin = (col == 0) ? todoWin : (col == 1) ? inProgressWin : doneWin;
 
-        int y = 2;
+        int y = 3;
         for (int i = 0; i < tasks[col].size(); ++i) {
             bool isSelected = (currentType == col && currentSelected == i);
 
@@ -349,4 +360,14 @@ int TaskManager::nextFree() {
     }
 
     return maxId + 1;
+}
+
+void TaskManager::swapIn(){
+    currentSelected = 0;
+    currentType = 0;
+}
+
+void TaskManager::swapOut(){
+    currentSelected = -1;
+    currentType = -1;
 }
