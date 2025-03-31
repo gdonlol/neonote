@@ -354,6 +354,11 @@ void TerminalEditor::handleInputSidebar(int ch) {
 void TerminalEditor::handleInputKanban(int ch){
     string input;
     switch(ch){
+        case 15:
+        case 4:
+            last_focused_div = focused_div;
+            focused_div = 1; /**< Flip focused_div. */
+            break;
         case 14: // Ctrl+N - Add new task
             input = ui.displayPrompt("Enter new task:");
             if (!input.empty()) {
