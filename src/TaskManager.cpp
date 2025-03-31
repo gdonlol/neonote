@@ -246,7 +246,7 @@ void TaskManager::moveTaskPopup(int taskId) {
             if (i == highlight) {
                 wattron(popup, A_REVERSE); // Highlight current selection
             }
-            mvwprintw(popup, i + 2, 3, categories[i].c_str());
+            mvwprintw(popup, i + 2, 3, "%s", categories[i].c_str());
             wattroff(popup, A_REVERSE);
         }
 

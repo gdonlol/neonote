@@ -65,6 +65,6 @@ void MainMenu::drawMenu() const {
     }
 
     const char* credits = "Credits: Gordon Xu, Allen Zhu, Emily Atyeo";
-    mvwprintw(win_, (LINES - 1), (COLS - strlen(credits)) / 2, credits);
+    mvwprintw(win_, (LINES - 1), (COLS - strlen(credits)) / 2, "%s", credits);
     wrefresh(win_);
 }
