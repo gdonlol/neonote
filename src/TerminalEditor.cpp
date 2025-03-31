@@ -53,6 +53,24 @@ void TerminalEditor::handleInput(int ch) {
         handleInputSidebar(ch);  /**< Handle input in the sidebar area. */
     }
     else if (focused_div == 2) { //**< 2 = kanban */
+        string input;
+        switch(ch){
+            case 20: // Ctrl+T - Add new task
+                input = ui.displayPrompt("Enter new task:");
+                if (!input.empty()) {
+                    taskManager.addTask(input); /**< Add new task to task manager. */
+                    taskManager.renderTasks();  /**< Refresh task display. */
+                }
+                break;
+            case 16: // Ctrl+P
+                int taskId = taskManager.nextFree() - 1; 
+                if (taskId >= 0) {
+                    printw("Opening move task popup for task ID %d\n", taskId);
+                    refresh();
+                    taskManager.moveTaskPopup(taskId);
+                }
+                break;
+        }
     }
     else if (focused_div == 3) { //**< 3 = handleinputcalendar */
         string event_title, event_desc, event_date, input;
@@ -311,17 +329,6 @@ void TerminalEditor::handleInputSidebar(int ch) {
             fileManager.newFile(); /**< Push new file to files vector. */
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             break;
-        case 16: // Ctrl+P
-            refresh();
-            if (sidebar_index >= fileManager.getFiles().size()) { 
-                int taskId = taskManager.nextFree() - 1; 
-                if (taskId >= 0) {
-                    printw("Opening move task popup for task ID %d\n", taskId);
-                    refresh();
-                    taskManager.moveTaskPopup(taskId);
-                }
-            }
-            break;
         case KEY_F(2):
         case 18:
             fileManager.saveFile(current_file, lines);
@@ -329,13 +336,6 @@ void TerminalEditor::handleInputSidebar(int ch) {
             fileManager.renameFile(fileManager.getFiles()[sidebar_index], input, current_file);
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);
-            break;
-        case 20: // Ctrl+T - Add new task
-            input = ui.displayPrompt("Enter new task:");
-            if (!input.empty()) {
-                taskManager.addTask(input); /**< Add new task to task manager. */
-                taskManager.renderTasks();  /**< Refresh task display. */
-            }
             break;
         case KEY_DC:
             if(fileManager.getFiles().size() > 1){
