@@ -35,6 +35,8 @@ void Application::create_windows() {
     main_window_ = std::unique_ptr<WINDOW, WindowDeleter>(
         newwin(LINES, COLS, 0, 0), WindowDeleter());
 
+    auto [sidebar_width, content_width] = calculate_layout(COLS);
+
     // Create sidebar and content windows in container
     sidebar_ = std::unique_ptr<WINDOW, WindowDeleter>(
         derwin(main_window_.get(), LINES, sidebar_width, 0, 0), WindowDeleter());
