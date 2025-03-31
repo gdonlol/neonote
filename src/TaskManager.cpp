@@ -158,23 +158,23 @@ void TaskManager::moveSelection(int direction){
     switch (direction) {
         case 0:  // Up
             if (!tasks[currentType].empty()) {
-                currentSelected = (currentSelected - 1 + tasks[currentType].size()) % tasks[currentType].size();
+                currentSelected = (currentSelected - 1 + tasks[currentType].size()) % tasks[currentType].size(); //**< Circular navigation for rows */
             }
             break;
 
         case 1:  // Down
             if (!tasks[currentType].empty()) {
-                currentSelected = (currentSelected + 1) % tasks[currentType].size();
+                currentSelected = (currentSelected + 1) % tasks[currentType].size(); //**< Circular navigation for rows */
             }
             break;
 
         case 2:  // Left
-            currentType = (currentType - 1 + 3) % 3;  // Circular navigation for columns
+            currentType = (currentType - 1 + 3) % 3;  //**< Circular navigation for columns */
             currentSelected = std::min(currentSelected, (int)tasks[currentType].size() - 1);
             break;
 
         case 3:  // Right
-            currentType = (currentType + 1) % 3;  // Circular navigation for columns
+            currentType = (currentType + 1) % 3;  //**< Circular navigation for columns */
             currentSelected = std::min(currentSelected, (int)tasks[currentType].size() - 1);
             break;
     }
@@ -211,14 +211,12 @@ void TaskManager::moveTaskPopup(int taskId) {
     keypad(popup, TRUE);
 
     mvwprintw(popup, 1, 3, "Move Task To:");
-    wrefresh(popup);  // Ensure the window is drawn
+    wrefresh(popup);
 
     while (choice == -1) {
         // Display options
         for (size_t i = 0; i < categories.size(); i++) {
-            if (i == highlight) {
-                wattron(popup, A_REVERSE); // Highlight current selection
-            }
+            if (i == highlight) wattron(popup, A_REVERSE);
             mvwprintw(popup, i + 2, 3, "%s", categories[i].c_str());
             wattroff(popup, A_REVERSE);
         }
