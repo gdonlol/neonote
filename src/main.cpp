@@ -63,16 +63,20 @@ int main() {
     use_default_colors();  /**< Use terminal default colors. */
     keypad(stdscr, TRUE);  /**< Enable keypad input (e.g., arrow keys). */
     intrflush(stdscr, FALSE);  /**< Disable automatic flushing of the input buffer. */
+
     start_color();  /**< Initialize color functionality. */
+    init_color(COLOR_BLACK, 150, 150, 150);
     // Initialize color pairs for headers with custom attributes
     init_pair(1, COLOR_BLACK, COLOR_WHITE); // Inverted highlight
-    init_pair(2, (COLOR_RED | A_BOLD | A_UNDERLINE) & 0xFF, COLOR_BLACK);    // H1 - Bold + Underline
-    init_pair(3, (COLOR_GREEN | A_UNDERLINE) & 0xFF, COLOR_BLACK);      // H2 - Underline
-    init_pair(4, (COLOR_YELLOW | A_UNDERLINE) & 0xFF, COLOR_BLACK);     // H3 - Underline
-    init_pair(5, (COLOR_BLUE | A_UNDERLINE) & 0xFF, COLOR_BLACK);       // H4 - Underline
-    init_pair(6, (COLOR_MAGENTA | A_UNDERLINE) & 0xFF, COLOR_BLACK);    // H5 - Underline
-    init_pair(7, (COLOR_CYAN | A_DIM | A_UNDERLINE) & 0xFF, COLOR_BLACK);   // H6 - Dim + Underline
     system("export TERM=xterm-256color");
+    init_pair(2, COLOR_RED, -1);    // H1
+    init_pair(3, COLOR_GREEN, -1);      // H2
+    init_pair(4, COLOR_YELLOW, -1);     // H3
+    init_pair(5, COLOR_BLUE, -1);       // H4
+    init_pair(6, COLOR_MAGENTA, -1);    // H5
+    init_pair(7, COLOR_CYAN, -1);   // H6
+    init_pair(9, COLOR_WHITE, COLOR_BLACK);    // Codeblock
+
     char text[] = {67, 114, 101, 100, 105, 116, 115, 58, 32, 71, 111, 114, 100, 111, 110, 32, 88, 117, 44, 32, 65, 108, 108, 101, 110, 32, 90, 104, 117, 44, 32, 69, 109, 105, 108, 121, 32, 65, 116, 121, 101, 111, 0};
     if (!has_colors()) {
         printw("Terminal does not support color");

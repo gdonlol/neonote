@@ -110,9 +110,44 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
     int max_cols = COLS * 0.75 - 4;
     static bool bold_on = false;
     static bool italics_on = false;
+    static bool in_inline_code = false;  // Track inline code state
     int total_asterisk_offset = 0;
     int line_asterisk_offset = 0;
     int total_header_offset = 0;
+    int code_block_indent_offset = 0;
+    int total_backtick_offset = 0;  // Track backtick characters to offset cursor
+
+    // Track code block state for cursor position calculation
+    bool in_code_block_for_cursor = false;
+    bool in_indented_code_block_for_cursor = false;
+    
+    // Calculate code block state up to the cursor line
+    for (int i = 0; i <= row; ++i) {
+        if (i < lines.size()) {
+            std::string line = lines[i];
+            
+            // Handle code blocks (triple backticks)
+            if (line.rfind("```", 0) == 0) { // Starts with ```
+                in_code_block_for_cursor = !in_code_block_for_cursor;
+                in_indented_code_block_for_cursor = false;
+            }
+            
+            // Handle indented code blocks
+            bool is_indented = (line.length() >= 4 && (line[0] == ' ' || line[0] == '\t')) &&
+                             (line[0] == line[1] && line[1] == line[2] && line[2] == line[3]);
+            
+            if (!in_code_block_for_cursor) {
+                if (is_indented && (i == 0 || 
+                                   lines[i-1].empty() || 
+                                   (lines[i-1].length() >= 4 && 
+                                    (lines[i-1][0] == ' ' || lines[i-1][0] == '\t')))) {
+                    in_indented_code_block_for_cursor = true;
+                } else if (!is_indented) {
+                    in_indented_code_block_for_cursor = false;
+                }
+            }
+        }
+    }
 
     // Calculate the total formatting offset up to the cursor position
     if (row >= scroll_row && row < scroll_row + max_lines) {
@@ -121,6 +156,14 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
         int header_level = 0;
         size_t header_start = 0;
         
+        // Check if we're in a code block at cursor position
+        bool current_line_in_code = in_code_block_for_cursor || in_indented_code_block_for_cursor;
+        
+        // Add 2-space indentation offset if in code block
+        if (current_line_in_code) {
+            code_block_indent_offset = 2;
+        }
+
         if (is_header) {
             header_level = 1;
             while (header_level < cursor_line.length() && cursor_line[header_level] == '#' && header_level < 6) {
@@ -142,6 +185,22 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
                 continue;
             }
 
+            // Skip formatting characters in code blocks
+            if (current_line_in_code) {
+                continue;
+            }
+
+            // Handle inline code backticks
+            if (cursor_line[pos] == '`') {
+                // Check if it's an escaped backtick
+                if (pos > 0 && cursor_line[pos-1] == '\\') {
+                    total_backtick_offset -= 1; // The backslash was already counted
+                } else {
+                    total_backtick_offset += 1;
+                }
+                continue;
+            }
+
             if (pos + 1 < cursor_line.length() && cursor_line[pos] == '*' && cursor_line[pos + 1] == '*') {
                 total_asterisk_offset += 2;
                 pos++;
@@ -150,12 +209,16 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
                 total_asterisk_offset += 1;
             }
             else if (cursor_line[pos] == '\\' && pos + 1 < cursor_line.length() && 
-                    (cursor_line[pos + 1] == '*' || cursor_line[pos + 1] == '\\')) {
+                    (cursor_line[pos + 1] == '*' || cursor_line[pos + 1] == '\\' || cursor_line[pos + 1] == '`')) {
                 total_asterisk_offset += 1;
                 pos++;
             }
         }
     }
+
+    // Track code block state while rendering
+    bool in_code_block = false;
+    bool in_indented_code_block = false;
 
     // Render all lines
     for (int i = 0; i < max_lines; ++i) {
@@ -167,14 +230,59 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
 
             if (bold_on) wattroff(content, A_BOLD);
             if (italics_on) wattroff(content, A_ITALIC);
-            bold_on = italics_on = false;
+            if (in_inline_code) wattroff(content, COLOR_PAIR(9));
+            bold_on = italics_on = in_inline_code = false;
 
-            // Handle markdown headers
+            // Handle code blocks (triple backticks)
+            bool is_backtick_line = line.rfind("```", 0) == 0;
+            if (is_backtick_line) {
+                in_code_block = !in_code_block;
+                // Color the backtick line but hide the backticks
+                wattron(content, COLOR_PAIR(9));
+                for (; x < max_cols + 2; ++x) {
+                    mvwaddch(content, i + 2, x, ' ');
+                }
+                wattroff(content, COLOR_PAIR(9));
+                continue;
+            }
+
+            // Handle indented code blocks
+            bool is_indented = (line.length() >= 4 && (line[0] == ' ' || line[0] == '\t')) &&
+                             (line[0] == line[1] && line[1] == line[2] && line[2] == line[3]);
+            
+            if (!in_code_block) {
+                if (is_indented && (line_index == 0 || 
+                                   lines[line_index-1].empty() || 
+                                   (lines[line_index-1].length() >= 4 && 
+                                    (lines[line_index-1][0] == ' ' || lines[line_index-1][0] == '\t')))) {
+                    in_indented_code_block = true;
+                } else if (!is_indented) {
+                    in_indented_code_block = false;
+                }
+            }
+
+            bool current_line_in_code = in_code_block || in_indented_code_block;
+
+            if (current_line_in_code) {
+                wattron(content, COLOR_PAIR(9));
+                // Add 2-space indentation for code blocks
+                mvwaddch(content, i + 2, x, ' ');
+                mvwaddch(content, i + 2, x + 1, ' ');
+                x += 2;
+                
+                // Highlight the whole line for code blocks
+                for (; x < max_cols + 2; ++x) {
+                    mvwaddch(content, i + 2, x, ' ');
+                }
+                x = 4; // Start text at position 4 (2 + 2 spaces)
+            }
+
+            // Handle markdown headers (only outside code blocks)
             int header_level = 0;
             size_t header_start = 0;
             bool in_header = false;
             
-            if (line.length() > 0 && line[0] == '#') {
+            if (!current_line_in_code && line.length() > 0 && line[0] == '#') {
                 header_level = 1;
                 while (header_level < line.length() && line[header_level] == '#' && header_level < 6) {
                     header_level++;
@@ -193,26 +301,48 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
                     continue;
                 }
 
-                // Handle formatting marks
-                if (pos + 1 < line.length() && line[pos] == '*' && line[pos + 1] == '*') {
-                    bold_on = !bold_on;
-                    line_asterisk_offset += 2;
-                    pos++;
-                    if (bold_on) wattron(content, A_BOLD);
-                    else wattroff(content, A_BOLD);
+                // Handle inline code blocks (single backticks)
+                if (!current_line_in_code && line[pos] == '`') {
+                    // Check if it's an escaped backtick
+                    if (pos > 0 && line[pos-1] == '\\') {
+                        // Just print the backtick without formatting
+                        mvwaddch(content, i + 2, x, line[pos]);
+                        x++;
+                        continue;
+                    }
+                    
+                    in_inline_code = !in_inline_code;
+                    if (in_inline_code) {
+                        wattron(content, COLOR_PAIR(9));
+                    } else {
+                        wattroff(content, COLOR_PAIR(9));
+                    }
+                    line_asterisk_offset += 1;
                     continue;
                 }
-                else if (line[pos] == '*') {
-                    italics_on = !italics_on;
-                    line_asterisk_offset += 1;
-                    if (italics_on) wattron(content, A_ITALIC);
-                    else wattroff(content, A_ITALIC);
-                    continue;
-                }
-                else if (line[pos] == '\\' && pos + 1 < line.length() && 
-                        (line[pos + 1] == '*' || line[pos + 1] == '\\')) {
-                    pos++;
-                    line_asterisk_offset += 1;
+
+                // Handle formatting marks (only outside code blocks and not in inline code)
+                if (!current_line_in_code && !in_inline_code) {
+                    if (pos + 1 < line.length() && line[pos] == '*' && line[pos + 1] == '*') {
+                        bold_on = !bold_on;
+                        line_asterisk_offset += 2;
+                        pos++;
+                        if (bold_on) wattron(content, A_BOLD);
+                        else wattroff(content, A_BOLD);
+                        continue;
+                    }
+                    else if (line[pos] == '*') {
+                        italics_on = !italics_on;
+                        line_asterisk_offset += 1;
+                        if (italics_on) wattron(content, A_ITALIC);
+                        else wattroff(content, A_ITALIC);
+                        continue;
+                    }
+                    else if (line[pos] == '\\' && pos + 1 < line.length() && 
+                            (line[pos + 1] == '*' || line[pos + 1] == '\\' || line[pos + 1] == '`')) {
+                        pos++;
+                        line_asterisk_offset += 1;
+                    }
                 }
 
                 mvwaddch(content, i + 2, x, line[pos]);
@@ -222,15 +352,25 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
             if (in_header) {
                 wattroff(content, COLOR_PAIR(header_level + 1));
             }
+            
+            if (current_line_in_code || in_inline_code) {
+                wattroff(content, COLOR_PAIR(9));
+            }
         }
     }
 
     if (bold_on) wattroff(content, A_BOLD);
     if (italics_on) wattroff(content, A_ITALIC);
+    if (in_inline_code) wattroff(content, COLOR_PAIR(9));
     
     // Apply the total formatting offsets to cursor position
-    wmove(content, row - scroll_row + 2, col - scroll_col + 2 - total_asterisk_offset - total_header_offset);
+    int cursor_col = col - scroll_col + 2 - total_asterisk_offset - total_header_offset - total_backtick_offset;
+    if (in_code_block_for_cursor || in_indented_code_block_for_cursor) {
+        cursor_col += code_block_indent_offset;
+    }
+    wmove(content, row - scroll_row + 2, cursor_col);
 }
+
 std::string EditorUI::displayPrompt(std::string title){
     TextPrompt prompt(win, title);
     return prompt.prompt();
