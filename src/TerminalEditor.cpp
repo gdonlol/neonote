@@ -300,6 +300,17 @@ void TerminalEditor::handleInputSidebar(int ch) {
             fileManager.newFile(); /**< Push new file to files vector. */
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             break;
+        case 16: // Ctrl+P
+            refresh();
+            if (sidebar_index >= fileManager.getFiles().size()) { 
+                int taskId = taskManager.nextFree() - 1; 
+                if (taskId >= 0) {
+                    printw("Opening move task popup for task ID %d\n", taskId);
+                    refresh();
+                    taskManager.moveTaskPopup(taskId);
+                }
+            }
+            break;
         case KEY_F(2):
         case 18:
             fileManager.saveFile(current_file, lines);
