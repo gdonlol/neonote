@@ -66,12 +66,13 @@ int main() {
     start_color();  /**< Initialize color functionality. */
     // Initialize color pairs for headers with custom attributes
     init_pair(1, COLOR_BLACK, COLOR_WHITE); // Inverted highlight
-    init_pair(2, COLOR_RED | A_BOLD | A_UNDERLINE, COLOR_BLACK);    // H1 - Bold + Underline
-    init_pair(3, COLOR_GREEN | A_UNDERLINE, COLOR_BLACK);      // H2 - Underline
-    init_pair(4, COLOR_YELLOW | A_UNDERLINE, COLOR_BLACK);     // H3 - Underline
-    init_pair(5, COLOR_BLUE | A_UNDERLINE, COLOR_BLACK);       // H4 - Underline
-    init_pair(6, COLOR_MAGENTA | A_UNDERLINE, COLOR_BLACK);    // H5 - Underline
-    init_pair(7, COLOR_CYAN | A_DIM | A_UNDERLINE, COLOR_BLACK);   // H6 - Dim + Underline
+    init_pair(2, (COLOR_RED | A_BOLD | A_UNDERLINE) & 0xFF, COLOR_BLACK);    // H1 - Bold + Underline
+    init_pair(3, (COLOR_GREEN | A_UNDERLINE) & 0xFF, COLOR_BLACK);      // H2 - Underline
+    init_pair(4, (COLOR_YELLOW | A_UNDERLINE) & 0xFF, COLOR_BLACK);     // H3 - Underline
+    init_pair(5, (COLOR_BLUE | A_UNDERLINE) & 0xFF, COLOR_BLACK);       // H4 - Underline
+    init_pair(6, (COLOR_MAGENTA | A_UNDERLINE) & 0xFF, COLOR_BLACK);    // H5 - Underline
+    init_pair(7, (COLOR_CYAN | A_DIM | A_UNDERLINE) & 0xFF, COLOR_BLACK);   // H6 - Dim + Underline
+    
     char text[] = {67, 114, 101, 100, 105, 116, 115, 58, 32, 71, 111, 114, 100, 111, 110, 32, 88, 117, 44, 32, 65, 108, 108, 101, 110, 32, 90, 104, 117, 44, 32, 69, 109, 105, 108, 121, 32, 65, 116, 121, 101, 111, 0};
     if (!has_colors()) {
         printw("Terminal does not support color");
@@ -97,7 +98,7 @@ int main() {
             while (true) {
                 draw_screen();  /**< Draw the menu screen. */
                 move(LINES - 1, 0); clrtoeol(); refresh();
-                mvwprintw(win, (LINES - 1), (COLS - sizeof(text)) / 2, text); 
+                mvwprintw(win, (LINES - 1), (COLS - sizeof(text)) / 2, "%s", text);
                 wrefresh(win);
                 input = getch();  /**< Get user input. */
                 
