@@ -74,23 +74,31 @@ void Calendar::renderCalendar() {
     wclear(content);
     box(content, 0, 0);
 
-    //Display Header: Shows the current month, year, and weekdays.
+    // Get the terminal dimensions
+    int maxY, maxX;
+    getmaxyx(content, maxY, maxX);
+
+    // Use content dimensions
+    int contentMaxY, contentMaxX;
+    getmaxyx(content, contentMaxY, contentMaxX);
+
+    // Display Header: Shows the current month, year, and weekdays.
     int currentMonth = getCurrentMonth();
     int year = getCurrentYear();
-    mvwprintw(content, 2, 2, "%d/%d", currentMonth, year);  //**< Display "MM/YYYY"
+    mvwprintw(content, 2, 2, "%d/%d", currentMonth, year);  // **< Display "MM/YYYY"
 
-    //Month Details: Calculates the number of days and the first weekday.
+    // Month Details: Calculates the number of days and the first weekday.
     int daysInMonth = getDaysInMonth(currentMonth, year);
     int firstDay = getFirstDayOfMonth(currentMonth, year);
 
-    //Grid Layout: Defines dimensions of each day sub-window.
-    const int dayWidth = (((COLS - 1) * 0.75) / 2) / 7;  //**< Width of each day window
-    const int dayHeight = (LINES * 0.75) / 7;                 //**< Height of each day window
+    // Dynamic grid layout using content size
+    int dayWidth = (contentMaxX / 2) / 7;        // **< Width of each day window
+    int dayHeight = (contentMaxY * 0.75) / 7;     // **< Height of each day window
 
-    int startY = 6;                          //**< Starting Y position for the first row
-    int startX = 2 + (firstDay * dayWidth);  //**< Starting X position based on the first weekday
+    int startY = 6;                               // **< Starting Y position for the first row
+    int startX = 2 + (firstDay * dayWidth);       // **< Starting X position based on the first weekday
 
-    //Draw headers
+    // Draw headers
     const char* weekdays[] = {"S", "M", "T", "W", "T", "F", "S"};
     int headerY = 4;
     int headerX = 2;
@@ -98,19 +106,18 @@ void Calendar::renderCalendar() {
         mvwprintw(content, headerY, headerX + (i * dayWidth) + (dayWidth / 2) - 1, "%s", weekdays[i]);
     }
 
-    int currentDay = getCurrentDay();        //**< Get the current day for highlighting
+    int currentDay = getCurrentDay();           // **< Get the current day for highlighting
+    std::vector<WINDOW*> dayWindows;            // **< Store sub-windows for cleanup
 
-    std::vector<WINDOW*> dayWindows;         //**< Store sub-windows for cleanup
-
-    //Render Grid: Creates sub-windows and displays day numbers.
+    // Render Grid: Creates sub-windows and displays day numbers.
     for (int day = 1; day <= daysInMonth; ++day) {
-        WINDOW* dayWin = derwin(content, dayHeight, dayWidth, startY, startX);  //**< Create day sub-window
-        dayWindows.push_back(dayWin);  //**< Store the window for later cleanup
+        WINDOW* dayWin = derwin(content, dayHeight, dayWidth, startY, startX);  // **< Create day sub-window
+        dayWindows.push_back(dayWin);                                           // **< Store for cleanup
 
-        box(dayWin, 0, 0);  //**< Draw the border
-        mvwprintw(dayWin, 1, 2, "%2d", day);  //**< Display day number
+        box(dayWin, 0, 0);                                                      // **< Draw the border
+        mvwprintw(dayWin, 1, 2, "%2d", day);                                    // **< Display day number
 
-        //Highlight the current day
+        // Highlight the current day
         if (day == currentDay) {
             wattron(dayWin, A_REVERSE);
             mvwprintw(dayWin, 1, 2, "%2d", day);
@@ -119,36 +126,41 @@ void Calendar::renderCalendar() {
 
         wrefresh(dayWin);
 
-        //Move to the next day position
+        // Move to the next day position
         startX += dayWidth;
 
-        //Move to the next row at the end of the week
+        // Move to the next row at the end of the week
         if ((firstDay + day) % 7 == 0) {
             startY += dayHeight;
-            startX = 2;  //**< Reset to the first column
+            startX = 2;  // Reset to the first column
         }
     }
 
-    WINDOW *eventswin = derwin(
-        content, 
-        LINES - 4,
-        ((COLS * 0.75) / 2 )- 4,
-        2,
-        ((COLS * 0.75) / 2) + 4
-    );
+    // Render the events panel using content dimensions
+    int eventsWinHeight = contentMaxY - 4;
+    int eventsWinWidth = (contentMaxX / 2) - 4;
+    int eventsWinY = 2;
+    int eventsWinX = (contentMaxX / 2) + 1;
+
+    WINDOW* eventswin = derwin(content, eventsWinHeight, eventsWinWidth, eventsWinY, eventsWinX);
+    
     refresh();
     mvwprintw(eventswin, 0, 0, "%s", "Events");
     wrefresh(eventswin);
+
     int y = 1;
-    int lineWidth = ((COLS * 0.75) / 2) - 4;
+    int lineWidth = eventsWinWidth;
     int i = 0; 
-    if(events.empty()) {
+
+    // Display events or a placeholder message
+    if (events.empty()) {
         mvwprintw(eventswin, ++y, 0, "%s", "No events (Ctrl + N)");
     }
+    
     for (const Event& event : events) {
         mvwhline(eventswin, y++, 0, ACS_HLINE, lineWidth);
 
-        if (selectedEvent == i) wattron(eventswin, A_REVERSE);  // Compare against index
+        if (selectedEvent == i) wattron(eventswin, A_REVERSE);  // Highlight selected event
         
         std::string title = "Title: " + event.getTitle();
         mvwprintw(eventswin, y++, 0, "%s", (title + std::string(lineWidth - title.length(), ' ')).c_str());
@@ -160,13 +172,13 @@ void Calendar::renderCalendar() {
         mvwprintw(eventswin, y++, 0, "%s", (date + std::string(lineWidth - date.length(), ' ')).c_str());
         
         wattroff(eventswin, A_REVERSE);
-        
         ++i;
     }
-    //Refresh the main content window
+
+    // Refresh the main content window
     wrefresh(content);
 
-    //Cleanup: Free memory by deleting all sub-windows.
+    // Cleanup: Free memory by deleting all sub-windows.
     for (auto win : dayWindows) {
         delwin(win);
     }
