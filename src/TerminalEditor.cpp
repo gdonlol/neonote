@@ -77,6 +77,7 @@ void TerminalEditor::handleInput(int ch) {
         switch(ch){
             case 15:
             case 4:
+                last_focused_div = focused_div;
                 focused_div = 1; /**< Flip focused_div. */
                 calendar.setSelectedEvent(-1);
                 calendar.renderCalendar();
@@ -295,6 +296,7 @@ void TerminalEditor::handleInputContent(int ch) {
         case 15:
         case 4:
         // Ctrl+O or Ctrl+D - Swap to sidebar control:
+            last_focused_div = focused_div;
             focused_div = 1; /**< Flip focused_div. */
             curs_set(0);
             break;
@@ -323,6 +325,7 @@ void TerminalEditor::handleInputSidebar(int ch) {
         case 15:
         case 4:
             if (sidebar_index < fileManager.getFiles().size()){
+                last_focused_div = focused_div;
                 focused_div = 0; /**< Flip focused_div to content.  */
                 curs_set(1);
                 fileManager.saveFile(current_file, lines);
@@ -331,12 +334,14 @@ void TerminalEditor::handleInputSidebar(int ch) {
             }
             else if (sidebar_index == fileManager.getFiles().size()){
                 //kanban swap
+                last_focused_div = focused_div;
                 focused_div = 2; /**< Flip focused_div to kanban. */
             }
             else{
                 //calendar swap
                 calendar.setSelectedEvent(0);
                 calendar.renderCalendar();
+                last_focused_div = focused_div;
                 focused_div = 3; /**< Flip focused_div to calendar. */
             }
             break;
@@ -423,32 +428,26 @@ void TerminalEditor::redraw() {
     getmaxyx(stdscr, current_lines, current_cols);
     
     sidebar_width = current_cols * 0.25;
-    int content_width = current_cols - sidebar_width;
+    int content_width = current_cols * 0.75;
 
-    switch (focused_div) {
-            
-        case 1: // Sidebar
-	    ui.displayContent(lines, row, col, scroll_row, scroll_col, current_file);
-            break;
-            
-        case 2: // Kanban
-            taskManager.renderTasks();
-            break;
-            
-        case 3: // Calendar
-            calendar.renderCalendar();
-            break;
-    }
     wresize(ui.getMainWindow(), current_lines, current_cols);
     wresize(ui.getSidebar(), current_lines, sidebar_width);
     wresize(ui.getContent(), current_lines, content_width);
-    
+
     mvwin(ui.getSidebar(), 0, 0);
     mvwin(ui.getContent(), 0, sidebar_width);
+
     ui.renderUI(sidebar_width, fileManager.getFiles());
 
-    ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
-    ui.displayContent(lines, row, col, scroll_row, scroll_col, current_file);
+    if (focused_div == 0 || last_focused_div == 0){
+        ui.displayContent(lines, row, col, scroll_row, scroll_col, current_file);
+    }else if (focused_div == 2 || last_focused_div == 2){
+        taskManager.renderTasks();
+    }
+    else if (focused_div == 3 || last_focused_div == 3){
+        calendar.renderCalendar();
+    } 
+
     ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
 
     curs_set(focused_div == 0 ? 1 : 0); // Show cursor only in content editor
