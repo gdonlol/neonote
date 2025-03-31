@@ -1,34 +1,71 @@
 #include "Task.h"
 #include <sstream>
 
-// Constructor: Initializes a Task object with provided values.
+/**
+ * @brief Constructs a Task object.
+ * 
+ * This constructor initializes a task with an ID, title, status, description, and due date.
+ * 
+ * @param id The unique identifier for the task.
+ * @param title The title of the task.
+ * @param status The current status of the task (e.g., "in-progress", "completed").
+ * @param description A brief description of the task.
+ * @param dueDate The due date of the task.
+ */
 Task::Task(int id, const std::string& title, const std::string& status, 
     const std::string& description, const std::string& dueDate)
 : id(id), title(title), status(status), description(description), dueDate(dueDate) {}
 
-// Getter function for Task ID
+/**
+ * @brief Gets the unique identifier for the task.
+ * @return The ID of the task.
+ */
 int Task::getId() const { return id; }
 
-// Getter function for Task title
+/**
+ * @brief Gets the title of the task.
+ * @return The title of the task.
+ */
 std::string Task::getTitle() const { return title; }
 
-// Getter function for Task description
+/**
+ * @brief Gets the description of the task.
+ * @return The description of the task.
+ */
 std::string Task::getDescription() const { return description; }
 
-// Getter function for Task status
+/**
+ * @brief Gets the current status of the task.
+ * @return The status of the task.
+ */
 std::string Task::getStatus() const { return status; }
 
-// Getter function for Task due date
+/**
+ * @brief Gets the due date of the task.
+ * @return The due date of the task.
+ */
 std::string Task::getDueDate() const { return dueDate; }
 
-// Setter function to update the Task title
+/**
+ * @brief Updates the title of the task.
+ * @param newTitle The new title for the task.
+ */
 void Task::setTitle(const std::string& newTitle) { title = newTitle; }
 
-// Setter function to update the Task description
+/**
+ * @brief Updates the description of the task.
+ * @param newDescription The new description for the task.
+ */
 void Task::setDescription(const std::string& newDescription) { description = newDescription; }
 
-// Setter function to update the Task status
+/**
+ * @brief Updates the status of the task.
+ * @param newStatus The new status for the task.
+ */
 void Task::setStatus(const std::string& newStatus) { status = newStatus; }
 
-// Setter function to update the Task description
+/**
+ * @brief Updates the due date of the task.
+ * @param newDueDate The new due date for the task.
+ */
 void Task::setDueDate(const std::string& newDueDate) { dueDate = newDueDate; }
