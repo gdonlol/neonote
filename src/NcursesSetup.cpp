@@ -46,7 +46,7 @@ bool NcursesSetup::initialize() {
     init_color(COLOR_MAGENTA, 670, 470, 845); 	// Purple 5
     init_color(COLOR_CYAN, 700, 565, 800); 	// Purple 6
 
-    init_pair(1, COLOR_BLACK, COLOR_WHITE); // Inverted highlight
+    init_pair(1, COLOR_RED, -1); // Inverted highlight
     init_pair(2, COLOR_RED, -1);    // H1
     init_pair(3, COLOR_GREEN, -1);  // H2
     init_pair(4, COLOR_YELLOW, -1); // H3
