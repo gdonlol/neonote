@@ -83,7 +83,7 @@ int main() {
 
                 if (input == 17 || input == KEY_F(1)) { // Ctrl+Q or F1 to exit
                     terminal_editor.cleanup();
-                    mainMenu.returnToMenu();
+                    exit(0);
                     break;
                 }
                 else {
