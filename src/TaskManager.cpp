@@ -12,7 +12,7 @@
  * 
  * @param content Pointer to the ncurses window where tasks will be displayed.
  */
-TaskManager::TaskManager(WINDOW* content) : content(content) {
+TaskManager::TaskManager(WINDOW* content) : content(content), currentSelected(0) {
     this->content = content;
 }
 
@@ -137,22 +137,19 @@ void TaskManager::renderTasks() {
     // Loop through tasks and display them in the appropriate column
     for (const auto& task : tasks) {
         if (task.getStatus() == "To Do") {
-            mvwprintw(todoWin, todoY, 1, "ID: %d", task.getId());
-            mvwprintw(todoWin, todoY + 1, 1, "Title: %s", task.getTitle().c_str());
-            mvwprintw(todoWin, todoY + 2, 1, "Status: %s", task.getStatus().c_str());
-            mvwprintw(todoWin, todoY + 3, 1, "---------------------");
+            mvwprintw(inProgressWin, inProgressY + 1, 1, "%s", task.getTitle().c_str());
+            mvwprintw(inProgressWin, inProgressY, 1, "#%d", task.getId());
+            mvwprintw(inProgressWin, inProgressY + 3, 1, "---------------------");
             todoY += 5;
         } else if (task.getStatus() == "In Progress") {
-            mvwprintw(inProgressWin, inProgressY, 1, "ID: %d", task.getId());
-            mvwprintw(inProgressWin, inProgressY + 1, 1, "Title: %s", task.getTitle().c_str());
-            mvwprintw(inProgressWin, inProgressY + 2, 1, "Status: %s", task.getStatus().c_str());
+            mvwprintw(inProgressWin, inProgressY + 1, 1, "%s", task.getTitle().c_str());
+            mvwprintw(inProgressWin, inProgressY, 1, "#%d", task.getId());
             mvwprintw(inProgressWin, inProgressY + 3, 1, "---------------------");
             inProgressY += 5;
         } else if (task.getStatus() == "Done") {
-            mvwprintw(doneWin, doneY, 1, "ID: %d", task.getId());
-            mvwprintw(doneWin, doneY + 1, 1, "Title: %s", task.getTitle().c_str());
-            mvwprintw(doneWin, doneY + 2, 1, "Status: %s", task.getStatus().c_str());
-            mvwprintw(doneWin, doneY + 3, 1, "---------------------");
+            mvwprintw(inProgressWin, inProgressY + 1, 1, "%s", task.getTitle().c_str());
+            mvwprintw(inProgressWin, inProgressY, 1, "#%d", task.getId());
+            mvwprintw(inProgressWin, inProgressY + 3, 1, "---------------------");
             doneY += 5;
         }
     }

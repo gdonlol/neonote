@@ -52,10 +52,10 @@ void TerminalEditor::handleInput(int ch) {
     } else if (focused_div == 1) { //**< 1 = sidebar */
         handleInputSidebar(ch);  /**< Handle input in the sidebar area. */
     }
-    else if (focused_div == 2) { //**< 2 = kanban */
+    else if (focused_div == 2) { //**< 2 = handleinputkanban */
         string input;
         switch(ch){
-            case 20: // Ctrl+T - Add new task
+            case 14: // Ctrl+N - Add new task
                 input = ui.displayPrompt("Enter new task:");
                 if (!input.empty()) {
                     taskManager.addTask(input); /**< Add new task to task manager. */
@@ -63,7 +63,7 @@ void TerminalEditor::handleInput(int ch) {
                     ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
                 }
                 break;
-            case 16: // Ctrl+P
+            case '\n': // Enter to move task
                 int taskId = taskManager.nextFree() - 1; 
                 if (taskId >= 0) {
                     refresh();

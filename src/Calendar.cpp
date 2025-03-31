@@ -150,29 +150,34 @@ void Calendar::renderCalendar() {
 
     int y = 1;
     int lineWidth = eventsWinWidth - 1;
-    int i = 0; 
+    int lineHeight = 4; 
+    int maxVisibleEvents = eventsWinHeight / lineHeight;
+    int scrollOffset = 0;
+
+    if (selectedEvent >= scrollOffset + maxVisibleEvents) {
+        scrollOffset = selectedEvent - maxVisibleEvents + 1;
+    }
 
     // Display events or a placeholder message
     if (events.empty()) {
         mvwprintw(eventswin, ++y, 0, "%s", "No events (Ctrl + N)");
-    }
-    
-    for (const Event& event : events) {
-        mvwhline(eventswin, y++, 0, ACS_HLINE, lineWidth);
+    } else{
+        for (int i = scrollOffset; i < std::min(scrollOffset + maxVisibleEvents, (int)events.size()); ++i) {
+            mvwhline(eventswin, y++, 0, ACS_HLINE, lineWidth);
 
-        if (selectedEvent == i) wattron(eventswin, A_REVERSE);  // Highlight selected event
-        
-        std::string title = "Title: " + event.getTitle();
-        mvwprintw(eventswin, y++, 0, "%s", (title + std::string(lineWidth - title.length(), ' ')).c_str());
+            if (selectedEvent == i) wattron(eventswin, A_REVERSE);  // Highlight selected event
+            
+            std::string title = "Title: " + events[i].getTitle();
+            mvwprintw(eventswin, y++, 0, "%s", (title + std::string(lineWidth - title.length(), ' ')).c_str());
 
-        std::string description = "Description: " + event.getDescription();
-        mvwprintw(eventswin, y++, 0, "%s", (description + std::string(lineWidth - description.length(), ' ')).c_str());
-        
-        std::string date = "Date: " + event.getDate();
-        mvwprintw(eventswin, y++, 0, "%s", (date + std::string(lineWidth - date.length(), ' ')).c_str());
-        
-        wattroff(eventswin, A_REVERSE);
-        ++i;
+            std::string description = "Description: " + events[i].getDescription();
+            mvwprintw(eventswin, y++, 0, "%s", (description + std::string(lineWidth - description.length(), ' ')).c_str());
+            
+            std::string date = "Date: " + events[i].getDate();
+            mvwprintw(eventswin, y++, 0, "%s", (date + std::string(lineWidth - date.length(), ' ')).c_str());
+            
+            wattroff(eventswin, A_REVERSE);
+        }
     }
 
     // Refresh the main content window
