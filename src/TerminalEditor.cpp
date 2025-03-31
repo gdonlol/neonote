@@ -312,6 +312,9 @@ void TerminalEditor::handleInputSidebar(int ch) {
                 fileManager.saveFile(current_file, lines);
                 fileManager.loadFile(fileManager.getFiles()[sidebar_index], lines, current_file);
                 input = ui.displayPrompt("Rename note");
+                while (input.empty()) {
+                    input = ui.displayPrompt("Rename note (Field cannot be empty)");
+                }
                 fileManager.renameFile(fileManager.getFiles()[sidebar_index], input, current_file);
                 ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
                 ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);
@@ -361,11 +364,12 @@ void TerminalEditor::handleInputKanban(int ch){
             break;
         case 14: // Ctrl+N - Add new task
             input = ui.displayPrompt("Enter new task:");
-            if (!input.empty()) {
-                taskManager.addTask(input, 0); /**< Add new task to task manager. */
-                taskManager.renderTasks();  /**< Refresh task display. */
-                ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+            while (input.empty()){
+                input = ui.displayPrompt("Enter new task: (Field cannot be empty)");
             }
+            taskManager.addTask(input, 0); /**< Add new task to task manager. */
+            taskManager.renderTasks();  /**< Refresh task display. */
+            ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             break;
             case KEY_UP:
             taskManager.moveSelection(0);
@@ -384,11 +388,7 @@ void TerminalEditor::handleInputKanban(int ch){
             taskManager.renderTasks();  /**< Refresh task display. */
             break;
         case '\n': // Enter to move task
-            int taskId = taskManager.nextFree() - 1; 
-            if (taskId >= 0) {
-                refresh();
-                taskManager.moveTaskPopup(taskId);
-            }
+            taskManager.moveTaskPopup(taskManager.getSelectedTask().getId());
             break;
     }
 }
@@ -405,8 +405,19 @@ void TerminalEditor::handleInputCalendar(int ch){
             break;
         case 14:
             event_title = ui.displayPrompt("Event Name");
+            while (event_title.empty()) {
+                event_title = ui.displayPrompt("Event Name (Field cannot be empty)");
+            }
+            
             event_desc = ui.displayPrompt("Event Description");
+            while (event_desc.empty()) {
+                event_desc = ui.displayPrompt("Event Description (Field cannot be empty)");
+            }
+            
             event_date = ui.displayPrompt("Event Date");
+            while (event_date.empty()) {
+                event_date = ui.displayPrompt("Event Date (Field cannot be empty)");
+            }
             calendar.addEvent(Event(calendar.nextFree(), event_title, event_desc, event_date));
             calendar.renderCalendar();
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);

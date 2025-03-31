@@ -30,11 +30,6 @@ public:
     // Renders all tasks
     void renderTasks();
 
-    // Prompt user for task
-    void promptForTask();
-
-    // Listens for key press events for task input.
-    void listenForInput();
 
     int nextFree();
 
