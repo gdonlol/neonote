@@ -49,9 +49,12 @@ void FileManager::initializeAppDirectory() {
  * 
  * Iterates through the directory and adds the filenames (without extensions) to the `files` vector.
  */
-void FileManager::scanExistingFiles() {
-    for (const auto &entry : filesystem::directory_iterator(appDataPath)) {
-        files.push_back(entry.path().stem().string());  /**< Extract and store filenames (without extension). */
+
+ void FileManager::scanExistingFiles() {
+    for (const auto &entry : std::filesystem::directory_iterator(appDataPath)) {
+        if (std::filesystem::is_regular_file(entry)) {
+            files.push_back(entry.path().stem().string());  /**< Extract and store filenames (without extension). */
+        }
     }
 }
 
