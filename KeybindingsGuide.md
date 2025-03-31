@@ -26,12 +26,8 @@ This guide provides an overview of the keybindings available in the terminal edi
 - Enter (⏎) - Loads the selected file or page into the editor.
 - `Ctrl + O` / `Ctrl + D` - Switches focus back to content editing.
 - `Ctrl + R` - Rename a file (click enter to confirm after typing in new name).
+- `Ctrl + T` - Create a new task for the kanban board (click enter to confirm after typing in new name).
 
 ## Cursor and Scroll Adjustments
 - Cursor movement is restricted within the text bounds.
 - Scrolling occurs automatically when the cursor moves beyond the visible area.
-
-## Calander Page
-
-
-## My Tasks Page
