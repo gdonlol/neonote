@@ -60,6 +60,7 @@ void TerminalEditor::handleInput(int ch) {
                 if (!input.empty()) {
                     taskManager.addTask(input); /**< Add new task to task manager. */
                     taskManager.renderTasks();  /**< Refresh task display. */
+                    ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
                 }
                 break;
             case 16: // Ctrl+P
