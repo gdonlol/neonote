@@ -3,6 +3,15 @@
 #include <ncurses.h>
 #include <algorithm>
 
+/**
+ * @brief Constructs a TextPrompt object.
+ * 
+ * This constructor initializes a TextPrompt with a specific window and title. It is used to create an 
+ * interactive text prompt that displays in a given ncurses window with a specified title.
+ * 
+ * @param win_in The window in which the prompt will be displayed.
+ * @param title_in The title of the prompt.
+ */
 TextPrompt::TextPrompt(WINDOW *win_in, std::string title_in){
     win = win_in;
     title = title_in;
