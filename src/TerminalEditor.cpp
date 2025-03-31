@@ -53,61 +53,10 @@ void TerminalEditor::handleInput(int ch) {
         handleInputSidebar(ch);  /**< Handle input in the sidebar area. */
     }
     else if (focused_div == 2) { //**< 2 = handleinputkanban */
-        string input;
-        switch(ch){
-            case 14: // Ctrl+N - Add new task
-                input = ui.displayPrompt("Enter new task:");
-                if (!input.empty()) {
-                    taskManager.addTask(input, 0); /**< Add new task to task manager. */
-                    taskManager.renderTasks();  /**< Refresh task display. */
-                    ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
-                }
-                break;
-            case '\n': // Enter to move task
-                int taskId = taskManager.nextFree() - 1; 
-                if (taskId >= 0) {
-                    refresh();
-                    taskManager.moveTaskPopup(taskId);
-                }
-                break;
-        }
+        handleInputKanban(ch);
     }
     else if (focused_div == 3) { //**< 3 = handleinputcalendar */
-        string event_title, event_desc, event_date, input;
-        switch(ch){
-            case 15:
-            case 4:
-                last_focused_div = focused_div;
-                focused_div = 1; /**< Flip focused_div. */
-                calendar.setSelectedEvent(-1);
-                calendar.renderCalendar();
-                break;
-            case 14:
-                event_title = ui.displayPrompt("Event Name");
-                event_desc = ui.displayPrompt("Event Description");
-                event_date = ui.displayPrompt("Event Date");
-                calendar.addEvent(Event(calendar.nextFree(), event_title, event_desc, event_date));
-                calendar.renderCalendar();
-                ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
-                break;
-            case KEY_UP:
-                calendar.setSelectedEvent(std::max(0, calendar.getSelectedEvent() - 1));
-                calendar.renderCalendar();
-                break;
-            case KEY_DOWN:
-                calendar.setSelectedEvent(std::min(calendar.getEvents().size() - 1, static_cast<size_t>(calendar.getSelectedEvent()) + 1));
-                calendar.renderCalendar();
-                break;
-            case KEY_DC:
-                input = ui.displayPrompt("Delete permanently? (Y/N)");
-                if(input == "Y" || input == "y"){
-                    calendar.removeEvent(calendar.getSelectedEvent());
-                }
-                ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
-                calendar.renderCalendar();
-                refresh();
-                break;
-        }
+        handleInputCalendar(ch);
     } 
 }
 
@@ -398,6 +347,65 @@ void TerminalEditor::handleInputSidebar(int ch) {
                 calendar.setSelectedEvent(-1);
                 calendar.renderCalendar();
             }
+            break;
+    }
+}
+
+void TerminalEditor::handleInputKanban(int ch){
+    string input;
+    switch(ch){
+        case 14: // Ctrl+N - Add new task
+            input = ui.displayPrompt("Enter new task:");
+            if (!input.empty()) {
+                taskManager.addTask(input, 0); /**< Add new task to task manager. */
+                taskManager.renderTasks();  /**< Refresh task display. */
+                ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+            }
+            break;
+        case '\n': // Enter to move task
+            int taskId = taskManager.nextFree() - 1; 
+            if (taskId >= 0) {
+                refresh();
+                taskManager.moveTaskPopup(taskId);
+            }
+            break;
+    }
+}
+
+void TerminalEditor::handleInputCalendar(int ch){
+    string event_title, event_desc, event_date, input;
+    switch(ch){
+        case 15:
+        case 4:
+            last_focused_div = focused_div;
+            focused_div = 1; /**< Flip focused_div. */
+            calendar.setSelectedEvent(-1);
+            calendar.renderCalendar();
+            break;
+        case 14:
+            event_title = ui.displayPrompt("Event Name");
+            event_desc = ui.displayPrompt("Event Description");
+            event_date = ui.displayPrompt("Event Date");
+            calendar.addEvent(Event(calendar.nextFree(), event_title, event_desc, event_date));
+            calendar.renderCalendar();
+            ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+            break;
+        case KEY_UP:
+            calendar.setSelectedEvent(std::max(0, calendar.getSelectedEvent() - 1));
+            calendar.renderCalendar();
+            break;
+        case KEY_DOWN:
+            calendar.setSelectedEvent(std::min(calendar.getEvents().size() - 1, static_cast<size_t>(calendar.getSelectedEvent()) + 1));
+            calendar.renderCalendar();
+            break;
+        case KEY_DC:
+            input = ui.displayPrompt("Delete permanently? (Y/N)");
+            if(input == "Y" || input == "y"){
+                calendar.removeEvent(calendar.getSelectedEvent());
+            }
+            ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+            calendar.renderCalendar();
+            refresh();
             break;
     }
 }

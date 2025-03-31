@@ -37,6 +37,8 @@ private:
 
     void handleInputContent(int ch);
     void handleInputSidebar(int ch);
+    void handleInputKanban(int ch);
+    void handleInputCalendar(int ch);
     void adjustCursorPosition();
 };
 

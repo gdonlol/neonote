@@ -12,7 +12,7 @@
  * 
  * @param content Pointer to the ncurses window where tasks will be displayed.
  */
-TaskManager::TaskManager(WINDOW* content) : content(content), currentSelected(0) {
+TaskManager::TaskManager(WINDOW* content) : content(content), currentSelected(0), currentType(0){
     this->content = content;
 }
 
@@ -80,9 +80,9 @@ void TaskManager::moveTask(int taskId, int type) {
     if (type < 0 || type >= tasks.size()) {
         return;
     }
-    for (auto& taskList : tasks) {  
+    for (auto& taskList : tasks) {
         for (auto it = taskList.begin(); it != taskList.end(); ++it) {
-            if (it->getId() == taskId) {  
+            if (it->getId() == taskId) {
                 tasks[type].push_back(*it);
                 taskList.erase(it);
                 return;
@@ -130,11 +130,14 @@ void TaskManager::renderTasks() {
     for (int col = 0; col < 3; ++col) {
         WINDOW* drawWin = (col == 0) ? todoWin : (col == 1) ? inProgressWin : doneWin;
 
-        int y = 1;
-        for (const auto& task : tasks[col]) {
+        int y = 2;
+        for (int i = 0; i < tasks[col].size(); ++i) {
+            if(currentType == col && currentSelected == i){ wattron(drawWin, COLOR_PAIR(3)); }
             mvwhline(drawWin, y++, 1, ACS_HLINE, colWidth - 2);
-            mvwprintw(drawWin, y++, 1, "%s", task.getTitle().c_str());
-            mvwprintw(drawWin, y++, 1, "#%d", task.getId());
+            if(currentType == col && currentSelected == i){ wattroff(drawWin, COLOR_PAIR(3)); }
+
+            mvwprintw(drawWin, y++, 1, "%s", tasks[col][i].getTitle().c_str());
+            mvwprintw(drawWin, y++, 1, "#%d", tasks[col][i].getId());
             ++y;
         }
     }

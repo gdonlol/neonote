@@ -48,6 +48,7 @@ private:
     WINDOW* content;
 
     int currentSelected;
+    int currentType;
 };
 
 #endif // TASKMANAGER_H
