@@ -21,7 +21,7 @@ using namespace std;
  * 
  * Handles event rendering, loading from disk, and interactions.
  * 
- * @author Gordon Xu
+ * @author [Your Name]
  */
 Calendar::Calendar(WINDOW *content): selectedEvent(-1) {
     this->content = content;
@@ -267,4 +267,29 @@ int Calendar::getCurrentYear() const {
 }
 
 /**
- * @brief Gets the number of days in
+ * @brief Gets the number of days in a month.
+ * @param month The month (1-12).
+ * @param year The year.
+ * @return The number of days in the month.
+ */
+int Calendar::getDaysInMonth(int month, int year) const {
+    static const int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (month == 2 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))) {
+        return 29;  // Leap year
+    }
+    return daysInMonth[month - 1];
+}
+
+/**
+ * @brief Gets the first weekday of the month.
+ * @param month The month (1-12).
+ * @param year The year.
+ * @return The first weekday (0=Sunday, 6=Saturday).
+ */
+int Calendar::getFirstDayOfMonth(int month, int year) const {
+    tm time = {0};
+    time.tm_year = year - 1900;
+    time.tm_mon = month - 1;
+    mktime(&time);  ///< Normalize time structure
+    return time.tm_wday;
+}
