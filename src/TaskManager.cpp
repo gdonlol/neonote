@@ -62,13 +62,13 @@ void TaskManager::updateTask(int taskId, const Task& updatedTask) {
  * @param newStatus The new status for the task.
  */
 void TaskManager::moveTask(int taskId, const std::string& newStatus) {
-    auto it = std::find_if(tasks.begin(), tasks.end(), [taskId](const Task& t) {
-        return t.getId() == taskId;
-    });
-    if (it != tasks.end()) {
-        it->setStatus(newStatus);
+    for (auto& task : tasks) {
+        if (task.getId() == taskId) {
+            task.setStatus(newStatus);  // Update task status
+            renderTasks();              // Refresh UI
+            return;
+        }
     }
-    renderTasks();
 }
 
 /**
@@ -202,6 +202,65 @@ void TaskManager::listenForInput() {
         if (ch == 20) {  // Check if Ctrl + T is pressed (ASCII value 20)
             promptForTask();  // Trigger the task input prompt
         }
+    }
+}
+
+void TaskManager::moveTaskPopup(int taskId) {
+    const std::vector<std::string> categories = {"To Do", "In Progress", "Completed"};
+    int highlight = 0;
+    int choice = -1;
+
+    // Get screen dimensions
+    int maxY, maxX;
+    getmaxyx(content, maxY, maxX);
+
+    // Popup dimensions
+    int popupHeight = categories.size() + 4;
+    int popupWidth = 20;
+    int startY = (maxY - popupHeight) / 2;
+    int startX = (maxX - popupWidth) / 2;
+
+    // Create popup window
+    WINDOW* popup = newwin(popupHeight, popupWidth, startY, startX);
+    box(popup, 0, 0);
+    keypad(popup, TRUE);
+
+    mvwprintw(popup, 1, 3, "Move Task To:");
+    wrefresh(popup);  // Ensure the window is drawn
+
+    while (choice == -1) {
+        // Display options
+        for (size_t i = 0; i < categories.size(); i++) {
+            if (i == highlight) {
+                wattron(popup, A_REVERSE); // Highlight current selection
+            }
+            mvwprintw(popup, i + 2, 3, categories[i].c_str());
+            wattroff(popup, A_REVERSE);
+        }
+
+        wrefresh(popup);
+
+        // Handle input
+        int input = wgetch(popup);
+        switch (input) {
+            case KEY_UP:
+                highlight = (highlight == 0) ? categories.size() - 1 : highlight - 1;
+                break;
+            case KEY_DOWN:
+                highlight = (highlight == categories.size() - 1) ? 0 : highlight + 1;
+                break;
+            case 10: // Enter key
+                choice = highlight;
+                break;
+        }
+    }
+
+    delwin(popup);
+    clear();
+    refresh();
+
+    if (choice != -1) {
+        moveTask(taskId, categories[choice]);
     }
 }
 

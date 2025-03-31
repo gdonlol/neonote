@@ -40,6 +40,8 @@ public:
 
     int nextFree();
 
+    void moveTaskPopup(int taskId);
+
 private:
     std::vector<Task> tasks;
     WINDOW* content;
