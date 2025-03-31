@@ -63,8 +63,8 @@ void TerminalEditor::handleInput(int ch) {
                 break;
             case 14:
                 event_title = ui.displayPrompt("Event Name");
-                event_desc = ui.displayPrompt("Event Name");
-                event_date = ui.displayPrompt("Event Name");
+                event_desc = ui.displayPrompt("Event Description");
+                event_date = ui.displayPrompt("Event Date");
                 Event event_in(calendar.nextFree(), event_title, event_desc, event_date);
                 calendar.addEvent(event_in);
         }
