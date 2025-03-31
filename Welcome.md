@@ -2,10 +2,10 @@
 
 ## General Navigation
 - **Arrow Keys**
-  - `↑`: Move cursor up.
-  - `↓`: Move cursor down.
-  - `←`: Move cursor left.
-  - `→`: Move cursor right.
+  - `UP`: Move cursor up.
+  - `DOWN`: Move cursor down.
+  - `LEFT`: Move cursor left.
+  - `RIGHT`: Move cursor right.
 - **Page Navigation**
   - `Ctrl+F`: Go to the **front** of the file.
   - `Ctrl+T`: Go to the **tail** (end) of the file.
