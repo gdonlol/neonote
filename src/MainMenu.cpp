@@ -108,6 +108,7 @@ void MainMenu::drawMenu() const {
     attron(COLOR_PAIR(6));
     mvprintw((LINES - 11) / 2 - 1, (COLS - 40) / 2, "/_/ |_/\\___/\\____/_/ |_/\\____/\\__/\\___/ ");
     attroff(COLOR_PAIR(6));
+    mvwprintw(win_, (LINES - 1), (COLS - strlen(text)) / 2, "%s", text);
 
     int rowPrint = (LINES - 2) / 2;
 
