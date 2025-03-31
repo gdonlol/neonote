@@ -66,14 +66,25 @@ void Application::setup_window_layout(int lines, int cols) {
     // Define variables
     auto [sidebar_width, content_width] = calculate_layout(cols);
     
-    // Resize all windows
-    wresize(main_window_.get(), lines, cols);
+    // Resize main window first
+    wresize(main_window_.get(), lines, cols); 
+    werase(main_window_.get());
+    wrefresh(main_window_.get());
+    
+    // Resize and reposition subwindows
     wresize(sidebar_.get(), lines, sidebar_width);
     wresize(content_.get(), lines, content_width);
-
-    // Reposition sidebar and content
     mvwin(sidebar_.get(), 0, 0);
     mvwin(content_.get(), 0, sidebar_width);
+    
+    // Redraw borders
+    box(sidebar_.get(), 0, 0);
+    box(content_.get(), 0, 0);
+    
+    // Refresh all windows
+    wrefresh(sidebar_.get());
+    wrefresh(content_.get());
+    wrefresh(main_window_.get());
 }
 
 /**
@@ -125,9 +136,6 @@ void Application::handle_resize() {
         }
 	else if (current_window_ == WindowState::Editor) {
             TerminalEditor editor(main_window_.get(), sidebar_.get(), content_.get(), {});
-            wrefresh(main_window_.get());
-	    wrefresh(sidebar_.get());
-	    wrefresh(content_.get());
 	}
     }
 }
