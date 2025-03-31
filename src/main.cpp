@@ -71,7 +71,7 @@ int main() {
                 break;
             }
         }
-        else if (currentWindow == 1) { // Editor window
+        else { // Editor window
             TerminalEditor terminal_editor(win, sidebar, content, vector<string>());
 
             while (true) {
