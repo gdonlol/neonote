@@ -42,9 +42,14 @@ public:
 
     void moveTaskPopup(int taskId);
 
+    void setCurrentSelected(int index);
+    int getCurrentSelected();
+
 private:
     std::vector<Task> tasks;
     WINDOW* content;
+
+    int currentSelected;
 };
 
 #endif // TASKMANAGER_H

@@ -66,7 +66,6 @@ void TerminalEditor::handleInput(int ch) {
             case 16: // Ctrl+P
                 int taskId = taskManager.nextFree() - 1; 
                 if (taskId >= 0) {
-                    printw("Opening move task popup for task ID %d\n", taskId);
                     refresh();
                     taskManager.moveTaskPopup(taskId);
                 }
