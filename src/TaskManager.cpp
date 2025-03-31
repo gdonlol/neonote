@@ -293,7 +293,7 @@ int TaskManager::getSelectedTaskId() {
  */
 void TaskManager::moveTaskPopup(int taskId) {
     if(taskId == - 1)return;
-    const std::vector<std::string> categories = {"To Do", "In Progress", "Completed"};
+    const std::vector<std::string> categories = {"To Do", "In Progress", "Done"};
     const std::vector<int> categoriesType = {0, 1, 2};
 
     int highlight = 0;
