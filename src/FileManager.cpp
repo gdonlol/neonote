@@ -67,7 +67,7 @@ void FileManager::createDefaultFileIfNeeded() {
     if (files.empty()) {
         // Run the read me shell script
         system("./move_readme.sh");    
-        files.push_back("README");
+        files.push_back("Welcome");
     }
 }
 
