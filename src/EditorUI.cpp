@@ -119,7 +119,6 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
 
     // Track code block state for cursor position calculation
     bool in_code_block_for_cursor = false;
-    bool in_indented_code_block_for_cursor = false;
     
     // Calculate code block state up to the cursor line
     for (int i = 0; i <= row; ++i) {
@@ -129,22 +128,6 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
             // Handle code blocks (triple backticks)
             if (line.rfind("```", 0) == 0) { // Starts with ```
                 in_code_block_for_cursor = !in_code_block_for_cursor;
-                in_indented_code_block_for_cursor = false;
-            }
-            
-            // Handle indented code blocks
-            bool is_indented = (line.length() >= 4 && (line[0] == ' ' || line[0] == '\t')) &&
-                             (line[0] == line[1] && line[1] == line[2] && line[2] == line[3]);
-            
-            if (!in_code_block_for_cursor) {
-                if (is_indented && (i == 0 || 
-                                   lines[i-1].empty() || 
-                                   (lines[i-1].length() >= 4 && 
-                                    (lines[i-1][0] == ' ' || lines[i-1][0] == '\t')))) {
-                    in_indented_code_block_for_cursor = true;
-                } else if (!is_indented) {
-                    in_indented_code_block_for_cursor = false;
-                }
             }
         }
     }
@@ -157,7 +140,7 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
         size_t header_start = 0;
         
         // Check if we're in a code block at cursor position
-        bool current_line_in_code = in_code_block_for_cursor || in_indented_code_block_for_cursor;
+        bool current_line_in_code = in_code_block_for_cursor;
         
         // Add 2-space indentation offset if in code block
         if (current_line_in_code) {
@@ -218,7 +201,6 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
 
     // Track code block state while rendering
     bool in_code_block = false;
-    bool in_indented_code_block = false;
 
     // Render all lines
     for (int i = 0; i < max_lines; ++i) {
@@ -246,22 +228,7 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
                 continue;
             }
 
-            // Handle indented code blocks
-            bool is_indented = (line.length() >= 4 && (line[0] == ' ' || line[0] == '\t')) &&
-                             (line[0] == line[1] && line[1] == line[2] && line[2] == line[3]);
-            
-            if (!in_code_block) {
-                if (is_indented && (line_index == 0 || 
-                                   lines[line_index-1].empty() || 
-                                   (lines[line_index-1].length() >= 4 && 
-                                    (lines[line_index-1][0] == ' ' || lines[line_index-1][0] == '\t')))) {
-                    in_indented_code_block = true;
-                } else if (!is_indented) {
-                    in_indented_code_block = false;
-                }
-            }
-
-            bool current_line_in_code = in_code_block || in_indented_code_block;
+            bool current_line_in_code = in_code_block;
 
             if (current_line_in_code) {
                 wattron(content, COLOR_PAIR(9));
@@ -365,11 +332,12 @@ void EditorUI::renderContent(const std::vector<std::string> &lines,
     
     // Apply the total formatting offsets to cursor position
     int cursor_col = col - scroll_col + 2 - total_asterisk_offset - total_header_offset - total_backtick_offset;
-    if (in_code_block_for_cursor || in_indented_code_block_for_cursor) {
+    if (in_code_block_for_cursor) {
         cursor_col += code_block_indent_offset;
     }
     wmove(content, row - scroll_row + 2, cursor_col);
 }
+
 
 std::string EditorUI::displayPrompt(std::string title){
     TextPrompt prompt(win, title);
