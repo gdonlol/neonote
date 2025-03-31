@@ -393,6 +393,16 @@ void TerminalEditor::handleInputKanban(int ch){
             taskManager.renderTasks();  /**< Refresh task display. */
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             break;
+        case KEY_DC:
+            if(taskManager.getSelectedTaskId() == -1){break;}
+            input = ui.displayPrompt("Delete permanently? (Y/N)");
+            if(input == "Y" || input == "y"){
+                taskManager.removeTask(taskManager.getSelectedTaskId());
+            }
+            ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+            taskManager.renderTasks();  /**< Refresh task display. */
+            refresh();
+            break;
     }
 }
 

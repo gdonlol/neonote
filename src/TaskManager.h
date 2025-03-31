@@ -35,9 +35,6 @@ public:
 
     void moveTaskPopup(int taskId);
 
-    void setCurrentSelected(int index);
-    int getCurrentSelected();
-
     void moveSelection(int direction);
     
     int getSelectedTaskId();

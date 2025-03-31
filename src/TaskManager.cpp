@@ -37,6 +37,7 @@ void TaskManager::addTask(const std::string& title, int type) {
  * @param taskId The ID of the task to be removed.
  */
 void TaskManager::removeTask(int taskId) {
+    if(taskId == -1)return;
     for (auto& taskList : tasks) {
         for (auto it = taskList.begin(); it != taskList.end(); ++it) {
             if (it->getId() == taskId) {
