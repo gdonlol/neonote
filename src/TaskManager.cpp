@@ -24,21 +24,9 @@ TaskManager::TaskManager(WINDOW* content) : content(content), currentSelected(0)
  * 
  * @param title The title of the task to be added.
  */
-void TaskManager::addTask(const std::string& title) {
+void TaskManager::addTask(const std::string& title, int type) {
     int newTaskId = nextFree();
-    std::string defaultStatus = "To Do";
-    tasks.emplace_back(newTaskId, title, defaultStatus);
-}
-
-/**
- * @brief Adds an existing task to the task list.
- * 
- * This function adds an already created Task object to the list of tasks.
- * 
- * @param task The Task object to be added to the task list.
- */
-void TaskManager::addTask(const Task& task) {
-    tasks.push_back(task);
+    tasks[type].emplace_back(newTaskId, title, type);
 }
 
 /**
@@ -49,13 +37,14 @@ void TaskManager::addTask(const Task& task) {
  * @param taskId The ID of the task to be removed.
  */
 void TaskManager::removeTask(int taskId) {
-    auto it = std::find_if(tasks.begin(), tasks.end(), [taskId](const Task& t) {
-        return t.getId() == taskId;
-    });
-    if (it != tasks.end()) {
-        tasks.erase(it);
+    for (auto& taskList : tasks) {
+        for (auto it = taskList.begin(); it != taskList.end(); ++it) {
+            if (it->getId() == taskId) {
+                taskList.erase(it);
+                return;
+            }
+        }
     }
-    renderTasks();
 }
 
 /**
@@ -68,13 +57,14 @@ void TaskManager::removeTask(int taskId) {
  * @param updatedTask The new Task object containing updated task data.
  */
 void TaskManager::updateTask(int taskId, const Task& updatedTask) {
-    auto it = std::find_if(tasks.begin(), tasks.end(), [taskId](const Task& t) {
-        return t.getId() == taskId;
-    });
-    if (it != tasks.end()) {
-        *it = updatedTask;
+    for (auto& taskList : tasks) {  
+        for (auto& task : taskList) {  
+            if (task.getId() == taskId) { 
+                task = updatedTask;
+                return;
+            }
+        }
     }
-    renderTasks();
 }
 
 /**
@@ -84,14 +74,19 @@ void TaskManager::updateTask(int taskId, const Task& updatedTask) {
  * provided new status.
  * 
  * @param taskId The ID of the task to be moved.
- * @param newStatus The new status to assign to the task.
+ * @param type The new status to assign to the task.
  */
-void TaskManager::moveTask(int taskId, const std::string& newStatus) {
-    for (auto& task : tasks) {
-        if (task.getId() == taskId) {
-            task.setStatus(newStatus);  // Update task status
-            renderTasks();              // Refresh UI
-            return;
+void TaskManager::moveTask(int taskId, int type) {
+    if (type < 0 || type >= tasks.size()) {
+        return;
+    }
+    for (auto& taskList : tasks) {  
+        for (auto it = taskList.begin(); it != taskList.end(); ++it) {
+            if (it->getId() == taskId) {  
+                tasks[type].push_back(*it);
+                taskList.erase(it);
+                return;
+            }
         }
     }
 }
@@ -100,7 +95,7 @@ void TaskManager::moveTask(int taskId, const std::string& newStatus) {
  * @brief Gets a reference to the list of all tasks.
  * @return A reference to the vector containing all tasks.
  */
-const std::vector<Task>& TaskManager::getTasks() const {
+const std::vector<std::vector<Task>>& TaskManager::getTasks() const {
     return tasks;
 }
 
@@ -119,37 +114,28 @@ void TaskManager::renderTasks() {
 
     // Calculate dimensions for the columns
     int colWidth = (maxX - 2) / 3;        // Divide window into 3 equal parts
-    int colHeight = maxY - 2;       // Leave space for borders
+    int colHeight = maxY - 2;             // Leave space for borders
 
     // Create derwin windows for each column
     WINDOW* todoWin = derwin(content, colHeight, colWidth, 1, 1);
     WINDOW* inProgressWin = derwin(content, colHeight, colWidth, 1, colWidth + 1);
     WINDOW* doneWin = derwin(content, colHeight, colWidth, 1, 2 * colWidth + 1);
+
     // Render headers
     mvwprintw(todoWin, 0, (colWidth - 10) / 2, "--- To Do ---");
     mvwprintw(inProgressWin, 0, (colWidth - 15) / 2, "--- In Progress ---");
     mvwprintw(doneWin, 0, (colWidth - 9) / 2, "--- Done ---");
 
-    // Y positions for tasks in each column
-    int todoY = 2, inProgressY = 2, doneY = 2;
+    // Display tasks in each column
+    for (int col = 0; col < 3; ++col) {
+        WINDOW* drawWin = (col == 0) ? todoWin : (col == 1) ? inProgressWin : doneWin;
 
-    // Loop through tasks and display them in the appropriate column
-    for (const auto& task : tasks) {
-        if (task.getStatus() == "To Do") {
-            mvwprintw(inProgressWin, inProgressY + 1, 1, "%s", task.getTitle().c_str());
-            mvwprintw(inProgressWin, inProgressY, 1, "#%d", task.getId());
-            mvwprintw(inProgressWin, inProgressY + 3, 1, "---------------------");
-            todoY += 5;
-        } else if (task.getStatus() == "In Progress") {
-            mvwprintw(inProgressWin, inProgressY + 1, 1, "%s", task.getTitle().c_str());
-            mvwprintw(inProgressWin, inProgressY, 1, "#%d", task.getId());
-            mvwprintw(inProgressWin, inProgressY + 3, 1, "---------------------");
-            inProgressY += 5;
-        } else if (task.getStatus() == "Done") {
-            mvwprintw(inProgressWin, inProgressY + 1, 1, "%s", task.getTitle().c_str());
-            mvwprintw(inProgressWin, inProgressY, 1, "#%d", task.getId());
-            mvwprintw(inProgressWin, inProgressY + 3, 1, "---------------------");
-            doneY += 5;
+        int y = 1;
+        for (const auto& task : tasks[col]) {
+            mvwhline(drawWin, y++, 1, ACS_HLINE, colWidth - 2);
+            mvwprintw(drawWin, y++, 1, "%s", task.getTitle().c_str());
+            mvwprintw(drawWin, y++, 1, "#%d", task.getId());
+            ++y;
         }
     }
 
@@ -172,62 +158,57 @@ void TaskManager::renderTasks() {
  * inputs, and adds the new task to the list.
  */
 void TaskManager::promptForTask() {
-    char title[100];
-    char status[20];
+    // char title[100];
+    // char status[20];
 
-    // Clear previous input display area
-    wclear(content);  // Clear only the part of the screen where input is requested
-    box(content, 0, 0);  // Reapply the border if needed
-    mvwprintw(content, 1, 2, "Enter task title: ");
-    mvwprintw(content, 3, 2, "Enter task status (To Do, In Progress, Done): ");
-    wrefresh(content);
+    // // Clear previous input display area
+    // wclear(content);  // Clear only the part of the screen where input is requested
+    // box(content, 0, 0);  // Reapply the border if needed
+    // mvwprintw(content, 1, 2, "Enter task title: ");
+    // mvwprintw(content, 3, 2, "Enter task status (To Do, In Progress, Done): ");
+    // wrefresh(content);
 
-    // Ask for the task title
-    mvwprintw(content, 2, 2, "Title: ");
-    wrefresh(content);
-    echo();  // Allow input from the user
-    wgetstr(content, title);
-    noecho();
+    // // Ask for the task title
+    // mvwprintw(content, 2, 2, "Title: ");
+    // wrefresh(content);
+    // echo();  // Allow input from the user
+    // wgetstr(content, title);
+    // noecho();
 
-    if (strlen(title) == 0) {
-        mvwprintw(content, 5, 2, "Title cannot be empty! Press any key to retry.");
-        wrefresh(content);
-        getch();
-        return;  // Exit the function if the title is empty
-    }
+    // if (strlen(title) == 0) {
+    //     mvwprintw(content, 5, 2, "Title cannot be empty! Press any key to retry.");
+    //     wrefresh(content);
+    //     getch();
+    //     return;  // Exit the function if the title is empty
+    // }
 
-    // Ask for the task status
-    mvwprintw(content, 4, 2, "Status: ");
-    wrefresh(content);
-    echo();
-    wgetstr(content, status);
-    noecho();
+    // // Ask for the task status
+    // mvwprintw(content, 4, 2, "Status: ");
+    // wrefresh(content);
+    // echo();
+    // wgetstr(content, status);
+    // noecho();
 
-    // Validate status input
-    std::string validStatuses[] = {"To Do", "In Progress", "Done"};
-    bool isValidStatus = std::find(std::begin(validStatuses), std::end(validStatuses), status) != std::end(validStatuses);
+    // // Validate status input
+    // std::string validStatuses[] = {"To Do", "In Progress", "Done"};
+    // bool isValidStatus = std::find(std::begin(validStatuses), std::end(validStatuses), status) != std::end(validStatuses);
 
-    if (!isValidStatus) {
-        mvwprintw(content, 5, 2, "Invalid status! Press any key to retry.");
-        wrefresh(content);
-        getch();
-        return;  // Exit if status is invalid
-    }
+    // if (!isValidStatus) {
+    //     mvwprintw(content, 5, 2, "Invalid status! Press any key to retry.");
+    //     wrefresh(content);
+    //     getch();
+    //     return;  // Exit if status is invalid
+    // }
 
-    // Create a new task with the entered data
-    int taskId = nextFree();  // Use nextFree to ensure a unique ID
-    Task newTask(taskId, std::string(title), std::string(status));
+    // // Create a new task with the entered data
+    // int taskId = nextFree();  // Use nextFree to ensure a unique ID
+    // Task newTask(taskId, std::string(title), std::string(status));
 
-    // Add the new task to the list
-    addTask(newTask);
+    // // Add the new task to the list
+    // addTask(newTask, );
 
-    // Clear input area and show task list again
-    mvwprintw(content, 2, 2, "Task Added! Press any key to continue.");
-    wrefresh(content);
-    getch();
-
-    // Redraw the task list
-    renderTasks();
+    // // Redraw the task list
+    // renderTasks();
 }
 
 /**
@@ -255,6 +236,8 @@ void TaskManager::listenForInput() {
  */
 void TaskManager::moveTaskPopup(int taskId) {
     const std::vector<std::string> categories = {"To Do", "In Progress", "Completed"};
+    const std::vector<int> categoriesType = {0, 1, 2};
+
     int highlight = 0;
     int choice = -1;
 
@@ -308,20 +291,19 @@ void TaskManager::moveTaskPopup(int taskId) {
     refresh();
 
     if (choice != -1) {
-        moveTask(taskId, categories[choice]);
+        moveTask(taskId, categoriesType[choice]);
     }
 }
 
-/**
- * @brief Finds and returns the next available task ID.
- * @return The next available task ID.
- */
 int TaskManager::nextFree() {
-    int nextId = 1;
-    for (const auto& task : tasks) {
-        if (task.getId() == nextId) {
-            nextId++;
+    int maxId = 0;
+
+    // Iterate through all task vectors
+    for (const auto& taskList : tasks) {
+        for (const auto& task : taskList) {
+            maxId = std::max(maxId, task.getId());
         }
     }
-    return nextId;
+
+    return maxId + 1;
 }

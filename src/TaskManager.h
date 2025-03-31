@@ -13,9 +13,7 @@ public:
     TaskManager(WINDOW* content);
 
     // Adds a new task to the task list
-    void addTask(const std::string& title);
-
-    void addTask(const Task& task);
+    void addTask(const std::string& title, int type);
 
     // Removes a task from the list based on its ID
     void removeTask(int taskId);
@@ -24,10 +22,10 @@ public:
     void updateTask(int taskId, const Task& updatedTask);
 
     // Moves a task to a new status category
-    void moveTask(int taskId, const std::string& newStatus);
+    void moveTask(int taskId, int type);
 
     // Returns all tasks
-    const std::vector<Task>& getTasks() const;
+    const std::vector<std::vector<Task>>& getTasks() const;
 
     // Renders all tasks
     void renderTasks();
@@ -46,7 +44,7 @@ public:
     int getCurrentSelected();
 
 private:
-    std::vector<Task> tasks;
+    std::vector<std::vector<Task>> tasks = {{}, {}, {}};
     WINDOW* content;
 
     int currentSelected;

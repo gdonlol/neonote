@@ -58,7 +58,7 @@ void TerminalEditor::handleInput(int ch) {
             case 14: // Ctrl+N - Add new task
                 input = ui.displayPrompt("Enter new task:");
                 if (!input.empty()) {
-                    taskManager.addTask(input); /**< Add new task to task manager. */
+                    taskManager.addTask(input, 0); /**< Add new task to task manager. */
                     taskManager.renderTasks();  /**< Refresh task display. */
                     ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
                 }
