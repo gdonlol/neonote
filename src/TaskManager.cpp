@@ -111,7 +111,7 @@ const std::vector<Task>& TaskManager::getTasks() const {
  * status into three columns: "To Do", "In Progress", and "Done".
  */
 void TaskManager::renderTasks() {
-    wclear(content);
+    werase(content);
     box(content, 0, 0);
 
     int maxY, maxX;

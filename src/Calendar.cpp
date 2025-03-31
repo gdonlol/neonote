@@ -71,7 +71,7 @@ Calendar::Calendar(WINDOW *content): selectedEvent(-1) {
  * and organizes the days in a weekly format.
  */
 void Calendar::renderCalendar() {
-    wclear(content);
+    werase(content);
     box(content, 0, 0);
 
     // Get the terminal dimensions
