@@ -93,12 +93,21 @@ void MainMenu::returnToMenu() {
 void MainMenu::drawMenu() const {
     curs_set(0);
     char text[] = {67, 114, 101, 100, 105, 116, 115, 58, 32, 71, 111, 114, 100, 111, 110, 32, 88, 117, 44, 32, 65, 108, 108, 101, 110, 32, 90, 104, 117, 44, 32, 69, 109, 105, 108, 121, 32, 65, 116, 121, 101, 111, 0};
-    mvwprintw(win_, (LINES - 1), (COLS - strlen(text)) / 2, "%s", text);
-    mvwprintw(win_, (LINES - 11) / 2 - 5, (COLS - 40) / 2, "    _   __           _   __      __     ");
-    mvwprintw(win_, (LINES - 11) / 2 - 4, (COLS - 40) / 2, "   / | / /__  ____  / | / /___  / /____ ");
-    mvwprintw(win_, (LINES - 11) / 2 - 3, (COLS - 40) / 2, "  /  |/ / _ \\/ __ \\/  |/ / __ \\/ __/ _ \\");
-    mvwprintw(win_, (LINES - 11) / 2 - 2, (COLS - 40) / 2, " / /|  /  __/ /_/ / /|  / /_/ / /_/  __/");
-    mvwprintw(win_, (LINES - 11) / 2 - 1, (COLS - 40) / 2, "/_/ |_/\\___/\\____/_/ |_/\\____/\\__/\\___/ ");    
+    attron(COLOR_PAIR(2));
+    mvprintw((LINES - 11) / 2 - 5, (COLS - 40) / 2, "    _   __           _   __      __     ");
+    attroff(COLOR_PAIR(2));
+    attron(COLOR_PAIR(3));
+    mvprintw((LINES - 11) / 2 - 4, (COLS - 40) / 2, "   / | / /__  ____  / | / /___  / /____ ");
+    attroff(COLOR_PAIR(3));
+    attron(COLOR_PAIR(4));
+    mvprintw((LINES - 11) / 2 - 3, (COLS - 40) / 2, "  /  |/ / _ \\/ __ \\/  |/ / __ \\/ __/ _ \\");
+    attroff(COLOR_PAIR(4));
+    attron(COLOR_PAIR(5));
+    mvprintw((LINES - 11) / 2 - 2, (COLS - 40) / 2, " / /|  /  __/ /_/ / /|  / /_/ / /_/  __/");
+    attroff(COLOR_PAIR(5));
+    attron(COLOR_PAIR(6));
+    mvprintw((LINES - 11) / 2 - 1, (COLS - 40) / 2, "/_/ |_/\\___/\\____/_/ |_/\\____/\\__/\\___/ ");
+    attroff(COLOR_PAIR(6));
 
     int rowPrint = (LINES - 2) / 2;
 
