@@ -46,7 +46,7 @@ void EditorUI::renderUI(int sidebar_width, const std::vector<std::string> &files
  * @param files A vector of strings representing the file names to be displayed.
  */
 void EditorUI::renderSidebar(int sidebar_width, const std::vector<std::string> &files, int sidebar_index) {
-    wclear(sidebar); 
+    werase(sidebar); 
     box(sidebar, 0, 0);
     mvwhline(sidebar, 5, 1, ACS_HLINE, sidebar_width - 2);
     if(sidebar_index == files.size()) wattron(sidebar, COLOR_PAIR(1));
@@ -95,7 +95,7 @@ void EditorUI::displayContent(const std::vector<std::string> &lines,
  * 
  * This method handles the rendering of lines with special formatting such as 
  * bold and italics based on the presence of asterisks (*). It also manages 
- * cursor position and scrolling logic.
+ renderco* cursor position and scrolling logic.
  * 
  * @param lines A vector of strings representing the lines to be displayed.
  * @param row The current row position of the cursor.

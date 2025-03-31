@@ -148,7 +148,7 @@ void TerminalEditor::handleInputContent(int ch) {
                 row--;
             }
             break;
-        case 29: // Ctrl + ]
+        case 29: // Ctrl + [
             if (col > 0) {
                 // Skip any spaces immediately left
                 while (col > 0 && lines[row][col-1] == ' ') {
@@ -161,7 +161,7 @@ void TerminalEditor::handleInputContent(int ch) {
             }
             break;
 
-        case 28: // Ctrl + "\"
+        case 28: // Ctrl + ]
             if (col < lines[row].length()) {
                 // Skip current word
                 while (col < lines[row].length() && lines[row][col] != ' ') {
@@ -228,6 +228,14 @@ void TerminalEditor::handleInputContent(int ch) {
             row++;  /**< Move cursor to the next line. */
             col = 0;  /**< Reset the column to the beginning of the new line. */
             break;
+        case 6: // Ctrl+F - Go to front of file
+            row = 0;
+            col = 0;
+            break;
+        case 20: // Ctrl+T - Go to tail of file
+            row = lines.size() - 1;
+            col = lines[row].length();
+            break;
         case 19: // Ctrl+S
             fileManager.saveFile(current_file, lines);  /**< Save the current file. */
             break;
@@ -267,6 +275,19 @@ void TerminalEditor::handleInputContent(int ch) {
                 col = word_start + 1;
             }
             break;
+        case 16: // Ctrl+P - Scroll up one line
+            if (row > 0) {
+                row--;
+                col = std::min(col, (int)lines[row].length());
+            }
+            break;
+        case 12: // Ctrl+L - Scroll down one line
+            if (row < lines.size() - 1) {
+                row++;
+                col = std::min(col, (int)lines[row].length());
+            }
+            break;
+
 	case 14: // Ctrl+N - New file
             fileManager.newFile(); /**< Push new file to files vector. */
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);

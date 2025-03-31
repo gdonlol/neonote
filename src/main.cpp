@@ -45,6 +45,7 @@ int main() {
 
         if (current_cols != prev_cols || current_lines != prev_lines) {
             clear(); // Clear the screen
+	    wclear(win);
             refresh();
 
             sidebar_width = current_cols * 0.25;
