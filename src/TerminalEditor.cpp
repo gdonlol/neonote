@@ -60,6 +60,8 @@ void TerminalEditor::handleInput(int ch) {
             case 15:
             case 4:
                 focused_div = 1; /**< Flip focused_div. */
+                calendar.setSelectedEvent(-1);
+                calendar.renderCalendar();
                 break;
             case 14:
                 event_title = ui.displayPrompt("Event Name");
@@ -351,8 +353,7 @@ void TerminalEditor::handleInputSidebar(int ch) {
             }
             else {
                 //render calendar here
-                focused_div = 3;
-                calendar.setSelectedEvent(0);
+                calendar.setSelectedEvent(-1);
                 calendar.renderCalendar();
             }
             break;
