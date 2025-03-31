@@ -142,10 +142,10 @@ void FileManager::deleteFile(const string &filename){
     }
 }
 
-void FileManager::renameFile(const string &filename, string newName){
+void FileManager::renameFile(const string &filename, string newName, string &current_file){
     string oldPath = appDataPath + "/" + filename + ".md";
     string newPath = appDataPath + "/" + newName + ".md";
-
+    current_file = newName;
     if (filesystem::exists(oldPath) && !filesystem::exists(newPath)) {
         filesystem::rename(oldPath, newPath);
 

@@ -192,7 +192,7 @@ void TerminalEditor::handleInputContent(int ch) {
             col = 0;  /**< Reset the column to the beginning of the new line. */
             break;
         case 19: // Ctrl+S
-            fileManager.saveFile(fileManager.getFiles()[0], lines);  /**< Save the current file. */
+            fileManager.saveFile(current_file, lines);  /**< Save the current file. */
             break;
         case 2: // Ctrl+B - Handle bold markdown
             if (col + 2 <= lines[row].length() && lines[row].substr(col, 2) == "**") {
@@ -292,8 +292,9 @@ void TerminalEditor::handleInputSidebar(int ch) {
             break;
         case KEY_F(2):
         case 18:
+            fileManager.saveFile(current_file, lines);
             input = ui.displayPrompt("Rename note");
-            fileManager.renameFile(fileManager.getFiles()[sidebar_index], input);
+            fileManager.renameFile(fileManager.getFiles()[sidebar_index], input, current_file);
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);
             break;
