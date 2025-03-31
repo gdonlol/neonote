@@ -31,25 +31,52 @@ int main() {
     // Initialize main menu
     MainMenu mainMenu(win);
 
+    int prev_cols = COLS;
+    int prev_lines = LINES;
+
     // Main application loop
     while (true) {
+        int current_cols, current_lines;
+        getmaxyx(stdscr, current_lines, current_cols);
+
+        if (current_cols != prev_cols || current_lines != prev_lines) {
+            clear(); // Clear the screen
+            refresh();
+
+            sidebar_width = current_cols * 0.25;
+            content_width = current_cols - sidebar_width;
+
+            wresize(sidebar, current_lines, sidebar_width);
+            wresize(content, current_lines, content_width);
+            mvwin(sidebar, 0, 0);
+            mvwin(content, 0, sidebar_width);
+
+            // Update size
+            prev_cols = current_cols;
+            prev_lines = current_lines;
+
+            // Redraw
+            mainMenu.display();
+        }
+
+        // Get the current window
         int currentWindow = mainMenu.getCurrentWindow();
 
         if (currentWindow == 0) { // Menu window
             mainMenu.display();
             int input = getch();
             mainMenu.handleInput(input);
-            
+
             if (mainMenu.shouldExit()) {
                 break;
             }
         }
         else if (currentWindow == 1) { // Editor window
             TerminalEditor terminal_editor(win, sidebar, content, vector<string>());
-            
+
             while (true) {
                 int input = getch();
-                
+
                 if (input == 17 || input == KEY_F(1)) { // Ctrl+Q or F1 to exit
                     terminal_editor.cleanup();
                     mainMenu.returnToMenu();
@@ -68,3 +95,4 @@ int main() {
     delwin(win);
     return 0;
 }
+
