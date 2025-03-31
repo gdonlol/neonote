@@ -53,6 +53,22 @@ void TerminalEditor::handleInput(int ch) {
         handleInputSidebar(ch);  /**< Handle input in the sidebar area. */
     }
     else if (focused_div == 2) { //**< 2 = kanban */
+        string task_title, task_desc, task_due_date;
+        switch(ch) {
+            case 15:
+            case 4: // Switch focus
+                focused_div = 1; 
+                break;
+            case 14: // Add a new task
+                task_title = ui.displayPrompt("Task Name");
+                task_desc = ui.displayPrompt("Task Description");
+                task_due_date = ui.displayPrompt("Task Due Date");
+                Task new_task(taskManager.nextFree(), task_title, "To Do", task_desc, task_due_date); 
+                taskManager.addTask(new_task);
+                taskManager.renderTasks();
+                ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
+                break;
+        }
     }
     else if (focused_div == 3) { //**< 3 = calendar */
         string event_title, event_desc, event_date;

@@ -33,6 +33,11 @@ public:
     // Prompt user for task
     void promptForTask();
 
+    // Listens for key press events for task input.
+    void listenForInput();
+
+    int nextFree();
+
 private:
     std::vector<Task> tasks;
     WINDOW* content;
