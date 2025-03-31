@@ -18,9 +18,6 @@ public:
     // Removes a task from the list based on its ID
     void removeTask(int taskId);
 
-    // Updates a task by replacing it with an updated version
-    void updateTask(int taskId, const Task& updatedTask);
-
     // Moves a task to a new status category
     void moveTask(int taskId, int type);
 

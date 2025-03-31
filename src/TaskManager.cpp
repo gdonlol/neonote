@@ -4,6 +4,9 @@
 #include <algorithm>
 #include <ncurses.h> 
 #include <cstring>
+#include <filesystem>
+#include <fstream>
+#include <cstdlib>
 
 /**
  * @brief Constructor for TaskManager.
@@ -12,8 +15,37 @@
  * 
  * @param content Pointer to the ncurses window where tasks will be displayed.
  */
-TaskManager::TaskManager(WINDOW* content) : content(content), currentSelected(0), currentType(0){
+TaskManager::TaskManager(WINDOW* content) : content(content), currentSelected(0), currentType(0) {
     this->content = content;
+
+    const char* homeDir = getenv("HOME");
+    if (!homeDir) return;
+
+    std::string dirPath = std::string(homeDir) + "/.local/share/neonote/kanban/";
+
+    if (!std::filesystem::exists(dirPath) || !std::filesystem::is_directory(dirPath)) {
+        std::filesystem::create_directories(dirPath);  // Create the directory if it doesn't exist
+        return;
+    }
+
+    for (const auto& entry : std::filesystem::directory_iterator(dirPath)) {
+        if (entry.is_regular_file()) {
+            std::ifstream inFile(entry.path());
+            
+            std::string title;
+            int type = -1;
+            
+            if (std::getline(inFile, title) && inFile >> type) {
+                std::string filename = entry.path().filename().string();
+                int taskId = std::stoi(filename);
+
+                if (type >= 0 && type < tasks.size()) {
+                    tasks[type].emplace_back(taskId, title, type);
+                }
+            }
+            inFile.close();
+        }
+    }
 }
 
 /**
@@ -27,6 +59,24 @@ TaskManager::TaskManager(WINDOW* content) : content(content), currentSelected(0)
 void TaskManager::addTask(const std::string& title, int type) {
     int newTaskId = nextFree();
     tasks[type].emplace_back(newTaskId, title, type);
+
+    const char* homeDir = getenv("HOME");  // Get the home directory
+    if (homeDir == nullptr) return;        // Failsafe if HOME is not set
+
+    std::string kanbanDir = std::string(homeDir) + "/.local/share/neonote/kanban/";
+
+    // Create the directory if it doesn't exist
+    std::filesystem::create_directories(kanbanDir);
+
+    // Write the task to a file with ID as filename
+    std::string filePath = kanbanDir + std::to_string(newTaskId);
+
+    std::ofstream outFile(filePath);
+    if (outFile.is_open()) {
+        outFile << title << "\n";
+        outFile << type << "\n";
+        outFile.close();
+    }
 }
 
 /**
@@ -37,31 +87,21 @@ void TaskManager::addTask(const std::string& title, int type) {
  * @param taskId The ID of the task to be removed.
  */
 void TaskManager::removeTask(int taskId) {
-    if(taskId == -1)return;
+    if (taskId == -1) return;
+
     for (auto& taskList : tasks) {
         for (auto it = taskList.begin(); it != taskList.end(); ++it) {
             if (it->getId() == taskId) {
                 taskList.erase(it);
-                return;
-            }
-        }
-    }
-}
 
-/**
- * @brief Updates an existing task with new data.
- * 
- * This function searches for a task by its ID and replaces it with the provided
- * updated task data.
- * 
- * @param taskId The ID of the task to be updated.
- * @param updatedTask The new Task object containing updated task data.
- */
-void TaskManager::updateTask(int taskId, const Task& updatedTask) {
-    for (auto& taskList : tasks) {  
-        for (auto& task : taskList) {  
-            if (task.getId() == taskId) { 
-                task = updatedTask;
+                const char* homeDir = getenv("HOME");
+                if (homeDir != nullptr) {
+                    std::string filePath = std::string(homeDir) + "/.local/share/neonote/kanban/" + std::to_string(taskId);
+
+                    if (std::filesystem::exists(filePath)) {
+                        std::filesystem::remove(filePath);
+                    }
+                }
                 return;
             }
         }
@@ -88,6 +128,24 @@ void TaskManager::moveTask(int taskId, int type) {
                 if (&taskList != &tasks[type]) {
                     tasks[type].push_back(*it);
                     it = taskList.erase(it);
+
+                    const char* homeDir = getenv("HOME");
+                    if (homeDir != nullptr) {
+                        std::string filePath = std::string(homeDir) + "/.local/share/neonote/kanban/" + std::to_string(taskId);
+
+                        if (std::filesystem::exists(filePath)) {
+                            std::ifstream inFile(filePath);
+                            std::string title;
+
+                            if (std::getline(inFile, title)) {
+                                inFile.close();
+
+                                std::ofstream outFile(filePath);
+                                outFile << title << "\n" << type << "\n";
+                                outFile.close();
+                            }
+                        }
+                    }
                 } else {
                     ++it;
                 }
