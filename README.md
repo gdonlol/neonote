@@ -20,30 +20,30 @@ Neonote relies on the following dependencies for proper compilation and executio
 2. ## **ncurses Library**
 - Used for terminal-based UI rendering.
 - Install commands for common Linux distributions:
-### 2.1. Debian/Ubuntu:
+- ### 2.1. Debian/Ubuntu:
 ```
 sudo apt install libncurses5-dev libncursesw5-dev
 ```
-### 2.2. Arch Linux:
+- ### 2.2. Arch Linux:
 ```
 sudo pacman -S ncurses
 ```
-### 2.3. Fedora/RHEL:
+- ### 2.3. Fedora/RHEL:
 ```
 sudo dnf install ncurses-devel
 ```
 3. ## **GNU Make**
 - Used to build the project using the provided `Makefile`.
 - Install commands:
-### 3.1. Debian/Ubuntu:
+- ### 3.1. Debian/Ubuntu:
 ```
 sudo apt install make
 ```
-### 3.2. Arch Linux:
+- ### 3.2. Arch Linux:
 ```
 sudo pacman -S make
 ```
-### 3.3. Fedora/RHEL:
+- ### 3.3. Fedora/RHEL:
 ```
 sudo dnf install make
 ```
