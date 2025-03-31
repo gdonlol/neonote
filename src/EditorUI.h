@@ -21,6 +21,8 @@ private:
     WINDOW *win;
     WINDOW *sidebar;
     WINDOW *content;
+
+    int sidebarScrollOffset;
     
     void renderContent(const std::vector<std::string> &lines, 
                       int row, int col, 

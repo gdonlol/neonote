@@ -12,7 +12,7 @@
  * @param content_in The content window to be used for rendering.
  */
 EditorUI::EditorUI(WINDOW *win_in, WINDOW *sidebar_in, WINDOW *content_in) 
-    : win(win_in), sidebar(sidebar_in), content(content_in) {}
+    : win(win_in), sidebar(sidebar_in), content(content_in), sidebarScrollOffset(0) {}
 
 /**
  * @brief Renders the entire user interface.
@@ -57,9 +57,18 @@ void EditorUI::renderSidebar(int sidebar_width, const std::vector<std::string> &
     mvwprintw(sidebar, 3, 2, "%s", std::string("Calendar").substr(0, std::max(0, sidebar_width - 4)).c_str());
     wattroff(sidebar, COLOR_PAIR(1));
     
-    for (size_t i = 0; i < files.size(); i++) {
+
+    int maxVisibleFiles = LINES - 9;
+    int filesVector = (int)files.size();
+    if (sidebar_index < sidebarScrollOffset) {
+        sidebarScrollOffset = std::max(sidebar_index, 0);
+    } else if (sidebar_index >= sidebarScrollOffset + maxVisibleFiles && sidebar_index < filesVector) {
+        sidebarScrollOffset = sidebar_index - maxVisibleFiles + 1;
+    }
+    int j = 0;
+    for (int i = sidebarScrollOffset; i < std::min(sidebarScrollOffset + maxVisibleFiles, filesVector); i++) {
         if(i == sidebar_index) wattron(sidebar, COLOR_PAIR(1));
-        mvwprintw(sidebar, 7 + i, 2, "%s", files[i].substr(0, std::max(0, sidebar_width - 4)).c_str());
+        mvwprintw(sidebar, 7 + j++, 2, "%s", files[i].substr(0, std::max(0, sidebar_width - 4)).c_str());
         wattroff(sidebar, COLOR_PAIR(1));
     }
     wrefresh(sidebar);

@@ -354,15 +354,15 @@ void TerminalEditor::handleInputSidebar(int ch) {
             break;
         case KEY_F(2):
         case 18:
-            if(sidebar_index < fileManager.getFiles().size()){
+            if(sidebar_index < fileManager.getFiles().size() - 2){
                 fileManager.saveFile(current_file, lines);
                 fileManager.loadFile(fileManager.getFiles()[sidebar_index], lines, current_file);
                 input = ui.displayPrompt("Rename note");
                 fileManager.renameFile(fileManager.getFiles()[sidebar_index], input, current_file);
                 ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
                 ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);
-                break;
             }
+            break;
         case KEY_DC:
             if(fileManager.getFiles().size() > 1){
                 input = ui.displayPrompt("Delete permanently? (Y/N)");
