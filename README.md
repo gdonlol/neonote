@@ -5,7 +5,7 @@ A terminal-based, markdown text editor with task management, calendar scheduling
 Clone the repository.
 
 ```
-git clone https://github.com/gdonlol/neonote.git
+git clone https://gitlab.sci.uwo.ca/courses/2025/01/COMPSCI3307/group14.git
 ```
 
 Navigate to project directory in your terminal and use `make` to compile the program or `make run` to compile and run.
