@@ -81,7 +81,7 @@ void TerminalEditor::handleInputContent(int ch) {
         case CURSOR_DOWN: 
             if (row < lines.size() - 1) row++;  /**< Move the cursor down one line. */
             break;
-        case CURSOR_LEFT: 
+        case CURSOR_RIGHT: 
             if (col > 0) {
                 col--;  /**< Move the cursor left. */
             } else if (row > 0) {
@@ -90,7 +90,7 @@ void TerminalEditor::handleInputContent(int ch) {
                 col = lines[row].length();
             }
             break;
-        case CURSOR_RIGHT: 
+        case CURSOR_LEFT: 
             if (col < lines[row].length()) {
                 col++;  /**< Move the cursor right. */
             } else if (row < lines.size() - 1) {
@@ -176,7 +176,7 @@ void TerminalEditor::handleInputContent(int ch) {
                     }
                 }
                 if (shouldExpand) {
-                    lines[row].replace(col - 1, 1, "    - ");
+                    lines[row].replace(col - 1, 1, INDENTATION + "- ");
                     col += 5;
                 }
             }
