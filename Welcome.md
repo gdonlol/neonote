@@ -1,7 +1,7 @@
 # Introduction
 Welcome to NeoNote!
 
-NeoNote is a terminal-based note-taking app created for `CS3307` at the *University of Western Ontario* during the ****2025 Winter Semester**.
+NeoNote is a terminal-based note-taking app created for `CS3307` at the *University of Western Ontario* during the **2025 Winter Semester**.
 
 ### Goal
 Markdown editors in the terminal typically display formatting characters or require users to toggle between editing and viewing modes. 
