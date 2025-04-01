@@ -5,10 +5,12 @@
 /**
  * @brief Constructs a MainMenu object.
  * 
- * This constructor initializes the MainMenu object with a given window pointer. It also sets default values
- * for the current window, selected menu option, and exit request status.
+ * Constructor initializes the MainMenu object with a given window pointer. 
+ * Sets default values for current window, selected menu option, and exit request status.
  * 
  * @param win Pointer to the window object to display the menu on.
+ * @Author Runcong Zhu
+ * @Author Gordon Xu
  */
 MainMenu::MainMenu(WINDOW* win) 
     : win_(win), currentWindow_(0), menuOption_(0), exitRequested_(false) {}

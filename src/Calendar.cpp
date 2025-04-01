@@ -18,6 +18,7 @@ using namespace std;
 /**
  * @brief Constructor for the Calendar class.
  * @param content Pointer to the ncurses window where the calendar will be rendered.
+ * @Author Gordon Xu
  */
 Calendar::Calendar(WINDOW *content): selectedEvent(-1), eventsScrollOffset(0) {
     this->content = content;

@@ -1,21 +1,5 @@
-/**
- * @file Application.cpp
- * @brief Main application implementation for NeoNote
- * @author Allen Zhu
- * @author Gordon Xu
- * @date 2024-03-31
- */
-
 #include "Application.h"
 #include <ncurses.h>
-
-/**
- * @class Application
- * @brief Main application class managing terminal editor and main menu interfaces
- * 
- * Handles initialization, window management, and the main event loop for NeoNote.
- * Manages transitions between main menu and editor and handles resizes.
- */
 
 /**
  * @brief Default constructor for Application

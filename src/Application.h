@@ -9,6 +9,14 @@
 #include "NcursesSetup.h"
 #include "Settings.h"
 
+/**
+ * @class Application
+ * @brief Main application class managing terminal editor and main menu interfaces
+ * @Author Runcong Zhu
+ *
+ * Handles initialization, window management, and the main event loop for NeoNote.
+ * Manages transitions between main menu and editor and handles resizes.
+ */
 class Application {
 public:
     Application();

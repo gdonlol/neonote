@@ -1,5 +1,5 @@
 #include "NcursesSetup.h"
-
+#include "Settings.h"
 /**
  * @brief Constructs an NcursesSetup object.
  * 
@@ -38,23 +38,24 @@ bool NcursesSetup::initialize() {
     intrflush(stdscr, FALSE);
 
     start_color();
-    init_color(COLOR_BLACK, 150, 150, 150); 	// Grey
-    init_color(COLOR_RED, 555, 110, 1000); 	// Purple 1
-    init_color(COLOR_GREEN, 580, 200, 965); 	// Purple 2
-    init_color(COLOR_YELLOW, 615, 285, 925); 	// Purple 3
-    init_color(COLOR_BLUE, 635, 375, 880); 	// Purple 4
-    init_color(COLOR_MAGENTA, 670, 470, 845); 	// Purple 5
-    init_color(COLOR_CYAN, 700, 565, 800); 	// Purple 6
 
-    init_pair(1, COLOR_BLACK, COLOR_WHITE); // Inverted highlight
-    init_pair(2, COLOR_RED, -1);    // H1
-    init_pair(3, COLOR_GREEN, -1);  // H2
-    init_pair(4, COLOR_YELLOW, -1); // H3
-    init_pair(5, COLOR_BLUE, -1);   // H4
-    init_pair(6, COLOR_MAGENTA, -1);// H5
-    init_pair(7, COLOR_CYAN, -1);   // H6
-    init_pair(9, COLOR_WHITE, COLOR_BLACK); // Codeblock
-
+    init_color(COLOR_BLACK, CODEBLOCK_R, CODEBLOCK_G, CODEBLOCK_B);
+    init_color(COLOR_RED, COLOR1_R, COLOR1_G, COLOR1_B);
+    init_color(COLOR_GREEN, COLOR2_R, COLOR2_G, COLOR2_B);
+    init_color(COLOR_YELLOW, COLOR3_R, COLOR3_G, COLOR3_B);
+    init_color(COLOR_BLUE, COLOR4_R, COLOR4_G, COLOR4_B);
+    init_color(COLOR_MAGENTA, COLOR5_R, COLOR5_G, COLOR5_B);
+    init_color(COLOR_CYAN, COLOR6_R, COLOR6_G, COLOR6_B);
+    
+    init_pair(1, COLOR_RED, -1);		///< Highlight
+    init_pair(2, COLOR_RED, -1);		///< Color 1
+    init_pair(3, COLOR_GREEN, -1);		///< Color 2
+    init_pair(4, COLOR_YELLOW, -1);		///< Color 3
+    init_pair(5, COLOR_BLUE, -1);		///< Color 4
+    init_pair(6, COLOR_MAGENTA, -1);		///< Color 5
+    init_pair(7, COLOR_CYAN, -1);		///< Color 6
+    init_pair(9, COLOR_WHITE, COLOR_BLACK);	///< Codeblock
+    
     if (!has_colors()) {
         printw("Terminal does not support color");
         getch();
