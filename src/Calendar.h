@@ -2,9 +2,7 @@
  * @file Calendar.h
  * @brief Defines the Calendar class for managing and displaying events.
  * 
- * @author Gordon Xu
- * @author Emily Atyeo
- * @author Edward Bulmer
+
  */
 
 #ifndef CALENDAR_H
@@ -22,6 +20,9 @@
  * The Calendar class allows adding, removing, and updating events. It also handles rendering the calendar
  * in an ncurses window, provides date-related utilities, and manages the selection of events.
  * 
+ * @author Gordon Xu
+ * @author Emily Atyeo
+ * @author Edward Bulmer
  */
 class Calendar {
 public:
