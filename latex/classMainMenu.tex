@@ -1,0 +1,143 @@
+\doxysection{Main\+Menu Class Reference}
+\hypertarget{classMainMenu}{}\label{classMainMenu}\index{MainMenu@{MainMenu}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classMainMenu_af18672095f9df427971d02d00142b610}{Main\+Menu}} (WINDOW \texorpdfstring{$\ast$}{*}win)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{classMainMenu}{Main\+Menu} object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMainMenu_a1d790b1dc0bf2e1f9d399e95311ea167}{display}} ()
+\begin{DoxyCompactList}\small\item\em Displays the current window content. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMainMenu_a086da95145751202ccdd25e101f853ec}{handle\+Input}} (int input)
+\begin{DoxyCompactList}\small\item\em Handles user input to navigate the menu. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classMainMenu_a5296ece18955c7bf9181df0200e8e912}{should\+Exit}} () const
+\begin{DoxyCompactList}\small\item\em Checks if the user has requested to exit. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classMainMenu_afbd8116c3bdc25c648dcaa82f1870d0c}{get\+Current\+Window}} () const
+\begin{DoxyCompactList}\small\item\em Gets the current window index. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMainMenu_ab47edbd13b025a31f0faab291847e7d0}{return\+To\+Menu}} ()
+\begin{DoxyCompactList}\small\item\em Returns to the main menu. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classMainMenu_a6cd6f26430db579fd9ea954b892713ad}{draw\+Menu}} () const
+\begin{DoxyCompactList}\small\item\em Draws the main menu. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classMainMenu_a74fe30e347d54f683db0f3714de818a9}\label{classMainMenu_a74fe30e347d54f683db0f3714de818a9} 
+WINDOW \texorpdfstring{$\ast$}{*} {\bfseries win\+\_\+}
+\item 
+\Hypertarget{classMainMenu_a0511ba02e18d119ed294acc1da7950eb}\label{classMainMenu_a0511ba02e18d119ed294acc1da7950eb} 
+int {\bfseries current\+Window\+\_\+}
+\item 
+\Hypertarget{classMainMenu_af894d1952d7d46787e6d0a76da658ee1}\label{classMainMenu_af894d1952d7d46787e6d0a76da658ee1} 
+int {\bfseries menu\+Option\+\_\+}
+\item 
+\Hypertarget{classMainMenu_a2d298958638b3a53d1be9aecb33401a4}\label{classMainMenu_a2d298958638b3a53d1be9aecb33401a4} 
+bool {\bfseries exit\+Requested\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classMainMenu_af18672095f9df427971d02d00142b610}\label{classMainMenu_af18672095f9df427971d02d00142b610} 
+\index{MainMenu@{MainMenu}!MainMenu@{MainMenu}}
+\index{MainMenu@{MainMenu}!MainMenu@{MainMenu}}
+\doxysubsubsection{\texorpdfstring{MainMenu()}{MainMenu()}}
+{\footnotesize\ttfamily Main\+Menu\+::\+Main\+Menu (\begin{DoxyParamCaption}\item[{WINDOW \texorpdfstring{$\ast$}{*}}]{win }\end{DoxyParamCaption})}
+
+
+
+Constructs a \doxylink{classMainMenu}{Main\+Menu} object. 
+
+Constructor initializes the \doxylink{classMainMenu}{Main\+Menu} object with a given window pointer. Sets default values for current window, selected menu option, and exit request status.
+
+
+\begin{DoxyParams}{Parameters}
+{\em win} & Pointer to the window object to display the menu on. @\+Author Runcong Zhu @\+Author Gordon Xu \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classMainMenu_a1d790b1dc0bf2e1f9d399e95311ea167}\label{classMainMenu_a1d790b1dc0bf2e1f9d399e95311ea167} 
+\index{MainMenu@{MainMenu}!display@{display}}
+\index{display@{display}!MainMenu@{MainMenu}}
+\doxysubsubsection{\texorpdfstring{display()}{display()}}
+{\footnotesize\ttfamily void Main\+Menu\+::display (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Displays the current window content. 
+
+This method checks the {\ttfamily current\+Window\+\_\+} and displays the menu if it\textquotesingle{}s the main menu (i.\+e., {\ttfamily current\+Window\+\_\+ == 0}). \Hypertarget{classMainMenu_a6cd6f26430db579fd9ea954b892713ad}\label{classMainMenu_a6cd6f26430db579fd9ea954b892713ad} 
+\index{MainMenu@{MainMenu}!drawMenu@{drawMenu}}
+\index{drawMenu@{drawMenu}!MainMenu@{MainMenu}}
+\doxysubsubsection{\texorpdfstring{drawMenu()}{drawMenu()}}
+{\footnotesize\ttfamily void Main\+Menu\+::draw\+Menu (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Draws the main menu. 
+
+This method draws the visual layout of the main menu, including a title and the menu options ("{}my notes"{} and "{}exit"{}). The currently selected option is highlighted. \Hypertarget{classMainMenu_afbd8116c3bdc25c648dcaa82f1870d0c}\label{classMainMenu_afbd8116c3bdc25c648dcaa82f1870d0c} 
+\index{MainMenu@{MainMenu}!getCurrentWindow@{getCurrentWindow}}
+\index{getCurrentWindow@{getCurrentWindow}!MainMenu@{MainMenu}}
+\doxysubsubsection{\texorpdfstring{getCurrentWindow()}{getCurrentWindow()}}
+{\footnotesize\ttfamily int Main\+Menu\+::get\+Current\+Window (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the current window index. 
+
+This method returns the index of the current window. A value of 0 indicates the main menu.
+
+\begin{DoxyReturn}{Returns}
+The current window index. 
+\end{DoxyReturn}
+\Hypertarget{classMainMenu_a086da95145751202ccdd25e101f853ec}\label{classMainMenu_a086da95145751202ccdd25e101f853ec} 
+\index{MainMenu@{MainMenu}!handleInput@{handleInput}}
+\index{handleInput@{handleInput}!MainMenu@{MainMenu}}
+\doxysubsubsection{\texorpdfstring{handleInput()}{handleInput()}}
+{\footnotesize\ttfamily void Main\+Menu\+::handle\+Input (\begin{DoxyParamCaption}\item[{int}]{input }\end{DoxyParamCaption})}
+
+
+
+Handles user input to navigate the menu. 
+
+This method processes the user input to navigate through the menu options. It allows the user to move up or down through the options and select an option to either continue to another window or exit the application.
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The input character or key pressed by the user. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classMainMenu_ab47edbd13b025a31f0faab291847e7d0}\label{classMainMenu_ab47edbd13b025a31f0faab291847e7d0} 
+\index{MainMenu@{MainMenu}!returnToMenu@{returnToMenu}}
+\index{returnToMenu@{returnToMenu}!MainMenu@{MainMenu}}
+\doxysubsubsection{\texorpdfstring{returnToMenu()}{returnToMenu()}}
+{\footnotesize\ttfamily void Main\+Menu\+::return\+To\+Menu (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns to the main menu. 
+
+This method sets the {\ttfamily current\+Window\+\_\+} to 0, indicating the user is back at the main menu. \Hypertarget{classMainMenu_a5296ece18955c7bf9181df0200e8e912}\label{classMainMenu_a5296ece18955c7bf9181df0200e8e912} 
+\index{MainMenu@{MainMenu}!shouldExit@{shouldExit}}
+\index{shouldExit@{shouldExit}!MainMenu@{MainMenu}}
+\doxysubsubsection{\texorpdfstring{shouldExit()}{shouldExit()}}
+{\footnotesize\ttfamily bool Main\+Menu\+::should\+Exit (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Checks if the user has requested to exit. 
+
+This method returns whether the user has selected the "{}exit"{} option from the main menu.
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if the user requested to exit, otherwise {\ttfamily false}. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{MainMenu_8h}{Main\+Menu.\+h}}\item 
+src/Main\+Menu.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,60 @@
+\doxysection{Task\+Manager.\+h}
+\hypertarget{TaskManager_8h_source}{}\label{TaskManager_8h_source}\index{src/TaskManager.h@{src/TaskManager.h}}
+\mbox{\hyperlink{TaskManager_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#ifndef\ TASKMANAGER\_H}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ TASKMANAGER\_H}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Task_8h}{Task.h}}"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <ncurses.h>}\ }
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ TaskManager\ class\ manages\ a\ collection\ of\ Task\ objects}}
+\DoxyCodeLine{00021\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTaskManager}{TaskManager}}\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{comment}{//\ Constructor\ that\ takes\ an\ ncurses\ window\ for\ rendering}}
+\DoxyCodeLine{00024\ \ \ \ \ \mbox{\hyperlink{classTaskManager}{TaskManager}}(WINDOW*\ content);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{comment}{//\ Adds\ a\ new\ task\ to\ the\ task\ list}}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTaskManager_ad8010c05019cd6f791377bd3a049c878}{addTask}}(\textcolor{keyword}{const}\ std::string\&\ title,\ \textcolor{keywordtype}{int}\ type);}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{comment}{//\ Removes\ a\ task\ from\ the\ list\ based\ on\ its\ ID}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTaskManager_a7f7fe836be898337e1b8027921fe58a8}{removeTask}}(\textcolor{keywordtype}{int}\ taskId);}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ Moves\ a\ task\ to\ a\ new\ status\ category}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTaskManager_a4dc92e1402982581041ceaffeb5e20ad}{moveTask}}(\textcolor{keywordtype}{int}\ taskId,\ \textcolor{keywordtype}{int}\ type);}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\ Returns\ all\ tasks}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<std::vector<Task>>\&\ \mbox{\hyperlink{classTaskManager_a7db57d18f8a9d0f1079cda5a1ca29e3f}{getTasks}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{comment}{//\ Renders\ all\ tasks}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTaskManager_ab7865e8cbd7ed862d7e790516f83f843}{renderTasks}}();}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classTaskManager_aa359511b74f83172f714519d8010adff}{nextFree}}();}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTaskManager_ad8b8a810567b5319a10a8dd7b9cceef1}{moveTaskPopup}}(\textcolor{keywordtype}{int}\ taskId);}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTaskManager_aaa25017b0b2f603aa179bf267b933b2b}{moveSelection}}(\textcolor{keywordtype}{int}\ direction);}
+\DoxyCodeLine{00047\ \ \ \ \ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classTaskManager_a5c290406039624d32b600021bd712b10}{getSelectedTaskId}}();}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTaskManager_ae0a9bc962bcd4f529b4fcc4045f1d164}{swapIn}}();}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTaskManager_a2b90e191a29f3b609fc27e8c9f569c68}{swapOut}}();}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00055\ \ \ \ \ std::vector<std::vector<Task>>\ tasks\ =\ \{\{\},\ \{\},\ \{\}\};}
+\DoxyCodeLine{00056\ \ \ \ \ WINDOW*\ content;}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{int}\ currentSelected;}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{int}\ currentType;}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ std::vector<int>\ colOffset\ =\ \{0,\ 0,\ 0\};}
+\DoxyCodeLine{00062\ \};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ TASKMANAGER\_H}}
+
+\end{DoxyCode}

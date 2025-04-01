@@ -1,0 +1,233 @@
+\doxysection{Editor\+UI Class Reference}
+\hypertarget{classEditorUI}{}\label{classEditorUI}\index{EditorUI@{EditorUI}}
+
+
+Handles the rendering and interaction of a text editor\textquotesingle{}s user interface.  
+
+
+
+
+{\ttfamily \#include $<$Editor\+UI.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classEditorUI_ad611f67495e1ade9f95284d3cf5ec700}{Editor\+UI}} (WINDOW \texorpdfstring{$\ast$}{*}win, WINDOW \texorpdfstring{$\ast$}{*}sidebar, WINDOW \texorpdfstring{$\ast$}{*}content)
+\begin{DoxyCompactList}\small\item\em Constructor for the \doxylink{classEditorUI}{Editor\+UI} class. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classEditorUI_aa3d024eadaffc9432abe1574ac101f32}{render\+UI}} (int sidebar\+\_\+width, const std\+::vector$<$ std\+::string $>$ \&files)
+\begin{DoxyCompactList}\small\item\em Renders the entire user interface. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classEditorUI_acebbc7a21e9998ea79e85b0f8a28d230}{display\+Content}} (const std\+::vector$<$ std\+::string $>$ \&lines, int row, int col, int scroll\+\_\+row, int scroll\+\_\+col, std\+::string title)
+\begin{DoxyCompactList}\small\item\em Displays the content in the content window. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classEditorUI_a591c1c13c99b45b919a6a2b9d1f5a894}{render\+Sidebar}} (int sidebar\+\_\+width, const std\+::vector$<$ std\+::string $>$ \&files, int sidebar\+\_\+index)
+\begin{DoxyCompactList}\small\item\em Renders the sidebar with the list of files and additional content. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classEditorUI_aa5ed1389a55feda9c9dfdf5cf8d61760}{cleanup}} ()
+\begin{DoxyCompactList}\small\item\em Cleans up and terminates the ncurses session. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classEditorUI_acffcec3d61b510ad584bb12e331cb648}{display\+Prompt}} (std\+::string title)
+\begin{DoxyCompactList}\small\item\em Displays the prompt and captures user input. \end{DoxyCompactList}\item 
+\Hypertarget{classEditorUI_a8e2d0336c0f68605086c7b7fd386a215}\label{classEditorUI_a8e2d0336c0f68605086c7b7fd386a215} 
+WINDOW \texorpdfstring{$\ast$}{*} {\bfseries get\+Main\+Window} () const
+\item 
+\Hypertarget{classEditorUI_a48df690524b4978c7aa17735f2c9754b}\label{classEditorUI_a48df690524b4978c7aa17735f2c9754b} 
+WINDOW \texorpdfstring{$\ast$}{*} {\bfseries get\+Sidebar} () const
+\item 
+\Hypertarget{classEditorUI_ae987dd90d24a97e3bc1b61cb9608f5d5}\label{classEditorUI_ae987dd90d24a97e3bc1b61cb9608f5d5} 
+WINDOW \texorpdfstring{$\ast$}{*} {\bfseries get\+Content} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classEditorUI_afc6b590ad4f0418b0543832a234e8df0}{render\+Content}} (const std\+::vector$<$ std\+::string $>$ \&lines, int row, int col, int scroll\+\_\+row, int scroll\+\_\+col)
+\begin{DoxyCompactList}\small\item\em Renders the actual content inside the content window. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classEditorUI_a86dd0ccd041f5d47bc31027a0b79832f}{format\+With\+Ellipsis}} (const std\+::string \&text, int max\+Width)
+\begin{DoxyCompactList}\small\item\em Formats a string with an ellipsis if it exceeds the specified width. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classEditorUI_a46d48c4c6ff0cb57ee17d981253b246a}\label{classEditorUI_a46d48c4c6ff0cb57ee17d981253b246a} 
+WINDOW \texorpdfstring{$\ast$}{*} {\bfseries win}
+\item 
+\Hypertarget{classEditorUI_a6984505999099723177a352852cdc846}\label{classEditorUI_a6984505999099723177a352852cdc846} 
+WINDOW \texorpdfstring{$\ast$}{*} {\bfseries sidebar}
+\item 
+\Hypertarget{classEditorUI_ac42ebbc66fdb9ae3908d4c81dd6512c0}\label{classEditorUI_ac42ebbc66fdb9ae3908d4c81dd6512c0} 
+WINDOW \texorpdfstring{$\ast$}{*} {\bfseries content}
+\item 
+\Hypertarget{classEditorUI_a5d0e2d382f73463a82dea54ff23bb16d}\label{classEditorUI_a5d0e2d382f73463a82dea54ff23bb16d} 
+int {\bfseries sidebar\+Scroll\+Offset}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Handles the rendering and interaction of a text editor\textquotesingle{}s user interface. 
+
+The \doxylink{classEditorUI}{Editor\+UI} class is responsible for managing the main window, sidebar, and content area. It provides functions for rendering the UI, displaying content, managing scrolling, and handling user prompts. @\+Author Gordon Xu @\+Author Runcong Zhu 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classEditorUI_ad611f67495e1ade9f95284d3cf5ec700}\label{classEditorUI_ad611f67495e1ade9f95284d3cf5ec700} 
+\index{EditorUI@{EditorUI}!EditorUI@{EditorUI}}
+\index{EditorUI@{EditorUI}!EditorUI@{EditorUI}}
+\doxysubsubsection{\texorpdfstring{EditorUI()}{EditorUI()}}
+{\footnotesize\ttfamily Editor\+UI\+::\+Editor\+UI (\begin{DoxyParamCaption}\item[{WINDOW \texorpdfstring{$\ast$}{*}}]{win\+\_\+in,  }\item[{WINDOW \texorpdfstring{$\ast$}{*}}]{sidebar\+\_\+in,  }\item[{WINDOW \texorpdfstring{$\ast$}{*}}]{content\+\_\+in }\end{DoxyParamCaption})}
+
+
+
+Constructor for the \doxylink{classEditorUI}{Editor\+UI} class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em win\+\_\+in} & The main window to be used for rendering. \\
+\hline
+{\em sidebar\+\_\+in} & The sidebar window to be used for rendering. \\
+\hline
+{\em content\+\_\+in} & The content window to be used for rendering. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classEditorUI_aa5ed1389a55feda9c9dfdf5cf8d61760}\label{classEditorUI_aa5ed1389a55feda9c9dfdf5cf8d61760} 
+\index{EditorUI@{EditorUI}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!EditorUI@{EditorUI}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily void Editor\+UI\+::cleanup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Cleans up and terminates the ncurses session. 
+
+This function is called to clean up the ncurses environment after the program has finished running. \Hypertarget{classEditorUI_acebbc7a21e9998ea79e85b0f8a28d230}\label{classEditorUI_acebbc7a21e9998ea79e85b0f8a28d230} 
+\index{EditorUI@{EditorUI}!displayContent@{displayContent}}
+\index{displayContent@{displayContent}!EditorUI@{EditorUI}}
+\doxysubsubsection{\texorpdfstring{displayContent()}{displayContent()}}
+{\footnotesize\ttfamily void Editor\+UI\+::display\+Content (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{lines,  }\item[{int}]{row,  }\item[{int}]{col,  }\item[{int}]{scroll\+\_\+row,  }\item[{int}]{scroll\+\_\+col,  }\item[{std\+::string}]{title }\end{DoxyParamCaption})}
+
+
+
+Displays the content in the content window. 
+
+Clears the content window, draws a box around it, and then renders the actual content lines in the window. The content is rendered based on the current row, column, and scrolling parameters.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lines} & A vector of strings representing the lines to be displayed. \\
+\hline
+{\em row} & The current row position of the cursor. \\
+\hline
+{\em col} & The current column position of the cursor. \\
+\hline
+{\em scroll\+\_\+row} & The row index for the scrolling. \\
+\hline
+{\em scroll\+\_\+col} & The column index for the scrolling. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classEditorUI_acffcec3d61b510ad584bb12e331cb648}\label{classEditorUI_acffcec3d61b510ad584bb12e331cb648} 
+\index{EditorUI@{EditorUI}!displayPrompt@{displayPrompt}}
+\index{displayPrompt@{displayPrompt}!EditorUI@{EditorUI}}
+\doxysubsubsection{\texorpdfstring{displayPrompt()}{displayPrompt()}}
+{\footnotesize\ttfamily std\+::string Editor\+UI\+::display\+Prompt (\begin{DoxyParamCaption}\item[{std\+::string}]{title }\end{DoxyParamCaption})}
+
+
+
+Displays the prompt and captures user input. 
+
+This method creates a {\ttfamily \doxylink{classTextPrompt}{Text\+Prompt}} object with the given title and returns the input provided by the user.
+
+
+\begin{DoxyParams}{Parameters}
+{\em title} & The title to be displayed at the prompt.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A string containing the user input. 
+\end{DoxyReturn}
+\Hypertarget{classEditorUI_a86dd0ccd041f5d47bc31027a0b79832f}\label{classEditorUI_a86dd0ccd041f5d47bc31027a0b79832f} 
+\index{EditorUI@{EditorUI}!formatWithEllipsis@{formatWithEllipsis}}
+\index{formatWithEllipsis@{formatWithEllipsis}!EditorUI@{EditorUI}}
+\doxysubsubsection{\texorpdfstring{formatWithEllipsis()}{formatWithEllipsis()}}
+{\footnotesize\ttfamily std\+::string Editor\+UI\+::format\+With\+Ellipsis (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{text,  }\item[{int}]{max\+Width }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Formats a string with an ellipsis if it exceeds the specified width. 
+
+This function truncates the input string to {\ttfamily max\+Width -\/ 3} characters and appends {\ttfamily ...} if the string length exceeds {\ttfamily max\+Width}. Otherwise, it returns the original string.
+
+
+\begin{DoxyParams}{Parameters}
+{\em text} & The input string to format. \\
+\hline
+{\em max\+Width} & The maximum allowed width of the string (including the ellipsis, if applied). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The formatted string with an ellipsis if it exceeds the max width. 
+\end{DoxyReturn}
+\Hypertarget{classEditorUI_afc6b590ad4f0418b0543832a234e8df0}\label{classEditorUI_afc6b590ad4f0418b0543832a234e8df0} 
+\index{EditorUI@{EditorUI}!renderContent@{renderContent}}
+\index{renderContent@{renderContent}!EditorUI@{EditorUI}}
+\doxysubsubsection{\texorpdfstring{renderContent()}{renderContent()}}
+{\footnotesize\ttfamily void Editor\+UI\+::render\+Content (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{lines,  }\item[{int}]{row,  }\item[{int}]{col,  }\item[{int}]{scroll\+\_\+row,  }\item[{int}]{scroll\+\_\+col }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Renders the actual content inside the content window. 
+
+This method handles the rendering of lines with special formatting such as bold and italics based on the presence of asterisks (\texorpdfstring{$\ast$}{*}). It also manages renderco\texorpdfstring{$\ast$}{*} cursor position and scrolling logic.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lines} & A vector of strings representing the lines to be displayed. \\
+\hline
+{\em row} & The current row position of the cursor. \\
+\hline
+{\em col} & The current column position of the cursor. \\
+\hline
+{\em scroll\+\_\+row} & The row index for the scrolling. \\
+\hline
+{\em scroll\+\_\+col} & The column index for the scrolling. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classEditorUI_a591c1c13c99b45b919a6a2b9d1f5a894}\label{classEditorUI_a591c1c13c99b45b919a6a2b9d1f5a894} 
+\index{EditorUI@{EditorUI}!renderSidebar@{renderSidebar}}
+\index{renderSidebar@{renderSidebar}!EditorUI@{EditorUI}}
+\doxysubsubsection{\texorpdfstring{renderSidebar()}{renderSidebar()}}
+{\footnotesize\ttfamily void Editor\+UI\+::render\+Sidebar (\begin{DoxyParamCaption}\item[{int}]{sidebar\+\_\+width,  }\item[{const std\+::vector$<$ std\+::string $>$ \&}]{files,  }\item[{int}]{sidebar\+\_\+index }\end{DoxyParamCaption})}
+
+
+
+Renders the sidebar with the list of files and additional content. 
+
+The sidebar includes labels like "{}\+My Tasks"{} and "{}\+Calendar"{}, along with a horizontal line and a list of file names.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sidebar\+\_\+width} & The width of the sidebar. \\
+\hline
+{\em files} & A vector of strings representing the file names to be displayed. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classEditorUI_aa3d024eadaffc9432abe1574ac101f32}\label{classEditorUI_aa3d024eadaffc9432abe1574ac101f32} 
+\index{EditorUI@{EditorUI}!renderUI@{renderUI}}
+\index{renderUI@{renderUI}!EditorUI@{EditorUI}}
+\doxysubsubsection{\texorpdfstring{renderUI()}{renderUI()}}
+{\footnotesize\ttfamily void Editor\+UI\+::render\+UI (\begin{DoxyParamCaption}\item[{int}]{sidebar\+\_\+width,  }\item[{const std\+::vector$<$ std\+::string $>$ \&}]{files }\end{DoxyParamCaption})}
+
+
+
+Renders the entire user interface. 
+
+Clears the main window, renders the sidebar, and the content window. Refreshes all windows after rendering.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sidebar\+\_\+width} & The width of the sidebar. \\
+\hline
+{\em files} & A vector of strings representing the files to display in the sidebar. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{EditorUI_8h}{Editor\+UI.\+h}}\item 
+src/Editor\+UI.\+cpp\end{DoxyCompactItemize}

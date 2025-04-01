@@ -1,0 +1,174 @@
+\doxysection{Task Class Reference}
+\hypertarget{classTask}{}\label{classTask}\index{Task@{Task}}
+
+
+Collaboration diagram for Task\+:
+% FIG 0
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classTask_af1c68df55705c88204d8b017e20f8987}{Task}} (int id, const std\+::string \&title, const int status, const std\+::string \&description="{}"{})
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{classTask}{Task} object. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classTask_abf76ea8bb7d99718c0ae0d231fd4dc52}{get\+Id}} () const
+\begin{DoxyCompactList}\small\item\em Gets the unique identifier for the task. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classTask_a85c31b536e5c92719636e1c65b7b74de}{get\+Title}} () const
+\begin{DoxyCompactList}\small\item\em Gets the title of the task. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classTask_aecbe79dd5334c9969320695b5a82e32a}{get\+Description}} () const
+\begin{DoxyCompactList}\small\item\em Gets the description of the task. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classTask_ad8e4e039f29de2c5161dcfd251d1b535}{get\+Status}} () const
+\begin{DoxyCompactList}\small\item\em Gets the current status of the task. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTask_a29976325484105532f92087057e407c1}{set\+Title}} (const std\+::string \&new\+Title)
+\begin{DoxyCompactList}\small\item\em Updates the title of the task. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTask_aed251b50df62e4fe089604a74e6353bb}{set\+Description}} (const std\+::string \&new\+Description)
+\begin{DoxyCompactList}\small\item\em Updates the description of the task. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classTask_adc62176e3030ba98f4f5ce094e08b1c6}{set\+Status}} (const int new\+Status)
+\begin{DoxyCompactList}\small\item\em Updates the status of the task. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classTask_a1bdc8139dd647f9701e9f43e588749d7}\label{classTask_a1bdc8139dd647f9701e9f43e588749d7} 
+int {\bfseries id}
+\item 
+\Hypertarget{classTask_a2bd361b513c89d2e574b10709ddd9150}\label{classTask_a2bd361b513c89d2e574b10709ddd9150} 
+std\+::string {\bfseries title}
+\item 
+\Hypertarget{classTask_a14f67f96a806a46958b47f04a0a7550d}\label{classTask_a14f67f96a806a46958b47f04a0a7550d} 
+std\+::string {\bfseries description}
+\item 
+\Hypertarget{classTask_af3c9b00f6ffaef332b5cff52592e88fd}\label{classTask_af3c9b00f6ffaef332b5cff52592e88fd} 
+int {\bfseries status}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classTask_af1c68df55705c88204d8b017e20f8987}\label{classTask_af1c68df55705c88204d8b017e20f8987} 
+\index{Task@{Task}!Task@{Task}}
+\index{Task@{Task}!Task@{Task}}
+\doxysubsubsection{\texorpdfstring{Task()}{Task()}}
+{\footnotesize\ttfamily Task\+::\+Task (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{const std\+::string \&}]{title,  }\item[{const int}]{status,  }\item[{const std\+::string \&}]{description = {\ttfamily "{}"{}} }\end{DoxyParamCaption})}
+
+
+
+Constructs a \doxylink{classTask}{Task} object. 
+
+This constructor initializes a task with an ID, title, status, description, and due date.
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The unique identifier for the task. \\
+\hline
+{\em title} & The title of the task. \\
+\hline
+{\em status} & The current status of the task (e.\+g., "{}in-\/progress"{}, "{}completed"{}). \\
+\hline
+{\em description} & A brief description of the task. \\
+\hline
+{\em due\+Date} & The due date of the task. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classTask_aecbe79dd5334c9969320695b5a82e32a}\label{classTask_aecbe79dd5334c9969320695b5a82e32a} 
+\index{Task@{Task}!getDescription@{getDescription}}
+\index{getDescription@{getDescription}!Task@{Task}}
+\doxysubsubsection{\texorpdfstring{getDescription()}{getDescription()}}
+{\footnotesize\ttfamily std\+::string Task\+::get\+Description (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the description of the task. 
+
+\begin{DoxyReturn}{Returns}
+The description of the task. 
+\end{DoxyReturn}
+\Hypertarget{classTask_abf76ea8bb7d99718c0ae0d231fd4dc52}\label{classTask_abf76ea8bb7d99718c0ae0d231fd4dc52} 
+\index{Task@{Task}!getId@{getId}}
+\index{getId@{getId}!Task@{Task}}
+\doxysubsubsection{\texorpdfstring{getId()}{getId()}}
+{\footnotesize\ttfamily int Task\+::get\+Id (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the unique identifier for the task. 
+
+\begin{DoxyReturn}{Returns}
+The ID of the task. 
+\end{DoxyReturn}
+\Hypertarget{classTask_ad8e4e039f29de2c5161dcfd251d1b535}\label{classTask_ad8e4e039f29de2c5161dcfd251d1b535} 
+\index{Task@{Task}!getStatus@{getStatus}}
+\index{getStatus@{getStatus}!Task@{Task}}
+\doxysubsubsection{\texorpdfstring{getStatus()}{getStatus()}}
+{\footnotesize\ttfamily int Task\+::get\+Status (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the current status of the task. 
+
+\begin{DoxyReturn}{Returns}
+The status of the task. 
+\end{DoxyReturn}
+\Hypertarget{classTask_a85c31b536e5c92719636e1c65b7b74de}\label{classTask_a85c31b536e5c92719636e1c65b7b74de} 
+\index{Task@{Task}!getTitle@{getTitle}}
+\index{getTitle@{getTitle}!Task@{Task}}
+\doxysubsubsection{\texorpdfstring{getTitle()}{getTitle()}}
+{\footnotesize\ttfamily std\+::string Task\+::get\+Title (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the title of the task. 
+
+\begin{DoxyReturn}{Returns}
+The title of the task. 
+\end{DoxyReturn}
+\Hypertarget{classTask_aed251b50df62e4fe089604a74e6353bb}\label{classTask_aed251b50df62e4fe089604a74e6353bb} 
+\index{Task@{Task}!setDescription@{setDescription}}
+\index{setDescription@{setDescription}!Task@{Task}}
+\doxysubsubsection{\texorpdfstring{setDescription()}{setDescription()}}
+{\footnotesize\ttfamily void Task\+::set\+Description (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{new\+Description }\end{DoxyParamCaption})}
+
+
+
+Updates the description of the task. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Description} & The new description for the task. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTask_adc62176e3030ba98f4f5ce094e08b1c6}\label{classTask_adc62176e3030ba98f4f5ce094e08b1c6} 
+\index{Task@{Task}!setStatus@{setStatus}}
+\index{setStatus@{setStatus}!Task@{Task}}
+\doxysubsubsection{\texorpdfstring{setStatus()}{setStatus()}}
+{\footnotesize\ttfamily void Task\+::set\+Status (\begin{DoxyParamCaption}\item[{const int}]{new\+Status }\end{DoxyParamCaption})}
+
+
+
+Updates the status of the task. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Status} & The new status for the task. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classTask_a29976325484105532f92087057e407c1}\label{classTask_a29976325484105532f92087057e407c1} 
+\index{Task@{Task}!setTitle@{setTitle}}
+\index{setTitle@{setTitle}!Task@{Task}}
+\doxysubsubsection{\texorpdfstring{setTitle()}{setTitle()}}
+{\footnotesize\ttfamily void Task\+::set\+Title (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{new\+Title }\end{DoxyParamCaption})}
+
+
+
+Updates the title of the task. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Title} & The new title for the task. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{Task_8h}{Task.\+h}}\item 
+src/Task.\+cpp\end{DoxyCompactItemize}

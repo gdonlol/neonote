@@ -1,0 +1,33 @@
+\doxysection{src/\+Application.h File Reference}
+\hypertarget{Application_8h}{}\label{Application_8h}\index{src/Application.h@{src/Application.h}}
+
+
+Main application class managing terminal editor and main menu interfaces for Neo\+Note.  
+
+
+{\ttfamily \#include $<$ncurses.\+h$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include "{}Terminal\+Editor.\+h"{}}\newline
+{\ttfamily \#include "{}Main\+Menu.\+h"{}}\newline
+{\ttfamily \#include "{}Ncurses\+Setup.\+h"{}}\newline
+{\ttfamily \#include "{}Settings.\+h"{}}\newline
+Include dependency graph for Application.\+h\+:
+% FIG 0
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classApplication}{Application}}
+\begin{DoxyCompactList}\small\item\em Main application class managing terminal editor and main menu interfaces @\+Author Runcong Zhu. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structApplication_1_1WindowDeleter}{Application\+::\+Window\+Deleter}}
+\item 
+struct \mbox{\hyperlink{structApplication_1_1Dimensions}{Application\+::\+Dimensions}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Main application class managing terminal editor and main menu interfaces for Neo\+Note. 
+
+\begin{DoxyAuthor}{Author}
+Runcong Zhu 
+\end{DoxyAuthor}

@@ -1,0 +1,33 @@
+\doxysection{Main\+Menu.\+h}
+\hypertarget{MainMenu_8h_source}{}\label{MainMenu_8h_source}\index{src/MainMenu.h@{src/MainMenu.h}}
+\mbox{\hyperlink{MainMenu_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#ifndef\ MAIN\_MENU\_H}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ MAIN\_MENU\_H}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <ncurses.h>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classMainMenu}{MainMenu}}\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{classMainMenu}{MainMenu}}(WINDOW*\ win);}
+\DoxyCodeLine{00021\ \ \ \ \ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMainMenu_a1d790b1dc0bf2e1f9d399e95311ea167}{display}}();}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMainMenu_a086da95145751202ccdd25e101f853ec}{handleInput}}(\textcolor{keywordtype}{int}\ input);}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classMainMenu_a5296ece18955c7bf9181df0200e8e912}{shouldExit}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classMainMenu_afbd8116c3bdc25c648dcaa82f1870d0c}{getCurrentWindow}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMainMenu_ab47edbd13b025a31f0faab291847e7d0}{returnToMenu}}();}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00029\ \ \ \ \ WINDOW*\ win\_;}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{int}\ currentWindow\_;}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{int}\ menuOption\_;}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{bool}\ exitRequested\_;}
+\DoxyCodeLine{00033\ \ \ \ \ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classMainMenu_a6cd6f26430db579fd9ea954b892713ad}{drawMenu}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00035\ \};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

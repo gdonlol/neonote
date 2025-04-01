@@ -1,0 +1,33 @@
+\doxysection{File\+Manager.\+h}
+\hypertarget{FileManager_8h_source}{}\label{FileManager_8h_source}\index{src/FileManager.h@{src/FileManager.h}}
+\mbox{\hyperlink{FileManager_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\ \#ifndef\ FILE\_MANAGER\_H}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ FILE\_MANAGER\_H}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classFileManager}{FileManager}}\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{classFileManager_a8afd512c06be9daf140cc19d71f9b391}{FileManager}}();}
+\DoxyCodeLine{00021\ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{classFileManager_af3c93e3cfaaedda7e565deab9ae42451}{getFiles}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classFileManager_afc87e23515ef64f35df63e656b6729c6}{loadFile}}(\textcolor{keyword}{const}\ std::string\ \&filename,\ std::vector<std::string>\ \&lines,\ std::string\ \&current\_file);}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classFileManager_ad9831a338cb15815a550ffe203cc8f09}{saveFile}}(\textcolor{keyword}{const}\ std::string\ \&filename,\ \textcolor{keyword}{const}\ std::vector<std::string>\ \&lines);}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classFileManager_aef74a562daec89c802dab6c81081a742}{newFile}}();}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classFileManager_af147903628ee32b76bf003aa5a887e9f}{deleteFile}}(\textcolor{keyword}{const}\ std::string\ \&filename);}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classFileManager_a2901e9a8d36bc92f8b7e54bfe43c6a96}{renameFile}}(\textcolor{keyword}{const}\ std::string\ \&filename,\ std::string\ newName,\ std::string\ \&current\_file);}
+\DoxyCodeLine{00027\ \ \ \ \ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00029\ \ \ \ \ std::string\ appDataPath;}
+\DoxyCodeLine{00030\ \ \ \ \ std::vector<std::string>\ files;}
+\DoxyCodeLine{00031\ \ \ \ \ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classFileManager_a7314a1fa8da02b5044fd3534b5244b48}{initializeAppDirectory}}();}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classFileManager_a560e218fc35f01eee29640ecd6940031}{scanExistingFiles}}();}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classFileManager_ab4c9b57df9e4125eacc13fdd56ac90b6}{createDefaultFileIfNeeded}}();}
+\DoxyCodeLine{00035\ \};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

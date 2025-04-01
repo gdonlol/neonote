@@ -1,0 +1,19 @@
+digraph "TerminalEditor"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  Node1 [id="Node000001",label="TerminalEditor",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [id="edge7_Node000001_Node000002",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" fileManager",fontcolor="grey" ];
+  Node2 [id="Node000002",label="FileManager",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classFileManager.html",tooltip="The FileManager class is responsible for managing file operations such as loading,..."];
+  Node3 -> Node2 [id="edge8_Node000002_Node000003",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" appDataPath",fontcolor="grey" ];
+  Node3 [id="Node000003",label="string",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node4 -> Node1 [id="edge9_Node000001_Node000004",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" ui",fontcolor="grey" ];
+  Node4 [id="Node000004",label="EditorUI",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classEditorUI.html",tooltip="Handles the rendering and interaction of a text editor's user interface."];
+  Node5 -> Node1 [id="edge10_Node000001_Node000005",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" calendar",fontcolor="grey" ];
+  Node5 [id="Node000005",label="Calendar",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classCalendar.html",tooltip="Manages a collection of events and provides functionality for rendering and interacting with a calend..."];
+  Node6 -> Node1 [id="edge11_Node000001_Node000006",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" taskManager",fontcolor="grey" ];
+  Node6 [id="Node000006",label="TaskManager",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$classTaskManager.html",tooltip=" "];
+  Node3 -> Node1 [id="edge12_Node000001_Node000003",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" current_file",fontcolor="grey" ];
+}

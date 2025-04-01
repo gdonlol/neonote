@@ -1,0 +1,38 @@
+\doxysection{Task.\+h}
+\hypertarget{Task_8h_source}{}\label{Task_8h_source}\index{src/Task.h@{src/Task.h}}
+\mbox{\hyperlink{Task_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#ifndef\ TASK\_H}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ TASK\_H}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ The\ Task\ class\ represents\ an\ individual\ task\ in\ a\ Kanban\ board.}}
+\DoxyCodeLine{00020\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classTask}{Task}}\ \{}
+\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{comment}{//\ Constructor:\ Initializes\ a\ task\ with\ an\ ID,\ title,\ description,\ and\ due\ date.}}
+\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{classTask}{Task}}(\textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ std::string\&\ title,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ status,}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ description\ =\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{00025\ \ \ \ \ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{comment}{//\ Getter\ methods:}}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classTask_abf76ea8bb7d99718c0ae0d231fd4dc52}{getId}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00028\ \ \ \ \ std::string\ \mbox{\hyperlink{classTask_a85c31b536e5c92719636e1c65b7b74de}{getTitle}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00029\ \ \ \ \ std::string\ \mbox{\hyperlink{classTask_aecbe79dd5334c9969320695b5a82e32a}{getDescription}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classTask_ad8e4e039f29de2c5161dcfd251d1b535}{getStatus}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ Setter\ methods:}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_a29976325484105532f92087057e407c1}{setTitle}}(\textcolor{keyword}{const}\ std::string\&\ newTitle);}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_aed251b50df62e4fe089604a74e6353bb}{setDescription}}(\textcolor{keyword}{const}\ std::string\&\ newDescription);}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classTask_adc62176e3030ba98f4f5ce094e08b1c6}{setStatus}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ newStatus);}
+\DoxyCodeLine{00036\ \ \ \ \ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{int}\ id;}
+\DoxyCodeLine{00039\ \ \ \ \ std::string\ title;}
+\DoxyCodeLine{00040\ \ \ \ \ std::string\ description;}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{int}\ status;}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ TASK\_H}}
+
+\end{DoxyCode}

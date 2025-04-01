@@ -1,0 +1,84 @@
+\doxysection{Ncurses\+Setup Class Reference}
+\hypertarget{classNcursesSetup}{}\label{classNcursesSetup}\index{NcursesSetup@{NcursesSetup}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classNcursesSetup_a00cb10983065cf7391fdc929952559c4}{Ncurses\+Setup}} ()
+\begin{DoxyCompactList}\small\item\em Constructs an \doxylink{classNcursesSetup}{Ncurses\+Setup} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classNcursesSetup_a8b631b29fabed48720ad7992df3241fe}{\texorpdfstring{$\sim$}{\string~}\+Ncurses\+Setup}} ()
+\begin{DoxyCompactList}\small\item\em Destroys the \doxylink{classNcursesSetup}{Ncurses\+Setup} object and cleans up resources. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classNcursesSetup_a235c863c82931101a952bfa27b4e72a7}{initialize}} ()
+\begin{DoxyCompactList}\small\item\em Initializes the Ncurses environment for terminal-\/based UI. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classNcursesSetup_a84c1d6ee464997861b7749fc361ecfab}{cleanup}} ()
+\begin{DoxyCompactList}\small\item\em Cleans up the Ncurses session. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classNcursesSetup_a00cb10983065cf7391fdc929952559c4}\label{classNcursesSetup_a00cb10983065cf7391fdc929952559c4} 
+\index{NcursesSetup@{NcursesSetup}!NcursesSetup@{NcursesSetup}}
+\index{NcursesSetup@{NcursesSetup}!NcursesSetup@{NcursesSetup}}
+\doxysubsubsection{\texorpdfstring{NcursesSetup()}{NcursesSetup()}}
+{\footnotesize\ttfamily Ncurses\+Setup\+::\+Ncurses\+Setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Constructs an \doxylink{classNcursesSetup}{Ncurses\+Setup} object. 
+
+This constructor initializes the Ncurses setup object, but no specific actions are performed here. The object will be fully initialized by the {\ttfamily \doxylink{classNcursesSetup_a235c863c82931101a952bfa27b4e72a7}{initialize()}} method. \Hypertarget{classNcursesSetup_a8b631b29fabed48720ad7992df3241fe}\label{classNcursesSetup_a8b631b29fabed48720ad7992df3241fe} 
+\index{NcursesSetup@{NcursesSetup}!````~NcursesSetup@{\texorpdfstring{$\sim$}{\string~}NcursesSetup}}
+\index{````~NcursesSetup@{\texorpdfstring{$\sim$}{\string~}NcursesSetup}!NcursesSetup@{NcursesSetup}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}NcursesSetup()}{\string~NcursesSetup()}}
+{\footnotesize\ttfamily Ncurses\+Setup\+::\texorpdfstring{$\sim$}{\string~}\+Ncurses\+Setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Destroys the \doxylink{classNcursesSetup}{Ncurses\+Setup} object and cleans up resources. 
+
+This destructor calls the {\ttfamily \doxylink{classNcursesSetup_a84c1d6ee464997861b7749fc361ecfab}{cleanup()}} method to properly end the Ncurses session and release any resources allocated during the setup. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classNcursesSetup_a84c1d6ee464997861b7749fc361ecfab}\label{classNcursesSetup_a84c1d6ee464997861b7749fc361ecfab} 
+\index{NcursesSetup@{NcursesSetup}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!NcursesSetup@{NcursesSetup}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily void Ncurses\+Setup\+::cleanup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Cleans up the Ncurses session. 
+
+This method ends the Ncurses session and restores the terminal to its normal state. \Hypertarget{classNcursesSetup_a235c863c82931101a952bfa27b4e72a7}\label{classNcursesSetup_a235c863c82931101a952bfa27b4e72a7} 
+\index{NcursesSetup@{NcursesSetup}!initialize@{initialize}}
+\index{initialize@{initialize}!NcursesSetup@{NcursesSetup}}
+\doxysubsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily bool Ncurses\+Setup\+::initialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initializes the Ncurses environment for terminal-\/based UI. 
+
+This method sets up the Ncurses library for terminal-\/based user interface functionality. It initializes color support, sets terminal modes (like noecho, raw input, etc.), and checks for color support in the terminal. If color support is unavailable, the function will display a message and return {\ttfamily false}.
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if the Ncurses setup is successful, otherwise {\ttfamily false}. 
+\end{DoxyReturn}
+\texorpdfstring{$<$}{<} Highlight
+
+\texorpdfstring{$<$}{<} Color 1
+
+\texorpdfstring{$<$}{<} Color 2
+
+\texorpdfstring{$<$}{<} Color 3
+
+\texorpdfstring{$<$}{<} Color 4
+
+\texorpdfstring{$<$}{<} Color 5
+
+\texorpdfstring{$<$}{<} Color 6
+
+\texorpdfstring{$<$}{<} Codeblock
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{NcursesSetup_8h}{Ncurses\+Setup.\+h}}\item 
+src/Ncurses\+Setup.\+cpp\end{DoxyCompactItemize}

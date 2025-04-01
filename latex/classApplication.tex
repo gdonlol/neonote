@@ -1,0 +1,257 @@
+\doxysection{Application Class Reference}
+\hypertarget{classApplication}{}\label{classApplication}\index{Application@{Application}}
+
+
+Main application class managing terminal editor and main menu interfaces @\+Author Runcong Zhu.  
+
+
+
+
+{\ttfamily \#include $<$Application.\+h$>$}
+
+
+
+Collaboration diagram for Application\+:
+% FIG 0
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structApplication_1_1Dimensions}{Dimensions}}
+\item 
+struct \mbox{\hyperlink{structApplication_1_1WindowDeleter}{Window\+Deleter}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classApplication_afa8cc05ce6b6092be5ecdfdae44e05f8}{Application}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor for \doxylink{classApplication}{Application}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classApplication_a748bca84fefb9c12661cfaa2f623748d}{\texorpdfstring{$\sim$}{\string~}\+Application}} ()
+\begin{DoxyCompactList}\small\item\em Destructor for \doxylink{classApplication}{Application}. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classApplication_a8cf8941c8db90117d3735bce5ae1fdf4}{run}} ()
+\begin{DoxyCompactList}\small\item\em Runs the main app loop. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classApplication_aab8e3ac9a8469d3fb62dd7bed0f79a29}\label{classApplication_aab8e3ac9a8469d3fb62dd7bed0f79a29} 
+enum class {\bfseries Window\+State} \{ {\bfseries Main\+Menu}
+, {\bfseries Editor}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classApplication_aa6f19c9b9e245212fb56d495fee13867}{initialize}} ()
+\begin{DoxyCompactList}\small\item\em Initizes the application in ncurses. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classApplication_ad0a480b9c490571789be33873f0c6c0d}{create\+\_\+windows}} ()
+\begin{DoxyCompactList}\small\item\em Creates and initializes parent container for all UI elements. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classApplication_a586a53d59e64d8831c2f075d7df87f68}{main\+\_\+loop}} ()
+\begin{DoxyCompactList}\small\item\em Main app loop. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classApplication_a705496b73d742f130a35f9c0e199dea9}{handle\+\_\+resize}} ()
+\begin{DoxyCompactList}\small\item\em Handles terminal resize events. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classApplication_a8a6b533ec7887b4b5743ebc66cd49d64}{handle\+\_\+main\+\_\+menu}} ()
+\begin{DoxyCompactList}\small\item\em Handles main menu interaction. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classApplication_a0161780f4eb8c695251ff6b028acfc5b}{handle\+\_\+editor}} ()
+\begin{DoxyCompactList}\small\item\em Handles editor interaction. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classApplication_aa9a857b3a751d9eb3cb47606c0e3c67a}{cleanup}} ()
+\begin{DoxyCompactList}\small\item\em Cleans up application resources. \end{DoxyCompactList}\item 
+std\+::pair$<$ int, int $>$ \mbox{\hyperlink{classApplication_ae98c46854a3ce7b0c46fe657103252a3}{calculate\+\_\+layout}} (int total\+\_\+cols) const
+\begin{DoxyCompactList}\small\item\em Calculates window layout dimentions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classApplication_a92114a700c661b803382a3ef22a0766c}{setup\+\_\+window\+\_\+layout}} (int lines, int cols)
+\begin{DoxyCompactList}\small\item\em Sets up or updates the window layout. \end{DoxyCompactList}\item 
+\Hypertarget{classApplication_af6ece62580b3ee60bed08458adad2a6f}\label{classApplication_af6ece62580b3ee60bed08458adad2a6f} 
+int {\bfseries calculate\+\_\+sidebar\+\_\+width} (int current\+\_\+cols=COLS) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classApplication_afdd70ef4bc745df71432629e3d380b3a}\label{classApplication_afdd70ef4bc745df71432629e3d380b3a} 
+\mbox{\hyperlink{classNcursesSetup}{Ncurses\+Setup}} {\bfseries ncurses\+\_\+setup\+\_\+}
+\item 
+\Hypertarget{classApplication_af3646a31fbee8069b28992bff0996dbd}\label{classApplication_af3646a31fbee8069b28992bff0996dbd} 
+\mbox{\hyperlink{classMainMenu}{Main\+Menu}} {\bfseries main\+\_\+menu\+\_\+}
+\item 
+\Hypertarget{classApplication_a50e30330995fe113c18a422102d81401}\label{classApplication_a50e30330995fe113c18a422102d81401} 
+\mbox{\hyperlink{classTerminalEditor}{Terminal\+Editor}} {\bfseries terminal\+\_\+editor\+\_\+}
+\item 
+\Hypertarget{classApplication_ad2ad94c205b171268d3f122b8132bbc3}\label{classApplication_ad2ad94c205b171268d3f122b8132bbc3} 
+Window\+State {\bfseries current\+\_\+window\+\_\+} \{Window\+State\+::\+Main\+Menu\}
+\item 
+\Hypertarget{classApplication_a58cac65e6bda7312f9cbff0f368e6b99}\label{classApplication_a58cac65e6bda7312f9cbff0f368e6b99} 
+bool {\bfseries running\+\_\+} \{true\}
+\item 
+\Hypertarget{classApplication_ac7428325260181cee1a2c5d75334e033}\label{classApplication_ac7428325260181cee1a2c5d75334e033} 
+\mbox{\hyperlink{structApplication_1_1Dimensions}{Dimensions}} {\bfseries previous\+\_\+dimensions\+\_\+}
+\item 
+\Hypertarget{classApplication_a1ea9d6d5b68e871a21eaca9b72a1e3f7}\label{classApplication_a1ea9d6d5b68e871a21eaca9b72a1e3f7} 
+std\+::unique\+\_\+ptr$<$ WINDOW, \mbox{\hyperlink{structApplication_1_1WindowDeleter}{Window\+Deleter}} $>$ {\bfseries main\+\_\+window\+\_\+} \{nullptr\}
+\item 
+\Hypertarget{classApplication_a6742f38dc3432ead45e86455a5ce27ac}\label{classApplication_a6742f38dc3432ead45e86455a5ce27ac} 
+std\+::unique\+\_\+ptr$<$ WINDOW, \mbox{\hyperlink{structApplication_1_1WindowDeleter}{Window\+Deleter}} $>$ {\bfseries sidebar\+\_\+} \{nullptr\}
+\item 
+\Hypertarget{classApplication_af7abe4fe9e27985f15655101d77cb191}\label{classApplication_af7abe4fe9e27985f15655101d77cb191} 
+std\+::unique\+\_\+ptr$<$ WINDOW, \mbox{\hyperlink{structApplication_1_1WindowDeleter}{Window\+Deleter}} $>$ {\bfseries content\+\_\+} \{nullptr\}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classApplication_aee6f3b761a8872eaa789d1d0ba880ef7}\label{classApplication_aee6f3b761a8872eaa789d1d0ba880ef7} 
+static constexpr double {\bfseries SIDEBAR\+\_\+\+WIDTH\+\_\+\+RATIO} = 0.\+25
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Main application class managing terminal editor and main menu interfaces @\+Author Runcong Zhu. 
+
+Handles initialization, window management, and the main event loop for Neo\+Note. Manages transitions between main menu and editor and handles resizes. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classApplication_afa8cc05ce6b6092be5ecdfdae44e05f8}\label{classApplication_afa8cc05ce6b6092be5ecdfdae44e05f8} 
+\index{Application@{Application}!Application@{Application}}
+\index{Application@{Application}!Application@{Application}}
+\doxysubsubsection{\texorpdfstring{Application()}{Application()}}
+{\footnotesize\ttfamily Application\+::\+Application (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Default constructor for \doxylink{classApplication}{Application}. 
+
+Initializes member bariables with default values and null pointers. Actual windows created in initalize(). \Hypertarget{classApplication_a748bca84fefb9c12661cfaa2f623748d}\label{classApplication_a748bca84fefb9c12661cfaa2f623748d} 
+\index{Application@{Application}!````~Application@{\texorpdfstring{$\sim$}{\string~}Application}}
+\index{````~Application@{\texorpdfstring{$\sim$}{\string~}Application}!Application@{Application}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Application()}{\string~Application()}}
+{\footnotesize\ttfamily Application\+::\texorpdfstring{$\sim$}{\string~}\+Application (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Destructor for \doxylink{classApplication}{Application}. 
+
+Ensures cleanup for ncurses resources and windows. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classApplication_ae98c46854a3ce7b0c46fe657103252a3}\label{classApplication_ae98c46854a3ce7b0c46fe657103252a3} 
+\index{Application@{Application}!calculate\_layout@{calculate\_layout}}
+\index{calculate\_layout@{calculate\_layout}!Application@{Application}}
+\doxysubsubsection{\texorpdfstring{calculate\_layout()}{calculate\_layout()}}
+{\footnotesize\ttfamily std\+::pair$<$ int, int $>$ Application\+::calculate\+\_\+layout (\begin{DoxyParamCaption}\item[{int}]{total\+\_\+cols }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Calculates window layout dimentions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em total\+\_\+cols} & Widths of terminal \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pair containing sidebar width and content width
+\end{DoxyReturn}
+Uses a ratio (25\% by default) of the width of the terminal for the sidebar. Remaining space is for the content. \Hypertarget{classApplication_aa9a857b3a751d9eb3cb47606c0e3c67a}\label{classApplication_aa9a857b3a751d9eb3cb47606c0e3c67a} 
+\index{Application@{Application}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!Application@{Application}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily void Application\+::cleanup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Cleans up application resources. 
+
+Properly deallocates windows and resets terminal state before exit. Ensures clean termination of ncurses. \Hypertarget{classApplication_ad0a480b9c490571789be33873f0c6c0d}\label{classApplication_ad0a480b9c490571789be33873f0c6c0d} 
+\index{Application@{Application}!create\_windows@{create\_windows}}
+\index{create\_windows@{create\_windows}!Application@{Application}}
+\doxysubsubsection{\texorpdfstring{create\_windows()}{create\_windows()}}
+{\footnotesize\ttfamily void Application\+::create\+\_\+windows (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Creates and initializes parent container for all UI elements. 
+
+Creates the main window container and divides it into sidebar and content area. Initializes the main menue \Hypertarget{classApplication_a0161780f4eb8c695251ff6b028acfc5b}\label{classApplication_a0161780f4eb8c695251ff6b028acfc5b} 
+\index{Application@{Application}!handle\_editor@{handle\_editor}}
+\index{handle\_editor@{handle\_editor}!Application@{Application}}
+\doxysubsubsection{\texorpdfstring{handle\_editor()}{handle\_editor()}}
+{\footnotesize\ttfamily void Application\+::handle\+\_\+editor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Handles editor interaction. 
+
+Process user input in the editor mode. Sends signals to terminal editor and transitions back to main menu when exited \Hypertarget{classApplication_a8a6b533ec7887b4b5743ebc66cd49d64}\label{classApplication_a8a6b533ec7887b4b5743ebc66cd49d64} 
+\index{Application@{Application}!handle\_main\_menu@{handle\_main\_menu}}
+\index{handle\_main\_menu@{handle\_main\_menu}!Application@{Application}}
+\doxysubsubsection{\texorpdfstring{handle\_main\_menu()}{handle\_main\_menu()}}
+{\footnotesize\ttfamily void Application\+::handle\+\_\+main\+\_\+menu (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Handles main menu interaction. 
+
+Displays the main menu and processes user input. Manages transitions between menu state to editor state/exit \texorpdfstring{$<$}{<} "{}new note"{}\Hypertarget{classApplication_a705496b73d742f130a35f9c0e199dea9}\label{classApplication_a705496b73d742f130a35f9c0e199dea9} 
+\index{Application@{Application}!handle\_resize@{handle\_resize}}
+\index{handle\_resize@{handle\_resize}!Application@{Application}}
+\doxysubsubsection{\texorpdfstring{handle\_resize()}{handle\_resize()}}
+{\footnotesize\ttfamily void Application\+::handle\+\_\+resize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Handles terminal resize events. 
+
+Checks for terminal dimension changes and updates the window accordingly. Maintains UI consistency across resizes. \Hypertarget{classApplication_aa6f19c9b9e245212fb56d495fee13867}\label{classApplication_aa6f19c9b9e245212fb56d495fee13867} 
+\index{Application@{Application}!initialize@{initialize}}
+\index{initialize@{initialize}!Application@{Application}}
+\doxysubsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily bool Application\+::initialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Initizes the application in ncurses. 
+
+\begin{DoxyReturn}{Returns}
+If initialzation succeeded
+\end{DoxyReturn}
+Sets up ncurses enviroment and creates windows. Needs to be called before running main app loop. \Hypertarget{classApplication_a586a53d59e64d8831c2f075d7df87f68}\label{classApplication_a586a53d59e64d8831c2f075d7df87f68} 
+\index{Application@{Application}!main\_loop@{main\_loop}}
+\index{main\_loop@{main\_loop}!Application@{Application}}
+\doxysubsubsection{\texorpdfstring{main\_loop()}{main\_loop()}}
+{\footnotesize\ttfamily void Application\+::main\+\_\+loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Main app loop. 
+
+Continuously processes user input and window transitions until exit. Manages state transitions between the main menu and editor UIs. \Hypertarget{classApplication_a8cf8941c8db90117d3735bce5ae1fdf4}\label{classApplication_a8cf8941c8db90117d3735bce5ae1fdf4} 
+\index{Application@{Application}!run@{run}}
+\index{run@{run}!Application@{Application}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily int Application\+::run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Runs the main app loop. 
+
+\begin{DoxyReturn}{Returns}
+\doxylink{classApplication}{Application} exit code (0 for sucess, 1 for initialization failure)
+\end{DoxyReturn}
+Initializes the application and enters the main app loop Returns when the user exits Neo\+Note \Hypertarget{classApplication_a92114a700c661b803382a3ef22a0766c}\label{classApplication_a92114a700c661b803382a3ef22a0766c} 
+\index{Application@{Application}!setup\_window\_layout@{setup\_window\_layout}}
+\index{setup\_window\_layout@{setup\_window\_layout}!Application@{Application}}
+\doxysubsubsection{\texorpdfstring{setup\_window\_layout()}{setup\_window\_layout()}}
+{\footnotesize\ttfamily void Application\+::setup\+\_\+window\+\_\+layout (\begin{DoxyParamCaption}\item[{int}]{lines,  }\item[{int}]{cols }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Sets up or updates the window layout. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lines} & Current number of rows \\
+\hline
+{\em cols} & Current number of columns\\
+\hline
+\end{DoxyParams}
+Handles resizing and repositioning of all windows when terminal dimentiosn change. Redraws borders and refreshes all windows to maintain consistant appearance. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{Application_8h}{Application.\+h}}\item 
+src/Application.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,45 @@
+\doxysection{Editor\+UI.\+h}
+\hypertarget{EditorUI_8h_source}{}\label{EditorUI_8h_source}\index{src/EditorUI.h@{src/EditorUI.h}}
+\mbox{\hyperlink{EditorUI_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#ifndef\ EDITOR\_UI\_H}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ EDITOR\_UI\_H}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <ncurses.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classEditorUI}{EditorUI}}\ \{}
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ \mbox{\hyperlink{classEditorUI}{EditorUI}}(WINDOW\ *win,\ WINDOW\ *sidebar,\ WINDOW\ *content);}
+\DoxyCodeLine{00029\ \ \ \ \ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classEditorUI_aa3d024eadaffc9432abe1574ac101f32}{renderUI}}(\textcolor{keywordtype}{int}\ sidebar\_width,\ \textcolor{keyword}{const}\ std::vector<std::string>\ \&files);}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classEditorUI_acebbc7a21e9998ea79e85b0f8a28d230}{displayContent}}(\textcolor{keyword}{const}\ std::vector<std::string>\ \&lines,\ }
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ row,\ \textcolor{keywordtype}{int}\ col,\ \textcolor{keywordtype}{int}\ scroll\_row,}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ scroll\_col,\ std::string\ title);}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classEditorUI_a591c1c13c99b45b919a6a2b9d1f5a894}{renderSidebar}}(\textcolor{keywordtype}{int}\ sidebar\_width,\ \textcolor{keyword}{const}\ std::vector<std::string>\ \&files,\ \textcolor{keywordtype}{int}\ sidebar\_index);}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classEditorUI_aa5ed1389a55feda9c9dfdf5cf8d61760}{cleanup}}();}
+\DoxyCodeLine{00036\ \ \ \ \ std::string\ \mbox{\hyperlink{classEditorUI_acffcec3d61b510ad584bb12e331cb648}{displayPrompt}}(std::string\ title);}
+\DoxyCodeLine{00037\ \ \ \ \ }
+\DoxyCodeLine{00038\ \ \ \ \ WINDOW*\ getMainWindow()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ win;\ \}}
+\DoxyCodeLine{00039\ \ \ \ \ WINDOW*\ getSidebar()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ sidebar;\ \}}
+\DoxyCodeLine{00040\ \ \ \ \ WINDOW*\ getContent()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ content;\ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00043\ \ \ \ \ WINDOW\ *win;}
+\DoxyCodeLine{00044\ \ \ \ \ WINDOW\ *sidebar;}
+\DoxyCodeLine{00045\ \ \ \ \ WINDOW\ *content;}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{int}\ sidebarScrollOffset;}
+\DoxyCodeLine{00048\ \ \ \ \ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classEditorUI_afc6b590ad4f0418b0543832a234e8df0}{renderContent}}(\textcolor{keyword}{const}\ std::vector<std::string>\ \&lines,\ }
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ row,\ \textcolor{keywordtype}{int}\ col,\ }
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ scroll\_row,\ \textcolor{keywordtype}{int}\ scroll\_col);}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ std::string\ \mbox{\hyperlink{classEditorUI_a86dd0ccd041f5d47bc31027a0b79832f}{formatWithEllipsis}}(\textcolor{keyword}{const}\ std::string\&\ text,\ \textcolor{keywordtype}{int}\ maxWidth);}
+\DoxyCodeLine{00054\ \};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

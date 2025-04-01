@@ -1,0 +1,286 @@
+\doxysection{Calendar Class Reference}
+\hypertarget{classCalendar}{}\label{classCalendar}\index{Calendar@{Calendar}}
+
+
+Manages a collection of events and provides functionality for rendering and interacting with a calendar.  
+
+
+
+
+{\ttfamily \#include $<$Calendar.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCalendar_a9d3cdcbfa13b58557d6f0ea43e9c12d8}{Calendar}} (WINDOW \texorpdfstring{$\ast$}{*}content)
+\begin{DoxyCompactList}\small\item\em Constructor for the \doxylink{classCalendar}{Calendar} class. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classCalendar_a76afe2fc88dfa5ea8ad03a08ee9a1547}{add\+Event}} (const \mbox{\hyperlink{classEvent}{Event}} \&event)
+\begin{DoxyCompactList}\small\item\em Adds an event to the calendar. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classCalendar_a0ae043e7043bf2c3f9c71bf4a2e50ac7}{remove\+Event}} (int index)
+\begin{DoxyCompactList}\small\item\em Removes an event from the calendar by its ID. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classCalendar_a376cbfd67b22277e6844b449006e1d9b}{update\+Event}} (int event\+Id, \mbox{\hyperlink{classEvent}{Event}} \&updated\+Event)
+\begin{DoxyCompactList}\small\item\em Updates an existing event in the calendar. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{classEvent}{Event}} $>$ \mbox{\hyperlink{classCalendar_aa4e2551a5bcef105bb990824cf06f7bc}{get\+Events}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves a list of all events. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classCalendar_a0bebd7a15bbdcf9871f34b581b48e0fb}{get\+Current\+Day}} () const
+\begin{DoxyCompactList}\small\item\em Gets the current day of the month. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classCalendar_a9a8eaeb291e8b3936f54ffc5f5aeeba5}{get\+Current\+Month}} () const
+\begin{DoxyCompactList}\small\item\em Gets the current month. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classCalendar_ab7bffa2a69ef5d82a4c3d564c439ee55}{get\+Current\+Year}} () const
+\begin{DoxyCompactList}\small\item\em Gets the current year. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classCalendar_a601438f8fff7a0367c5bd9b1a97504a2}{get\+Days\+In\+Month}} (int month, int year) const
+\begin{DoxyCompactList}\small\item\em Gets the number of days in a specified month and year. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classCalendar_a4936a2701f93ba9a804b510f5f5fe103}{get\+First\+Day\+Of\+Month}} (int month, int year) const
+\begin{DoxyCompactList}\small\item\em Gets the starting day of the specified month and year. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classCalendar_ae1750cce4c65df1a3438fe8590054d07}{render\+Calendar}} ()
+\begin{DoxyCompactList}\small\item\em Renders the calendar for the current month. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classCalendar_adfb984810b70098b71a207e073530e12}{next\+Free}} ()
+\begin{DoxyCompactList}\small\item\em Finds the next available event index in the events directory. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classCalendar_a7c8feea7141564cc78e3953afcc3de1f}{set\+Selected\+Event}} (int index)
+\begin{DoxyCompactList}\small\item\em Sets the currently selected event index. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classCalendar_a1abe429974563d3486643fb870223a67}{get\+Selected\+Event}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the currently selected event index. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classCalendar_a0f5dae726b1cff1f82c7a66026a5c222}\label{classCalendar_a0f5dae726b1cff1f82c7a66026a5c222} 
+std\+::vector$<$ \mbox{\hyperlink{classEvent}{Event}} $>$ {\bfseries events}
+\item 
+\Hypertarget{classCalendar_a9fb6950289fc0da5152e675cb027c5fe}\label{classCalendar_a9fb6950289fc0da5152e675cb027c5fe} 
+WINDOW \texorpdfstring{$\ast$}{*} {\bfseries content}
+\item 
+\Hypertarget{classCalendar_aa88479de7d0897795a5994b7da08e290}\label{classCalendar_aa88479de7d0897795a5994b7da08e290} 
+int {\bfseries selected\+Event}
+\item 
+\Hypertarget{classCalendar_a8c9f83fffab7cbe3c2736f8ed8e5cb91}\label{classCalendar_a8c9f83fffab7cbe3c2736f8ed8e5cb91} 
+int {\bfseries events\+Scroll\+Offset}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages a collection of events and provides functionality for rendering and interacting with a calendar. 
+
+The \doxylink{classCalendar}{Calendar} class allows adding, removing, and updating events. It also handles rendering the calendar in an ncurses window, provides date-\/related utilities, and manages the selection of events. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classCalendar_a9d3cdcbfa13b58557d6f0ea43e9c12d8}\label{classCalendar_a9d3cdcbfa13b58557d6f0ea43e9c12d8} 
+\index{Calendar@{Calendar}!Calendar@{Calendar}}
+\index{Calendar@{Calendar}!Calendar@{Calendar}}
+\doxysubsubsection{\texorpdfstring{Calendar()}{Calendar()}}
+{\footnotesize\ttfamily Calendar\+::\+Calendar (\begin{DoxyParamCaption}\item[{WINDOW \texorpdfstring{$\ast$}{*}}]{content }\end{DoxyParamCaption})}
+
+
+
+Constructor for the \doxylink{classCalendar}{Calendar} class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em content} & Pointer to the ncurses window where the calendar will be rendered. @\+Author Gordon Xu \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classCalendar_a76afe2fc88dfa5ea8ad03a08ee9a1547}\label{classCalendar_a76afe2fc88dfa5ea8ad03a08ee9a1547} 
+\index{Calendar@{Calendar}!addEvent@{addEvent}}
+\index{addEvent@{addEvent}!Calendar@{Calendar}}
+\doxysubsubsection{\texorpdfstring{addEvent()}{addEvent()}}
+{\footnotesize\ttfamily void Calendar\+::add\+Event (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classEvent}{Event}} \&}]{event }\end{DoxyParamCaption})}
+
+
+
+Adds an event to the calendar. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & The event to add. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classCalendar_a0bebd7a15bbdcf9871f34b581b48e0fb}\label{classCalendar_a0bebd7a15bbdcf9871f34b581b48e0fb} 
+\index{Calendar@{Calendar}!getCurrentDay@{getCurrentDay}}
+\index{getCurrentDay@{getCurrentDay}!Calendar@{Calendar}}
+\doxysubsubsection{\texorpdfstring{getCurrentDay()}{getCurrentDay()}}
+{\footnotesize\ttfamily int Calendar\+::get\+Current\+Day (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the current day of the month. 
+
+\begin{DoxyReturn}{Returns}
+The current day (1-\/31). 
+\end{DoxyReturn}
+\Hypertarget{classCalendar_a9a8eaeb291e8b3936f54ffc5f5aeeba5}\label{classCalendar_a9a8eaeb291e8b3936f54ffc5f5aeeba5} 
+\index{Calendar@{Calendar}!getCurrentMonth@{getCurrentMonth}}
+\index{getCurrentMonth@{getCurrentMonth}!Calendar@{Calendar}}
+\doxysubsubsection{\texorpdfstring{getCurrentMonth()}{getCurrentMonth()}}
+{\footnotesize\ttfamily int Calendar\+::get\+Current\+Month (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the current month. 
+
+\begin{DoxyReturn}{Returns}
+The current month as an integer (1 = January, 12 = December). 
+\end{DoxyReturn}
+\Hypertarget{classCalendar_ab7bffa2a69ef5d82a4c3d564c439ee55}\label{classCalendar_ab7bffa2a69ef5d82a4c3d564c439ee55} 
+\index{Calendar@{Calendar}!getCurrentYear@{getCurrentYear}}
+\index{getCurrentYear@{getCurrentYear}!Calendar@{Calendar}}
+\doxysubsubsection{\texorpdfstring{getCurrentYear()}{getCurrentYear()}}
+{\footnotesize\ttfamily int Calendar\+::get\+Current\+Year (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the current year. 
+
+\begin{DoxyReturn}{Returns}
+The current year (e.\+g., 2025). 
+\end{DoxyReturn}
+\Hypertarget{classCalendar_a601438f8fff7a0367c5bd9b1a97504a2}\label{classCalendar_a601438f8fff7a0367c5bd9b1a97504a2} 
+\index{Calendar@{Calendar}!getDaysInMonth@{getDaysInMonth}}
+\index{getDaysInMonth@{getDaysInMonth}!Calendar@{Calendar}}
+\doxysubsubsection{\texorpdfstring{getDaysInMonth()}{getDaysInMonth()}}
+{\footnotesize\ttfamily int Calendar\+::get\+Days\+In\+Month (\begin{DoxyParamCaption}\item[{int}]{month,  }\item[{int}]{year }\end{DoxyParamCaption}) const}
+
+
+
+Gets the number of days in a specified month and year. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em month} & The month (1-\/12). \\
+\hline
+{\em year} & The year (e.\+g., 2025). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of days in the month. 
+\end{DoxyReturn}
+\Hypertarget{classCalendar_aa4e2551a5bcef105bb990824cf06f7bc}\label{classCalendar_aa4e2551a5bcef105bb990824cf06f7bc} 
+\index{Calendar@{Calendar}!getEvents@{getEvents}}
+\index{getEvents@{getEvents}!Calendar@{Calendar}}
+\doxysubsubsection{\texorpdfstring{getEvents()}{getEvents()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classEvent}{Event}} $>$ Calendar\+::get\+Events (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Retrieves a list of all events. 
+
+\begin{DoxyReturn}{Returns}
+A vector containing all events. 
+\end{DoxyReturn}
+\Hypertarget{classCalendar_a4936a2701f93ba9a804b510f5f5fe103}\label{classCalendar_a4936a2701f93ba9a804b510f5f5fe103} 
+\index{Calendar@{Calendar}!getFirstDayOfMonth@{getFirstDayOfMonth}}
+\index{getFirstDayOfMonth@{getFirstDayOfMonth}!Calendar@{Calendar}}
+\doxysubsubsection{\texorpdfstring{getFirstDayOfMonth()}{getFirstDayOfMonth()}}
+{\footnotesize\ttfamily int Calendar\+::get\+First\+Day\+Of\+Month (\begin{DoxyParamCaption}\item[{int}]{month,  }\item[{int}]{year }\end{DoxyParamCaption}) const}
+
+
+
+Gets the starting day of the specified month and year. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em month} & The month (1-\/12). \\
+\hline
+{\em year} & The year (e.\+g., 2025). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The starting day of the month (0 = Sunday, 6 = Saturday). 
+\end{DoxyReturn}
+\Hypertarget{classCalendar_a1abe429974563d3486643fb870223a67}\label{classCalendar_a1abe429974563d3486643fb870223a67} 
+\index{Calendar@{Calendar}!getSelectedEvent@{getSelectedEvent}}
+\index{getSelectedEvent@{getSelectedEvent}!Calendar@{Calendar}}
+\doxysubsubsection{\texorpdfstring{getSelectedEvent()}{getSelectedEvent()}}
+{\footnotesize\ttfamily int Calendar\+::get\+Selected\+Event (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Retrieves the currently selected event index. 
+
+\begin{DoxyReturn}{Returns}
+The index of the selected event. 
+\end{DoxyReturn}
+\Hypertarget{classCalendar_adfb984810b70098b71a207e073530e12}\label{classCalendar_adfb984810b70098b71a207e073530e12} 
+\index{Calendar@{Calendar}!nextFree@{nextFree}}
+\index{nextFree@{nextFree}!Calendar@{Calendar}}
+\doxysubsubsection{\texorpdfstring{nextFree()}{nextFree()}}
+{\footnotesize\ttfamily int Calendar\+::next\+Free (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Finds the next available event index in the events directory. 
+
+This function iterates through the event files in the {\ttfamily .local/share/neonote/events} directory, starting from index 0, until it finds an index that does not have a corresponding event file.
+
+\begin{DoxyReturn}{Returns}
+The next free event index. 
+\end{DoxyReturn}
+\Hypertarget{classCalendar_a0ae043e7043bf2c3f9c71bf4a2e50ac7}\label{classCalendar_a0ae043e7043bf2c3f9c71bf4a2e50ac7} 
+\index{Calendar@{Calendar}!removeEvent@{removeEvent}}
+\index{removeEvent@{removeEvent}!Calendar@{Calendar}}
+\doxysubsubsection{\texorpdfstring{removeEvent()}{removeEvent()}}
+{\footnotesize\ttfamily void Calendar\+::remove\+Event (\begin{DoxyParamCaption}\item[{int}]{index }\end{DoxyParamCaption})}
+
+
+
+Removes an event from the calendar by its ID. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event\+Id} & The ID of the event to remove.\\
+\hline
+\end{DoxyParams}
+Removes an event from the calendar by its index and deletes its file. 
+\begin{DoxyParams}{Parameters}
+{\em index} & The index of the event to remove. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classCalendar_ae1750cce4c65df1a3438fe8590054d07}\label{classCalendar_ae1750cce4c65df1a3438fe8590054d07} 
+\index{Calendar@{Calendar}!renderCalendar@{renderCalendar}}
+\index{renderCalendar@{renderCalendar}!Calendar@{Calendar}}
+\doxysubsubsection{\texorpdfstring{renderCalendar()}{renderCalendar()}}
+{\footnotesize\ttfamily void Calendar\+::render\+Calendar (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Renders the calendar for the current month. 
+
+This function creates a grid of sub-\/windows inside the {\ttfamily content} window to represent each day of the month. It displays the current month and year, highlights the current day, and organizes the days in a weekly format. \Hypertarget{classCalendar_a7c8feea7141564cc78e3953afcc3de1f}\label{classCalendar_a7c8feea7141564cc78e3953afcc3de1f} 
+\index{Calendar@{Calendar}!setSelectedEvent@{setSelectedEvent}}
+\index{setSelectedEvent@{setSelectedEvent}!Calendar@{Calendar}}
+\doxysubsubsection{\texorpdfstring{setSelectedEvent()}{setSelectedEvent()}}
+{\footnotesize\ttfamily void Calendar\+::set\+Selected\+Event (\begin{DoxyParamCaption}\item[{int}]{index }\end{DoxyParamCaption})}
+
+
+
+Sets the currently selected event index. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & The index of the event to select. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classCalendar_a376cbfd67b22277e6844b449006e1d9b}\label{classCalendar_a376cbfd67b22277e6844b449006e1d9b} 
+\index{Calendar@{Calendar}!updateEvent@{updateEvent}}
+\index{updateEvent@{updateEvent}!Calendar@{Calendar}}
+\doxysubsubsection{\texorpdfstring{updateEvent()}{updateEvent()}}
+{\footnotesize\ttfamily void Calendar\+::update\+Event (\begin{DoxyParamCaption}\item[{int}]{event\+Id,  }\item[{\mbox{\hyperlink{classEvent}{Event}} \&}]{updated\+Event }\end{DoxyParamCaption})}
+
+
+
+Updates an existing event in the calendar. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event\+Id} & The ID of the event to update. \\
+\hline
+{\em updated\+Event} & The new event data. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{Calendar_8h}{Calendar.\+h}}\item 
+src/Calendar.\+cpp\end{DoxyCompactItemize}

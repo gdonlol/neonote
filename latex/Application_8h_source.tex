@@ -1,0 +1,67 @@
+\doxysection{Application.\+h}
+\hypertarget{Application_8h_source}{}\label{Application_8h_source}\index{src/Application.h@{src/Application.h}}
+\mbox{\hyperlink{Application_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ APPLICATION\_H}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ APPLICATION\_H}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <ncurses.h>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{TerminalEditor_8h}{TerminalEditor.h}}"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{MainMenu_8h}{MainMenu.h}}"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{NcursesSetup_8h}{NcursesSetup.h}}"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}Settings.h"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classApplication}{Application}}\ \{}
+\DoxyCodeLine{00028\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ \ \ \mbox{\hyperlink{classApplication_afa8cc05ce6b6092be5ecdfdae44e05f8}{Application}}();}
+\DoxyCodeLine{00030\ \ \ \ \ \mbox{\hyperlink{classApplication_a748bca84fefb9c12661cfaa2f623748d}{\string~Application}}();}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classApplication_a8cf8941c8db90117d3735bce5ae1fdf4}{run}}();}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structApplication_1_1WindowDeleter}{WindowDeleter}}\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{structApplication_1_1WindowDeleter_a2cad6d1a3d4f7032ee1f21c252b6e694}{operator()}}(WINDOW*\ win)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00036\ \ \ \ \ \};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{enum\ class}\ WindowState\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classMainMenu}{MainMenu}},}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ Editor}
+\DoxyCodeLine{00041\ \ \ \ \ \};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structApplication_1_1Dimensions}{Dimensions}}\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ lines\{0\};}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ cols\{0\};}
+\DoxyCodeLine{00046\ \ \ \ \ \};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classApplication_aa6f19c9b9e245212fb56d495fee13867}{initialize}}();}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classApplication_ad0a480b9c490571789be33873f0c6c0d}{create\_windows}}();}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classApplication_a586a53d59e64d8831c2f075d7df87f68}{main\_loop}}();}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classApplication_a705496b73d742f130a35f9c0e199dea9}{handle\_resize}}();}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classApplication_a8a6b533ec7887b4b5743ebc66cd49d64}{handle\_main\_menu}}();}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classApplication_a0161780f4eb8c695251ff6b028acfc5b}{handle\_editor}}();}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classApplication_aa9a857b3a751d9eb3cb47606c0e3c67a}{cleanup}}();}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ std::pair<int,\ int>\ \mbox{\hyperlink{classApplication_ae98c46854a3ce7b0c46fe657103252a3}{calculate\_layout}}(\textcolor{keywordtype}{int}\ total\_cols)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classApplication_a92114a700c661b803382a3ef22a0766c}{setup\_window\_layout}}(\textcolor{keywordtype}{int}\ lines,\ \textcolor{keywordtype}{int}\ cols);}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{int}\ calculate\_sidebar\_width(\textcolor{keywordtype}{int}\ current\_cols\ =\ COLS)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{double}\ SIDEBAR\_WIDTH\_RATIO\ =\ 0.25;\ }
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ \mbox{\hyperlink{classNcursesSetup}{NcursesSetup}}\ ncurses\_setup\_;}
+\DoxyCodeLine{00063\ \ \ \ \ \mbox{\hyperlink{classMainMenu}{MainMenu}}\ main\_menu\_;}
+\DoxyCodeLine{00064\ \ \ \ \ \mbox{\hyperlink{classTerminalEditor}{TerminalEditor}}\ terminal\_editor\_;}
+\DoxyCodeLine{00065\ \ \ \ \ WindowState\ current\_window\_\{WindowState::MainMenu\};}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{bool}\ running\_\{\textcolor{keyword}{true}\};}
+\DoxyCodeLine{00067\ \ \ \ \ Dimensions\ previous\_dimensions\_;}
+\DoxyCodeLine{00068\ \ \ \ \ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{comment}{//\ Smart\ pointers\ managing\ windows}}
+\DoxyCodeLine{00070\ \ \ \ \ std::unique\_ptr<WINDOW,\ WindowDeleter>\ main\_window\_\{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{00071\ \ \ \ \ std::unique\_ptr<WINDOW,\ WindowDeleter>\ sidebar\_\{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{00072\ \ \ \ \ std::unique\_ptr<WINDOW,\ WindowDeleter>\ content\_\{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{00073\ \};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ APPLICATION\_H}}
+
+\end{DoxyCode}
