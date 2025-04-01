@@ -1,3 +1,5 @@
+This repo is not to be graded, it is personal.
+
 # Neonote
 A terminal-based, markdown text editor with task management, calendar scheduling, and more.
 
