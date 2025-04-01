@@ -81,12 +81,31 @@ void TerminalEditor::handleInputContent(int ch) {
             if (row < lines.size() - 1) row++;  /**< Move the cursor down one line. */
             break;
         case KEY_LEFT: 
-            if (col > 0) col--;  /**< Move the cursor left. */
+            if (col > 0) {
+                col--;  /**< Move the cursor left. */
+            } else if (row > 0) {
+                // At beginning of line, move to end of previous line
+                row--;
+                col = lines[row].length();
+            }
             break;
         case KEY_RIGHT: 
-            if (col < lines[row].length()) col++;  /**< Move the cursor right. */
+            if (col < lines[row].length()) {
+                col++;  /**< Move the cursor right. */
+            } else if (row < lines.size() - 1) {
+                // At end of line, move to beginning of next line
+                row++;
+                col = 0;
+            }
             break;
-        case 127:
+        case 127:  // Typically Delete key
+            if (col < lines[row].length()) {  /**< Delete the character at the cursor position. */
+                lines[row].erase(col, 1);
+            } else if (row < lines.size() - 1) {  /**< Merge with next line if at end of current line. */
+                lines[row] += lines[row + 1];
+                lines.erase(lines.begin() + row + 1);
+            }
+            break;
         case KEY_BACKSPACE:
             if (col > 0) {  /**< Delete the character to the left of the cursor. */
                 lines[row].erase(col - 1, 1);
@@ -515,19 +534,7 @@ void TerminalEditor::adjustCursorPosition() {
  * 
  * It also ensures the sidebar and main content are properly refreshed.
  */
-void TerminalEditor::redraw() {
-    int current_lines, current_cols;
-    getmaxyx(stdscr, current_lines, current_cols);
-    
-    sidebar_width = current_cols * 0.25;
-    int content_width = current_cols * 0.75;
-
-    wresize(ui.getMainWindow(), current_lines, current_cols);
-    wresize(ui.getSidebar(), current_lines, sidebar_width);
-    wresize(ui.getContent(), current_lines, content_width);
-
-    mvwin(ui.getSidebar(), 0, 0);
-    mvwin(ui.getContent(), 0, sidebar_width);
+void TerminalEditor::redraw(int sidebar_width) {
 
     ui.renderUI(sidebar_width, fileManager.getFiles());
 
@@ -546,7 +553,7 @@ void TerminalEditor::redraw() {
     if (focused_div == 0) {
         wmove(ui.getContent(), row - scroll_row, col - scroll_col);
     }
-    
+
     wrefresh(ui.getMainWindow());
     wrefresh(ui.getSidebar());
     wrefresh(ui.getContent());

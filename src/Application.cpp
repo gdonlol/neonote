@@ -182,17 +182,11 @@ void Application::handle_resize() {
             main_menu_.display();
         }
 	else if (current_window_ == WindowState::Editor) {
-//            switch(terminal_editor_.currently_displaying() {
-//                case 1:
-//
-//		case 2:
-//
-//		case 3:
-
-	}
+            const int sidebar_width = static_cast<int>(current_cols * SIDEBAR_WIDTH_RATIO);        
+	    terminal_editor_.redraw(sidebar_width);
+        }
     }
 }
-
 /**
  * @brief Handles main menu interaction
  *
