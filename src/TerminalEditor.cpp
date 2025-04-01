@@ -279,6 +279,7 @@ void TerminalEditor::handleInputSidebar(int ch) {
                 curs_set(1);
                 fileManager.saveFile(current_file, lines);
                 fileManager.loadFile(fileManager.getFiles()[sidebar_index], lines, current_file);
+                adjustCursorPosition();
                 ui.displayContent(lines, row, col, scroll_row, scroll_col, fileManager.getFiles()[sidebar_index]);
             }
             else if (sidebar_index == fileManager.getFiles().size()){
