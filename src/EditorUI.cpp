@@ -36,6 +36,16 @@ void EditorUI::renderUI(int sidebar_width, const std::vector<std::string> &files
     wrefresh(content);
 }
 
+/**
+ * @brief Formats a string with an ellipsis if it exceeds the specified width.
+ * 
+ * This function truncates the input string to `maxWidth - 3` characters and appends `...` 
+ * if the string length exceeds `maxWidth`. Otherwise, it returns the original string.
+ * 
+ * @param text The input string to format.
+ * @param maxWidth The maximum allowed width of the string (including the ellipsis, if applied).
+ * @return The formatted string with an ellipsis if it exceeds the max width.
+ */
 std::string EditorUI::formatWithEllipsis(const std::string& text, int maxWidth)  {
     if ((int)text.length() > maxWidth) {
         return text.substr(0, maxWidth - 3) + "...";

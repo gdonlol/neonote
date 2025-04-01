@@ -356,6 +356,17 @@ void TerminalEditor::handleInputSidebar(int ch) {
     }
 }
 
+/**
+ * @brief Handles keyboard input for the Kanban task manager interface.
+ * 
+ * This function processes various key inputs to perform actions such as:
+ * - Swapping the focus between divisions.
+ * - Adding, moving, or deleting tasks.
+ * - Navigating through the task list.
+ * - Rendering the task manager and sidebar display.
+ * 
+ * @param ch The key code representing the user input.
+ */
 void TerminalEditor::handleInputKanban(int ch){
     string input;
     switch(ch){
@@ -409,6 +420,18 @@ void TerminalEditor::handleInputKanban(int ch){
     }
 }
 
+/**
+ * @brief Handles keyboard input for the calendar interface.
+ * 
+ * This function processes various key inputs to:
+ * - Switch the focus between divisions.
+ * - Add new events with a title, description, and date.
+ * - Navigate through the list of events.
+ * - Delete events permanently.
+ * - Render the calendar and sidebar display.
+ * 
+ * @param ch The key code representing the user input.
+ */
 void TerminalEditor::handleInputCalendar(int ch){
     string event_title, event_desc, event_date, input;
     switch(ch){
@@ -479,6 +502,18 @@ void TerminalEditor::adjustCursorPosition() {
     else if (col >= scroll_col + max_cols) scroll_col = col - max_cols + 1;  /**< Scroll right if the cursor goes beyond visible columns. */
 }
 
+/**
+ * @brief Redraws the terminal editor interface.
+ * 
+ * This function adjusts the window sizes based on the current terminal dimensions,
+ * repositions the sidebar and content windows, and renders the appropriate section
+ * based on the current focus:
+ * - **Content editor**: Displays the current file with cursor visibility.
+ * - **Task manager**: Renders the task list.
+ * - **Calendar**: Displays the calendar view.
+ * 
+ * It also ensures the sidebar and main content are properly refreshed.
+ */
 void TerminalEditor::redraw() {
     int current_lines, current_cols;
     getmaxyx(stdscr, current_lines, current_cols);

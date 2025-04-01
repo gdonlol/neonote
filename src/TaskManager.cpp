@@ -262,38 +262,65 @@ void TaskManager::renderTasks() {
     delwin(doneWin);
 }
 
+/**
+ * @brief Moves the task selection in the specified direction.
+ * 
+ * This function handles circular navigation for both rows (tasks) and columns (task types). 
+ * - **Direction 0:** Moves the selection up within the current task type.
+ * - **Direction 1:** Moves the selection down within the current task type.
+ * - **Direction 2:** Moves the selection left to the previous task type.
+ * - **Direction 3:** Moves the selection right to the next task type.
+ * 
+ * Circular navigation ensures that moving past the first or last element wraps around.
+ * 
+ * @param direction The direction to move the selection:
+ *                  - 0: Up
+ *                  - 1: Down
+ *                  - 2: Left
+ *                  - 3: Right
+ */
 void TaskManager::moveSelection(int direction){
     switch (direction) {
         case 0:  // Up
             if (!tasks[currentType].empty()) {
-                currentSelected = (currentSelected - 1 + tasks[currentType].size()) % tasks[currentType].size(); //**< Circular navigation for rows */
+                currentSelected = (currentSelected - 1 + tasks[currentType].size()) % tasks[currentType].size();
             }
             break;
 
         case 1:  // Down
             if (!tasks[currentType].empty()) {
-                currentSelected = (currentSelected + 1) % tasks[currentType].size(); //**< Circular navigation for rows */
+                currentSelected = (currentSelected + 1) % tasks[currentType].size();
             }
             break;
 
         case 2:  // Left
-            currentType = (currentType - 1 + 3) % 3;  //**< Circular navigation for columns */
-            currentSelected = std::min(currentSelected, tasks[currentType].size() == 0 ? 0: (int)tasks[currentType].size() - 1);
+            currentType = (currentType - 1 + 3) % 3;
+            currentSelected = std::min(currentSelected, tasks[currentType].size() == 0 ? 0 : (int)tasks[currentType].size() - 1);
             break;
 
         case 3:  // Right
-            currentType = (currentType + 1) % 3;  //**< Circular navigation for columns */
-            currentSelected = std::min(currentSelected, tasks[currentType].size() == 0 ? 0: (int)tasks[currentType].size() - 1);
+            currentType = (currentType + 1) % 3;
+            currentSelected = std::min(currentSelected, tasks[currentType].size() == 0 ? 0 : (int)tasks[currentType].size() - 1);
             break;
     }
 }
 
+
+/**
+ * @brief Retrieves the ID of the currently selected task.
+ * 
+ * This function returns the ID of the task at the current selection. 
+ * If the current type or selection is out of bounds, it returns `-1` to indicate an invalid selection.
+ * 
+ * @return The ID of the selected task, or `-1` if the selection is invalid.
+ */
 int TaskManager::getSelectedTaskId() {
     if (currentType >= tasks.size() || currentSelected >= tasks[currentType].size()) {
         return -1;
     }
     return tasks[currentType][currentSelected].getId();
 }
+
 
 /**
  * @brief Prompts the user to move a task to a different status via a popup.
@@ -357,6 +384,14 @@ void TaskManager::moveTaskPopup(int taskId) {
     }
 }
 
+/**
+ * @brief Finds the next available task ID.
+ * 
+ * This function iterates through all tasks across all types and 
+ * returns the next free ID, which is one greater than the current maximum ID.
+ * 
+ * @return The next free task ID.
+ */
 int TaskManager::nextFree() {
     int maxId = 0;
 
@@ -370,11 +405,21 @@ int TaskManager::nextFree() {
     return maxId + 1;
 }
 
+/**
+ * @brief Swaps into the task manager, resetting the selection.
+ * 
+ * Sets the selection to the first task type and the first task within it.
+ */
 void TaskManager::swapIn(){
     currentSelected = 0;
     currentType = 0;
 }
 
+/**
+ * @brief Swaps out of the task manager, clearing the selection.
+ * 
+ * Sets the selection to invalid indices, indicating no selection.
+ */
 void TaskManager::swapOut(){
     currentSelected = -1;
     currentType = -1;

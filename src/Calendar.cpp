@@ -328,6 +328,14 @@ int Calendar::getFirstDayOfMonth(int month, int year) const {
     return time_in.tm_wday;            //**< 0 = Sunday, 6 = Saturday */
 }
 
+/**
+ * @brief Finds the next available event index in the events directory.
+ * 
+ * This function iterates through the event files in the `.local/share/neonote/events` directory,
+ * starting from index 0, until it finds an index that does not have a corresponding event file.
+ * 
+ * @return The next free event index.
+ */
 int Calendar::nextFree() {
     std::filesystem::path eventsDir = std::filesystem::path(getenv("HOME")) / ".local" / "share" / "neonote" / "events";
     
@@ -341,14 +349,29 @@ int Calendar::nextFree() {
     }
 }
 
+/**
+ * @brief Retrieves the currently selected event index.
+ * 
+ * @return The index of the selected event.
+ */
 int Calendar::getSelectedEvent(){
     return selectedEvent;
 }
 
+/**
+ * @brief Sets the currently selected event index.
+ * 
+ * @param index The index of the event to select.
+ */
 void Calendar::setSelectedEvent(int index){
     selectedEvent = index;
 }
 
+/**
+ * @brief Retrieves a list of all events.
+ * 
+ * @return A vector containing all events.
+ */
 std::vector<Event> Calendar::getEvents(){
     return events;
 }
