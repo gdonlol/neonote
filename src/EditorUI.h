@@ -1,3 +1,11 @@
+/**
+ * @file EditorUI.h
+ * @brief Defines the EditorUI class for managing and rendering a text editor user interface using ncurses.
+ * 
+ * @author 
+ * - Gordon Xu
+ * - Runcong Zhu
+ */
 #ifndef EDITOR_UI_H
 #define EDITOR_UI_H
 
@@ -5,6 +13,16 @@
 #include <vector>
 #include <string>
 
+/**
+ * @class EditorUI
+ * @brief Handles the rendering and interaction of a text editor's user interface.
+ * 
+ * The EditorUI class is responsible for managing the main window, sidebar, and content area.
+ * It provides functions for rendering the UI, displaying content, managing scrolling, 
+ * and handling user prompts.
+ * @Author Gordon Xu
+ * @Author Runcong Zhu
+ */
 class EditorUI {
 public:
     EditorUI(WINDOW *win, WINDOW *sidebar, WINDOW *content);

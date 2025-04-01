@@ -1,3 +1,16 @@
+/**
+ * @file TerminalEditor.h
+ * @brief Header file for the TerminalEditor class, which serves as the main controller for the terminal-based editor.
+ * 
+ * This file defines the TerminalEditor class responsible for handling user input, rendering the UI,
+ * managing files, and interacting with the calendar and task manager.
+ * 
+ * @author 
+ * - Gordon Xu
+ * - Runcong Zhu
+ * - Emily Atyeo
+ */
+
 #ifndef TERMINAL_EDITOR_H
 #define TERMINAL_EDITOR_H
 

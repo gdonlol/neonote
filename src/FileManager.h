@@ -1,4 +1,16 @@
-#ifndef FILE_MANAGER_H
+/**
+ * @file FileManager.h
+ * @brief Manages file operations for NeoNote, including loading, saving, renaming, and deleting files.
+ * 
+ * Handles interactions with the filesystem, manages the app's data directory, 
+ * and keeps track of existing files.
+ * 
+ * @author 
+ * - Gordon Xu
+ * - Runcong Zhu
+ */
+
+ #ifndef FILE_MANAGER_H
 #define FILE_MANAGER_H
 
 #include <vector>

@@ -1,3 +1,12 @@
+/**
+ * @file Calendar.h
+ * @brief Defines the Calendar class for managing and displaying events.
+ * 
+ * @author 
+ * - Gordon Xu
+ * - Emily Atyeo
+ * - Edward Bulmer
+ */
 #ifndef CALENDAR_H
 #define CALENDAR_H
 
@@ -6,6 +15,14 @@
 #include <string>
 #include <ncurses.h>
 
+/**
+ * @class Calendar
+ * @brief Manages a collection of events and provides functionality for rendering and interacting with a calendar.
+ * 
+ * The Calendar class allows adding, removing, and updating events. It also handles rendering the calendar
+ * in an ncurses window, provides date-related utilities, and manages the selection of events.
+ * 
+ */
 class Calendar {
 public:
     Calendar(WINDOW *content);

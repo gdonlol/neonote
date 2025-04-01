@@ -1,3 +1,16 @@
+/**
+ * @file Task.h
+ * @brief Header file for the Task class, representing an individual task in a Kanban board.
+ * 
+ * This file defines the Task class, which contains information about a task, including 
+ * its ID, title, description, and status. It provides getter and setter methods 
+ * for modifying and retrieving task details.
+ * 
+ * @author 
+ * - Emily Atyeo
+ * - Gordon Xu
+ */
+
 #ifndef TASK_H
 #define TASK_H
 

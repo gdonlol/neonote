@@ -1,3 +1,14 @@
+/**
+ * @file TaskManager.h
+ * @brief Header file for the TaskManager class, which manages a collection of Task objects.
+ * 
+ * This file defines the TaskManager class, responsible for handling multiple 
+ * Task objects, including adding, removing, moving, and rendering them using ncurses.
+ * 
+ * @author 
+ * - Gordon Xu
+ * - Emily Atyeo
+ */
 #ifndef TASKMANAGER_H
 #define TASKMANAGER_H
 

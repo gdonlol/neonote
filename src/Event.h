@@ -1,3 +1,12 @@
+/**
+ * @file Event.h
+ * @brief Defines the Event class representing a calendar event with details such as ID, title, description, date, start time, and end time.
+ * 
+ * @author 
+ * - Emily Atyeo
+ * - Gordon Xu
+ */
+
 #ifndef EVENT_H
 #define EVENT_H
 
