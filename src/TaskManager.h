@@ -5,10 +5,10 @@
  * This file defines the TaskManager class, responsible for handling multiple 
  * Task objects, including adding, removing, moving, and rendering them using ncurses.
  * 
- * @author 
- * - Gordon Xu
- * - Emily Atyeo
+ * @author Gordon Xu
+ * @author Emily Atyeo
  */
+
 #ifndef TASKMANAGER_H
 #define TASKMANAGER_H
 

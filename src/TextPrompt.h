@@ -5,8 +5,7 @@
  * This file defines the TextPrompt class responsible for displaying a text prompt 
  * and capturing user input in a terminal environment.
  * 
- * @author 
- * - Gordon Xu
+ * @author Gordon Xu
  */
 
 #ifndef TEXT_PROMPT_H

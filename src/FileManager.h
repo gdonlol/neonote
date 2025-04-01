@@ -5,9 +5,8 @@
  * Handles interactions with the filesystem, manages the app's data directory, 
  * and keeps track of existing files.
  * 
- * @author 
- * - Gordon Xu
- * - Runcong Zhu
+ * @author Gordon Xu
+ * @author Runcong Zhu
  */
 
  #ifndef FILE_MANAGER_H

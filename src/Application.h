@@ -2,8 +2,7 @@
  * @file Application.h
  * @brief Main application class managing terminal editor and main menu interfaces for NeoNote.
  * 
- * @author 
- * - Runcong Zhu
+ * @author Runcong Zhu
  */
 
 #ifndef APPLICATION_H

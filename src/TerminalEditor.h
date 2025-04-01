@@ -5,10 +5,9 @@
  * This file defines the TerminalEditor class responsible for handling user input, rendering the UI,
  * managing files, and interacting with the calendar and task manager.
  * 
- * @author 
- * - Gordon Xu
- * - Runcong Zhu
- * - Emily Atyeo
+ * @author Gordon Xu
+ * @author Runcong Zhu
+ * @author Emily Atyeo
  */
 
 #ifndef TERMINAL_EDITOR_H
@@ -28,7 +27,7 @@ public:
                  const std::vector<std::string> &files);
     
     void handleInput(int ch);
-    void redraw(int sidebar_width);
+    void redraw();
     void cleanup();
     
 private:

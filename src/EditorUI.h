@@ -2,10 +2,10 @@
  * @file EditorUI.h
  * @brief Defines the EditorUI class for managing and rendering a text editor user interface using ncurses.
  * 
- * @author 
- * - Gordon Xu
- * - Runcong Zhu
+ * @author Gordon Xu
+ * @author Runcong Zhu
  */
+
 #ifndef EDITOR_UI_H
 #define EDITOR_UI_H
 

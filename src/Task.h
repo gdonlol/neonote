@@ -6,10 +6,10 @@
  * its ID, title, description, and status. It provides getter and setter methods 
  * for modifying and retrieving task details.
  * 
- * @author 
- * - Emily Atyeo
- * - Gordon Xu
+ * @author Emily Atyeo
+ * @author Gordon Xu
  */
+
 
 #ifndef TASK_H
 #define TASK_H

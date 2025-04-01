@@ -5,10 +5,10 @@
  * This file defines the NcursesSetup class, responsible for setting up and properly cleaning up 
  * the ncurses environment used for the terminal-based calendar application.
  * 
- * @author 
- * - Gordon Xu
- * - Runcong Zhu
+ * @author Gordon Xu
+ * @author Runcong Zhu
  */
+
 
 #ifndef NCURSES_SETUP_H
 #define NCURSES_SETUP_H

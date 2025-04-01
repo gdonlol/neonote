@@ -2,11 +2,11 @@
  * @file Calendar.h
  * @brief Defines the Calendar class for managing and displaying events.
  * 
- * @author 
- * - Gordon Xu
- * - Emily Atyeo
- * - Edward Bulmer
+ * @author Gordon Xu
+ * @author Emily Atyeo
+ * @author Edward Bulmer
  */
+
 #ifndef CALENDAR_H
 #define CALENDAR_H
 

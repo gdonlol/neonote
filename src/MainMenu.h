@@ -5,10 +5,10 @@
  * This file defines the MainMenu class, which handles rendering the main menu, processing user input, 
  * and managing window navigation. It is part of a calendar application utilizing ncurses for terminal-based UI.
  * 
- * @author 
- * - Gordon Xu
- * - Runcong Zhu
+ * @author Gordon Xu
+ * @author Runcong Zhu
  */
+
 #ifndef MAIN_MENU_H
 #define MAIN_MENU_H
 
