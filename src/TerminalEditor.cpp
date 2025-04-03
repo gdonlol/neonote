@@ -316,7 +316,7 @@ void TerminalEditor::handleInputSidebar(int ch) {
             ui.renderSidebar(sidebar_width, fileManager.getFiles(), sidebar_index);
             break;
         case RENAME_FILE:
-            if(sidebar_index < fileManager.getFiles().size() - 2){
+            if(sidebar_index < fileManager.getFiles().size()){
                 fileManager.saveFile(current_file, lines);
                 fileManager.loadFile(fileManager.getFiles()[sidebar_index], lines, current_file);
                 input = ui.displayPrompt("Rename note");
